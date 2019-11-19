@@ -1,0 +1,36 @@
+#! /bin/csh -f
+#
+#  script to make a backup copy of a
+#  file with the name .file.ddmmmyy
+#
+#  If -x is given the backup copy is appendend
+#  to $COMB/lib/xfiles
+#
+#  Last Change: Wed Sep 11 11:49:28 PDT 1996 - mwp
+#      change format of write to xfiles since tarcomb has changed
+#
+if ( $#argv == 0 ) goto Usage
+ 
+set x=0
+set day=`date +%d%h%y`
+if ("$argv[1]" == "-x") then
+ set x=1
+ shift
+endif
+
+foreach file ( $argv )
+  set newfile=".$file.$day"
+  echo "cp $file --> $newfile"
+  if ($x == 1) then
+    set string="s:"`echo $COMB |sed 's/comb//'`"::"
+    set pth=`pwd |sed $string`
+    echo $pth/$newfile >> $COMB/lib/xfiles
+  endif
+  cp $file $newfile
+end
+
+exit 0
+Usage: 
+   echo "  Usage: $0 [-x] file1 file2 ... fileN"
+   echo "   if -x is given, saved filename is appended to $COMB/lib/xfiles"
+exit 1

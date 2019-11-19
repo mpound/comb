@@ -1,0 +1,5 @@
+dvt_.o: dvt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h
+dv.o: dv.c /usr/include/ctype.h ../../parse/P.tree.h \
+ ../../parse/../main/machinedep.h ../../parse/P.constant.h \
+ ../../parse/P.struct.h ../../parse/P.uservars.h ../../main/C.h \
+ ../../main/History.h dv.dc.h dv.ec.h

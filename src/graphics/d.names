@@ -1,0 +1,30 @@
+"hp2648",hp2648,
+"vt100",vt100,
+"tek4112",tek4112,
+"5620",tty5620,
+"imagen1",imagen1,
+"imagen2",imagen2,
+/* "imagen3",imagen3, */
+/* "imagen4",imagen4, */
+/* "versatek",versatek, */
+"tek4014",vt100,
+"sun",vt100,
+"xterm",xterm,
+/* "vs100" termcap entry is same as xterm */
+"vs100",xterm,
+"vs100s",xterm,
+"xterms",xterm,
+/* "hp7580",hp7580, */
+/*"dmdlayer",setlayer,*/
+"hp2623",hp2623,
+"post1",post1,
+"post2",post2,
+"post3",post3,
+"post4",post4,
+"postfile",postfile,
+"lj1",lj1,
+"lj2",lj2,
+"ljfile",ljfile,
+"hpglplot",hpglplot,
+"tekfile",tekfile,
+"tekplot",tekplot,

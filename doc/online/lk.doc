@@ -1,0 +1,34 @@
+lk - plot the locations of stacks
+
+EXAMPLES:
+
+lk 10,-10,-8 5		If the relative coordinate system is odra-oddec this
+			will plot an x for each stack in the area between
+			+10' and -10' from the center in ra and between
+			-8' and +5' from the center in dec.
+lk,8,-8,-8,8,psn:	show the stack numbers at the position of each stac
+			in the given area.
+lk dt:			show the stack locations for the background directory,
+			using the current x and y limits.
+
+lk ps:10		use dots instead of crosses to mark positions of spectra.
+
+DESCRIPTION:
+
+Lk is a quick way to find where the observations in a stacks file are.  It
+plots in the same size window as cm and can be used to make overlays showing
+where the data is.  Lk normally plots a cross at the location of each stack,
+but if the psn: flag is given it will plot the stack number instead (useful
+only in small areas).
+
+Lk uses the current relative coordinate system.  If a projection has
+been specified with 'op', lk will use it.  SEE COMMENTS on COORDINATES
+in the write up on cm.
+
+The sn:, fr:, hlb:, vlb:, and mlb: flags have the same use as in cm.
+
+The dt: flag allows one to see where stacks are in the background directory.
+
+The ps: flag allows a choice of plot symbols. See 'gm ?!' for list of plot 
+symbols. Dots (ps:10) or filled circles (ps:5 fill:) look nicer than crosses for 
+overlaying contour maps.

@@ -1,0 +1,13 @@
+rs - Rescale and add a constant to the data in stack 1.		RWW
+ 
+EXAMPLES:
+
+rs 2,-1		Multiply the data in stack 1 by 2 and subtract 1
+rs,1.1		Multiply the data in stack 1 by 1.1. 
+
+DESCRIPTION:
+
+Rescale multiplies the data in stack 1 by fact and then adds add to it.
+Rescale also multiplies the header value "factt" in stack 1 by the same
+factor.  So you can always "unscale" the data with "rs 1/.factt" (assuming 
+add: has always been 0).

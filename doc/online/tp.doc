@@ -1,0 +1,12 @@
+tp - Total power - average chans in stack1 weighted by cal in stack3
+
+EXAMPLES:
+
+gt ca:;st 3;gt dt:;tp	Get a cal scan in stack 3 and use it to weight the
+			next data scan and print the continuum antenna
+			temperature.
+
+DESCRIPTION:
+
+Tp is used to derive continuum data from observations with a spectrometer.
+It weights the channels correctly for the best snr.

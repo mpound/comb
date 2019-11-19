@@ -1,0 +1,137 @@
+
+im - image manipulate    				      MWP & RWW
+
+EXAMPLES:
+
+im mv:			copy image 1 to image 2
+
+im,3,5			copy image 3 to image 5
+
+im add:1,3,4 mina:-1.5  minb:0 
+			add images 1 & 3, put result in image 4, suppressing
+			data with pixel values < -1.5 in image 1, and data
+			with pixel values < 0.0 in image 3. 
+
+im mul:	hl:"Go forth and multiply" 
+			multiply images 1 & 2, put result in image 3, and
+		        set the "im" HISTORY label of image 3 to the string.
+			String can be up to 50 chars.
+
+im rs:4.2,-1		rescale (multiply) the pixels in image 1 by 4.2, 
+			then subtract 1 from them.
+
+im ph:2			print the header of image 2 (FITS format)
+
+im ah:1,"Hello world"   add a "user" HISTORY label to the image header of 
+		        image 1 comprised of the string "Hello world".  
+			String can be up to 50 chars.
+
+im si:1,2 an:1          Write a subimage of image 1, as defined by area 1, 
+                        into image 2.
+
+im si:1,3 po:[-5,5,-4,7]  Write a subimage of image 1, as defined by the given 
+                          x limits (-5,5) and y limits (-4,7), into image 3.
+
+im si:1,2 po:[900*5:32, 900*5:30, 60*2:30, 60*3:00]
+			   A subimage example for images in Total RA-DEC 
+                           coordinates (see below).
+
+im temp:1,2,3 pow:-1.0  Compute dust temperature map from two IRAS flux maps
+			in adjacent bands (e.g. 60 and 100 micron). Shorter
+			wavelength is in image 1. Temperature map is put in
+			image 3. 
+
+im cc:2,3,4             Perform color correction on IRAS flux map in image 2, 
+			using temperature map in image 3. 
+
+im tau:4,3,5            Compute opacity map at wavelength corresponding to
+			(color-corrected) flux map in image 4 and temperature
+			map in image 3. Assume opacity varies inversely with
+			wavelength. Result is put in image 5.
+
+DESCRIPTION:
+
+im performs image arithmetic, makes a subimage of a current image,
+and has functions for analysis of IRAS flux maps (which is just another 
+kind of arithmetic). 
+
+When pixels are changed by im, a HISTORY record reflecting the change is 
+automatically added to the header. The user may change this default
+HISTORY record, with the h: flag. With im ah:, the user may add one 
+additional HISTORY record. 
+
+im reports the number of output pixels which have the value BLANK, even if
+they were blank in the input image(s).
+
+mina: and minb: have no effect on im mv:, im rs:, im ah:, and im ph:.
+minb: has no effect on im si:.
+
+ IMAGE ARITHMETIC:
+
+im can add, subtract, multiply and divide two images, putting the result 
+in the specified image plane.  The default images for arithmetic operations 
+are 1, 2, 3; that is image 3 = image1 (OP) image2.  im rs: will multiply image 
+pixels by a constant and add a constant to the specified image (like 'rs' does 
+to stacks). The default image for im rs: is image 1. 
+
+im mv: copies an image from one image plane to another by linking the 
+image to the new pointer. It is particularly useful when making 
+overlay contour plots. The default for im mv: is image 1 to image 2
+Note, however, that since this is a "symbolic" link and not a true copy,
+any arithmetic operation on the image "copy" will also affect
+the original (and vice versa). Recomputing a new image in the "original"
+image plane will not affect the copy however.
+
+ SUBIMAGES:
+
+Using the si: option, you can copy a portion of a given image into
+another image plane. This is done either by specifying a defined area which
+delimits the desired region, or by specifying the corners of the subimage
+(left and right x and y limits) in the image units. The defined area does
+not need to be rectangular, but the resultant subimage always will be 
+a rectangular region which encompasses the area given. With either method
+of specifying the region, the subimage limits are rounded to the nearest
+pixel. If an x or y boundary requested for the subimage exceeds that of 
+the source image, the request is reset to the source image boundary.
+The default is to copy the region defined by area 1 from image 1 to 
+image 2.
+
+Note for images in "Total RA-DEC" coordinates (i.e., 'cp' shows HH:MM:SS on 
+RA axis), you must specify the subimage in arcminute offsets from 
+(0 hr, 0 deg).  The resultant image will also be in "Total RA-DEC" 
+coordinates.  See the example above for a simple way of doing this, using
+the axes numerals that cp displays. For images in (l,b) coordinates, specify
+the offsets in degrees from CRPIX1 and CRPIX2, even though 'cp' shows total
+degrees.
+
+ ANALYSIS OF IRAS IMAGES:
+
+im has 3 special options for analysis of IRAS flux maps. im will
+compute dust temperature and opacity maps from IRAS flux maps, and
+perform the "color correction" to IRAS flux maps.  
+
+The method for computing dust temperature and opacity maps is described
+in Langer et. al. (1989, ApJ, 337, 355 [Section V and Appendix A]). 
+It is assumed that the dust temperature along the line of sight can be 
+characterized by a single temperature and that the emission is optically thin. 
+Consult Appendix A of Langer et.al. for more information on the method and 
+caveats. 
+
+Briefly, the method is as follows (using 60 and 100 micron as examples):
+ 
+I(60)/I(100) = [B(T,60)/B(T,100)]*[tau(60)/tau(100)]
+
+where I = intensity, B = Planck function, T = dust temp., and tau = opacity.
+If it is assumed that the optical depth is a power-law with wavelength, then
+the above equation can be solved for T at each point in the IRAS maps.
+Temperatures are clipped at about 20 and 10,000 K, the exact clipping value
+depends on the wavelengths of the input images.
+
+Before calculating the opacity map at any wavelength, a color-correction must 
+be applied to that flux map to account for the effects of the finite IRAS 
+passbands. The color correction is performed as described on page VI-27 of the 
+IRAS Explanatory Supplement (1987).
+
+Dividing each pixel of a color-corrected flux map by the Planck function at the
+derived temperature of that pixel, converts the flux map into an opacity
+map at that wavelength.

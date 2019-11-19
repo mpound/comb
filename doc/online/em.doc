@@ -1,0 +1,29 @@
+em - Empty a stack					Matthew Miller
+
+
+EXAMPLES:
+em			empty stack 2 (fill it with zeros)
+em 7			empty stack 7 in the current foreground
+			directory
+em 13 dt:		empty stack 13 in the current background
+			directory
+em 11 rev:		recover stack 11 in the current foreground
+			directory if possible
+em 1_6			empty stacks 1 through 3 in core and 4
+			through 6 in the current foreground
+			directory
+
+DESCRIPTION:
+Em is used to empty a range of stacks which is either in core or on disk.
+If 'sk' is below 4, then the stack in core will be emptied.  If it is
+equal to or above 4, then the stack in the directory 'f' will be
+emptied.
+
+When a stack in core is emptied, it is filled with zeros and all the
+data is lost.  When a stack on disk is emptied, a flag is set that
+tells COMB it is emptied.  Stacks on disk may be recovered with the
+reverse empty flag ('rev') if the space they occupy has not been
+overwritten by a store.
+
+The current foreground stacks directory is used unless the dt: flag is
+given.

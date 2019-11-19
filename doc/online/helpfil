@@ -1,0 +1,21 @@
+
+Type "lc" for a list of commands and brief synopsis.
+Type <command name><space> "?!" for a longer description of the command.
+Type <command name><space> "??" for the command's input structure.
+Type <command name><space> "?"  to be lead through the input structure 
+                                of the command step by step ('hand-hold mode')
+
+Type "docp" for a description of special characters and the input structure.
+Type "doch" for a description of the stack header variables. Their names can
+	be used in numeric expressions.
+Type "docs" for a description of the spectral scan format.
+Type "keyw" for a list of Bell Labs scan keywords.
+Type "nrao" for a list of NRAO scan keywords.
+Type "bugs" for a description of known problems.
+Type "diag" to run diagnostics of comb functions.
+Type "motd" for the start-up message.
+Type "news" for news.
+
+Some generally useful macros are defined in .GMACROS. You can examine
+them with "dm g:". Usually, only the owner of comb has permission to
+write to .GMACROS.

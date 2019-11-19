@@ -1,0 +1,38 @@
+# include "../../parse/P.tree.h"
+
+Node opt_[] =
+{
+/*000*/ "Set options","op",NORMAL,0,0,0,{1,2,3,4,10,14,15,16,0},
+/*001*/ "Auto plot control\0","ap",LEAF,0,0,0,{Btwo(0),Btwo(-1),8,1,
+        Btwo(1),Btwo(0),Btwo(0),2,1,Btwo(20),Btwo(0),0},
+/*002*/ "Use Upper Case Labels\0","ucl",LEAF,0,1,0,{Btwo(4),Btwo(-1),
+        8,1,Btwo(1),Btwo(0),Btwo(0),2,1,Btwo(22),Btwo(0),0},
+/*003*/ "Default stacks path\0","sp",LEAF,0,2,0,{Btwo(40),Btwo(-1),3,
+        1,Btwo(129),Btwo(0),Btwo(0),1,1,Btwo(24),Btwo(0),0},
+/*004*/ "Projection to use for maps","",EXCLSV,0,3,0,{Btwo(26),
+        Btwo(28),5,6,7,8,9,0},
+/*005*/ "Current rel coordinates","rc",LEAF,4,0,0,{Btwo(-1),Btwo(-1),
+        0,1,Btwo(1),Btwo(0),Btwo(0),0,0,Btwo(0),Btwo(0),0},
+/*006*/ "Orthographic","ortho",LEAF,4,1,0,{Btwo(-1),Btwo(-1),0,1,
+        Btwo(1),Btwo(0),Btwo(0),0,0,Btwo(0),Btwo(0),0},
+/*007*/ "Mercator","merc",LEAF,4,2,0,{Btwo(-1),Btwo(-1),0,1,Btwo(1),
+        Btwo(0),Btwo(0),0,0,Btwo(0),Btwo(0),0},
+/*008*/ "Gnomonic","gnom",LEAF,4,3,0,{Btwo(-1),Btwo(-1),0,1,Btwo(1),
+        Btwo(0),Btwo(0),0,0,Btwo(0),Btwo(0),0},
+/*009*/ "Polar","po",LEAF,4,4,0,{Btwo(-1),Btwo(-1),0,1,Btwo(1),
+        Btwo(0),Btwo(0),0,0,Btwo(0),Btwo(0),0},
+/*010*/ "Horiz plot type","",EXCLSV,0,4,0,{Btwo(30),Btwo(32),11,12,13,
+        0},
+/*011*/ "Channels","ch",LEAF,10,0,0,{Btwo(-1),Btwo(-1),0,1,Btwo(1),
+        Btwo(0),Btwo(0),0,0,Btwo(0),Btwo(0),0},
+/*012*/ "Frequency","fr",LEAF,10,1,0,{Btwo(-1),Btwo(-1),0,1,Btwo(1),
+        Btwo(0),Btwo(0),0,0,Btwo(0),Btwo(0),0},
+/*013*/ "Velocity","vl",LEAF,10,2,0,{Btwo(-1),Btwo(-1),0,1,Btwo(1),
+        Btwo(0),Btwo(0),0,0,Btwo(0),Btwo(0),0},
+/*014*/ "Answer Yes to Warn\0","yw",LEAF,0,5,0,{Btwo(8),Btwo(-1),8,1,
+        Btwo(1),Btwo(0),Btwo(0),2,1,Btwo(34),Btwo(0),0},
+/*015*/ "Message Level for BLANK\0","msg",LEAF,0,6,0,{Btwo(12),
+        Btwo(-1),8,1,Btwo(1),Btwo(0),Btwo(0),5,1,Btwo(36),Btwo(0),0},
+/*016*/ "Don't show plots\0","dp",LEAF,0,7,0,{Btwo(16),Btwo(-1),8,1,
+        Btwo(1),Btwo(0),Btwo(0),2,1,Btwo(38),Btwo(0),0}
+};

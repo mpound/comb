@@ -1,0 +1,20 @@
+parse ("cmnd_.gstr")
+
+"Make a Hard copy of the current screen" "hc";
+{
+	"Type of device":ex("typ");
+	{
+		"Apost" "a":;
+		"Qpost" "q":;
+		"Bpost"	"b":;
+		"Cpost" "c":;
+		"Imagen" "i":;
+		"Jmagen" "j":;
+		"LaserJeta" "la":;
+		"LaserJetb" "lb":;
+		"PostScript file" "pf":;
+		"LaserJet File" "lf":;
+		"HP-GL Plot" "h":;
+	}
+}
+

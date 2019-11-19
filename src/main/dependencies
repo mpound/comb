@@ -1,0 +1,10 @@
+cmd.o: cmd.c include.h
+macro.o: macro.c C.h History.h ../stacks/C.h ../coordsys/C.h \
+ ../stacks/include.h ../error/C.h ../misc/C.h \
+ ../parse/P.cleanuservars.h
+main.o: main.c C.h History.h include.h machinedep.h dragon.h \
+ ../misc/C.h ../parse/P.cleanuservars.h ../stacks/C.h ../scan/C.h \
+ ../coordsys/C.h ../stacks/include.h ../graphics/C.h ../image/C.h \
+ ../error/C.h
+faerr.o: faerr.c C.h History.h include.h machinedep.h
+main.global.o: main.global.c C.h History.h include.h dragon.h

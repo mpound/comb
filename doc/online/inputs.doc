@@ -1,0 +1,52 @@
+                            Command Syntax
+                           ----------------
+
+A comb command consists of 2 basic parts: a command name followed by a
+delimited list of arguments. The delimiters may be commas or spaces (it's okay
+to mix the two).  The command name is a one- or two-character mnemonic for the
+function, e.g. "cm" is contour map. The arguments can take a variety of
+forms: numerical, character string, numerical range, list, flag, toggle, and
+expression.  The command "lk" (look), which displays the location of
+spectra on the sky, is a good example of most of these types.
+
+Command arguments are arranged in a syntax tree, with a unique label to specify
+each node of the tree.  This syntax tree is what is printed out when you 
+type " ??" after a command name.  For instance,
+
+-> lk ??
+
+Look at where stacks are "lk"
+  Horizontal limits "xl"
+    Left x "lx" - REAL, OLD(0)
+    Right x "rx" - REAL, OLD(0)
+  Vertical limits "yl"
+    Bottom y "by" - REAL, OLD(0)
+    Top y "ty" - REAL, OLD(0)
+  Stack number limits "sn"
+    Low "l" - INTEGER, OLD(10)
+    High "h" - INTEGER, OLD(262143)
+  Plot Symbol "ps"
+    Figure Number "fign" - INTEGER, SET(4)
+    Figure height "fh" - REAL, AUTOMATIC(0)
+    Figure width "fw" - REAL, AUTOMATIC(0)
+    Filled "fill" - FLAG(no)
+  Center Frequency (MHz) "fr" - REAL RANGE, OLD(0_990000)
+  Plot stack numbers "psn" - FLAG(no)
+  Horizontal label "hlb" - STRING, AUTOMATIC
+  Vertical label "vlb" - STRING, AUTOMATIC
+  Main label "mlb" - STRING, AUTOMATIC
+  Line type "lt" - INTEGER, OLD(255)
+  Check search vs stack "chk" - FLAG(no)
+  Directory two "dt" - FLAG(no)
+  Overlay "ovl" - FLAG(no)
+
+Labels, e.g. "xl:", "fr:", "mlb:", are delineated by a colon. If the arguments
+are entered in the order in which they appear in the syntax tree, then the
+labels are not needed. Use of labels, however, allows arguments to be entered
+in any order or arguments to be skipped altogether, if desired, and is also
+handy for remembering arguments in the list. Arguments following labels may
+take optional square brackets, e.g. "lk fr:[110200_110300]". Square brackets
+are required when the arguments type is a list, e.g. "cp sc:[0,20,2,39,3,49]".
+
+Nitty-gritty details of syntax trees, the meanings of AUTOMATIC, SET, OLD, etc.
+and the parser are available in the Help topic 'parser'.

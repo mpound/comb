@@ -1,0 +1,14 @@
+	*sbt = 0;
+	*Xt = 16;
+	*Xe = 1;
+	*Yt = 16;
+	*Ye = 1;
+	*an = 1;
+	*ant = 8;
+	*pft = 8;
+	*plft = 8;
+	*lnt = lnt_o;
+	*lntt = 8;
+	*paft = 8;
+	parse_(&cmnd_.gstr,dat_,dab.c);
+	lnt_o = *lnt;

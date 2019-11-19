@@ -1,0 +1,11 @@
+get1.o: get1.c ../stacks/C.h ../main/C.h ../main/History.h C.h
+get2.o: get2.c ../main/C.h ../main/History.h C.h ../stacks/C.h \
+ ../coordsys/C.h ../scan2/scan2.h
+scan.o: scan.c ../main/C.h ../main/History.h C.h include.h \
+ ../scan2/scan2.h ../stacks/C.h ../parse/P.tree.h \
+ ../parse/../main/machinedep.h ../parse/P.struct.h \
+ ../parse/P.constant.h
+scan.global.o: scan.global.c ../main/C.h ../main/History.h C.h
+nrao.o: nrao.c ../main/C.h ../main/History.h ../stacks/C.h \
+ ../coordsys/C.h ../scan2/scan2.h ../error/C.h pops.h pdfl.h sdd.h \
+ modes.h include.h C.h ../main/machinedep.h

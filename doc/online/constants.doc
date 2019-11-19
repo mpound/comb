@@ -1,0 +1,13 @@
+ Comb 1999 and later has predefined physical constants
+ for your convenience.  They are accessed by the 
+ usual "dot" mechanism (see help on "variables" if you don't
+ know what that is). For instance, pi is .PI:
+
+ -> p .PI
+ 3.14159 
+
+ The values of the  physical constants come from NIST, so
+ they are defined with as much precision as is known. 
+ The transcendental numbers are defined out to 16 decimal places.
+ To print them all, type 'cnst'.  See also dv ?! for the exact 
+ definitions.

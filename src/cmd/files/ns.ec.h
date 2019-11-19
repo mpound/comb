@@ -1,0 +1,10 @@
+	strcpy(fs,fs_o);
+	*fst = 3;
+	*dtt = 8;
+	*prnt = 8;
+	*psht = 8;
+	*clft = 8;
+	*tft = 8;
+	*qft = 8;
+	parse_(&cmnd_.gstr,nst_,nsb.c);
+	strcpy(fs_o,fs);

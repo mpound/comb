@@ -1,0 +1,80 @@
+op - set options					RWW & MWP
+
+EXAMPLES:
+op ap:			This controls automatic plotting of spectra with
+			'pl' after commands like 'rt' and 'li.' If auto plot 
+			is on, this turns it off, or if it was off it is 
+			turned on.  
+op no (yes)		Turn off (on) auto plot.
+
+op ucl:			Switch between mixed case labels on plots and upper
+			case only.
+
+op sp:"/ua/xyz"		Set the default stacks path to /ua/xyz.
+
+op rc:			Select maps in current relative coordinates.  See
+			documentation of 'cm' for discussion of mapping of the
+			sky onto the page.
+op ortho:		Choose maps with Orthographic projection.
+op merc:		Choose maps with Mercator projection.
+op gnom:		Choose maps with Gnomic projection.
+op po:			Choose maps with polar projection.
+
+op yw:			Toggle to supply an automatic yes answer to warning 
+			messages.
+
+op msg:1		Turn off messages generated when a BLANK value is 
+			encountered in a stack.
+
+op dp:			This is a toggle used to suppress ALL plotting, e.g.
+			pl, cm, lk. It can be used with "ro" to capture the 
+			numeric output of commands without capturing the
+			plotting code (e.g. the Tektronix code used for xterms).
+
+DESCRIPTION:
+Op is a way to control general options in comb. 
+
+Op ap: is a toggle to automatically plot a spectrum after most operations
+(e.g.  'gt', 'rt', 'li', 'is').
+
+The string given to 'op sp:' is the path to be pre-pended to the stacks
+directory named with 'ns' (comb adds the final slash if needed). The default
+path is the value of the environment variable LSTACKS or an empty string if
+LSTACKS is not defined.
+
+The flags 'rc:', 'ortho:', 'merc:', 'gnom:', and 'po:' indicate the projection
+to be used by map-making routines ('cm', 'vc', 'wc').
+
+Op yw: is a toggle to automatically answer yes to warning messages which ask
+"Do you want to continue?". This option should be used with caution!
+
+Op msg: controls the verboseness level of the message comb gives you when it
+encounters a stack (but not an image) with a BLANK value (aka DRAGON, .DR, 
+IEEE NaN, or FITS BLANK) in it. The levels are
+
+0 -- "Don't ask, don't tell." This instructs comb to not even check for
+     BLANKs in stacks. Use this if you know you don't have any BLANKs 
+     and aren't likely to generate any yourself.
+1 -- Check for BLANKs when a stack is brought into stack 1, 2 or 3, but
+     issue no message.
+2 -- Generate a message when a stack with a BLANK is brought into
+     stack 1, 2 or 3. 
+
+The default message level is 2. Comb automatically replaces the BLANK(s) by
+calling 'el' on the offending channel(s). Only the copy of the spectrum in
+stack 1, 2 , or 3 is affected; the disk stack (stacks 4 and higher) remains
+unchanged. Therefore commands which interpolate over a large enough area can
+generate multiple messages for the same stack. To avoid repetitive checking,
+only routines which might put something in stacks 1, 2, or 3 actually check for
+BLANKs. These commands are ad, af, co (if ad: or su: are not 1 or 2) , cm, gt,
+is, lk (if chk: is given), rt, st (into 1, 2 , or 3 ), th, vc, vm, wc, and xf.  
+The other commands don't check, under the assumption that whatever put data
+into stack 1, 2, or 3 has already checked.  So if you are pathological enough
+to do something like
+
+-> rt 10; c .stak(32)=.DR; li 1
+
+you'll get nasty behavior, and you'll have no one to blame but yourself.
+
+In general, scans made by Bell Labs and NRAO won't have BLANKs, but scans
+from FCRAO sometimes do.

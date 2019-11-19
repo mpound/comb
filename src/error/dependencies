@@ -1,0 +1,2 @@
+file.o: file.c C.h
+alloc.o: alloc.c

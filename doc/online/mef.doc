@@ -1,0 +1,20 @@
+	Description of the Parse Tree that 'Me' Uses in Reading Maps Files
+
+Each logical line in a maps file (except the last one) should completely
+describe a map.  Thus each line should name the directory containing the map,
+give its range of coordinates, specify the backend, etc.  (Note that
+both FS and PS may be given if either type of data is ok, but rmacro
+may be hard to write in that case).
+
+The last line  of the file must contain only the 'lsn:' option so that
+'me' will update the correct thing.
+
+At this writing (2/11/87)  the survey (smaps and its macros in
+/ua/comb/bin/.GMACROS) uses the largest number of features of 'me' and
+nmaps contains the largest number of maps.  You should look at one of
+them (in /ua/comb/lib) for examples of the maps files entries and in
+the corresponding stacks macro files for examples of 'smacro', etc.  In
+the case of smaps, the macros are in the global macro file.
+
+It is useful while debugging the description of a new map to change
+'rmacro' to print instead of storing.

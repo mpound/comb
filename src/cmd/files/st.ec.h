@@ -1,0 +1,13 @@
+	*sn = sn_o;
+	*snt = 8;
+	*sft = 3;
+	*dtt = 8;
+	*src = 1;
+	*srct = 8;
+	*autof = 0;
+	*frfre = frfre_o;
+	*frfret = 8;
+	*dct = 8;
+	parse_(&cmnd_.gstr,stt_,stb.c);
+	sn_o = *sn;
+	frfre_o = *frfre;

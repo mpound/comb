@@ -1,0 +1,148 @@
+=====================================================================
+                 Comb News and Views
+=====================================================================
+-------------------------------
+Changes for Comb 2000.2 
+-------------------------------
+
+13. Upgraded 'gt'
+
+You can now get the first and last scans in a file with "gt first:"
+and "gt last:". For NRAO SDD scans, this will also set scan main
+header variables .FrstScan and .LastScan, which are not stored
+explicitly in the SDD format.  
+
+
+12. 'sq' bug fix
+
+Tony Stark has fixed a bug where "sq" damages poor quality (i.e.
+submillimeter) data.
+
+
+11. String lengths increased for BUNIT, TELESCOP, OBJECT
+
+Formerly these FITS header variables were restricted to 8 characters.
+That restriction is lifted. They can now be up to 68 characters
+(as can any FITS string).
+
+
+10. Dates now stored with stacks.
+
+Previously, only scans had dates associated with them. With "st", the
+date was lost. Now, the date of a scan is stored with the stack in
+the j2sec variable (see news item #9).  The behavior of pd date: is
+thus changed to print out the date in FITS format
+(CCYY-MM-DDThh:mm:ss) of stack 1.  For stacks created in pre-2000.0
+versions of comb, there will be no date stored with the stack
+(.j2sec=0), so no date is printed out.  This same date string is
+written out by "wf st:" in the DATE-OBS keyword. The creation date of
+the file is written in the DATE keyword. Similarly, a FITS spectrum
+with DATE-OBS defined has the equivalent value stored in j2sec.  All
+output dates are UT.  Input dates are assumed to be UT.
+
+
+9. New stack header variables j2sec and ftrm.
+
+The number of seconds before or since J2000 is now stored 
+in .j2sec.   Negative values of j2sec mean before J2000, positive
+mean after J2000.  The value of j2sec is converted to calendar time
+for spectral plots (pl).  Zero (2000-Jan-01 00:00:00UT) is ignored
+since previous versions of the stack header have this location zeroed
+out. So if you happen to take data at exactly 2000-Jan-01 00:00:00UT
+it won't get displayed!  j2sec is set either from the J2Second
+header variable (for Bell Labs format), from the Class3.ut variable
+for NRAO format, or from the FITS DATE-OBS keyword for singledish
+FITS format.  For co-added stacks (stacks with multiple scans), j2sec
+has the value of that of the first scan in the list.
+
+If Fourier components are removed from a stack (see ft ?! and News
+item 3 below), the number of components removed is stored in .ftrm and
+display in a spectral plot next to the baseline order.
+
+These two variables took the part of the "spare" header variable 
+isdum, which now down to the length of 2 short integers.
+
+
+8. Baseline order FITS keyword for stacks 
+
+The baseline order removed from a stack is now written out in 
+FITS spectra (wf st:), using the keyword BASELN.  A value of -1 means 
+no baseline has been removed.
+
+
+7. New vertical offset option to "pl"
+
+The plot command pl now has the option voff: to add an arbitrary vertical
+offset to the current pl. This is useful for overlaying spectra without
+having them right on top of each other. E.g
+
+	-> rt 10;pl; rt 20; pl ovl:voff:3;rt 30; pl ovl:voff:-3
+
+would plot stacks 20 and 30 over stack 10 with a vertical offsets of 3 
+and -3, respectively, in the current plot units.  Note the offset can
+be positive or negative and reverts to zero if not specified.
+
+
+
+6. NRAO SDD and PDFL scans can now be read on little-endian machines (e.g, PCs).
+ 
+At long last, Marc has made the NRAO scan routines working on PCs
+(under Linux at least). 
+
+
+5. Comb is Y2K compliant!
+
+Actually there were only a few minor issues with Comb and the Year 2000.
+The main one is that COMB now writes FITS files with the DATE value
+according to the new FITS standard: CCYY-MM-DDThh:mm:ss in UT.
+
+
+4. New predefined constants
+
+For your convenience, AMU, C, E, G, K, MSUN, PC, and PI are now
+predefined. You can access these as normal variables, eg.
+
+	-> p .PI
+	3.14159
+
+For the exact definitions, see dv ?!.
+
+
+3. Upgraded Fourier Transform (ft) command
+
+The Fourier transform command ft has been upgraded by Tony Stark. New
+features include removal of Fourier components and number of
+components to fit.  (see also news item 9).
+
+
+2. Stacks format change
+
+The maximum number of channels allowed in comb is now 16224, down
+from 16384 in previous versions.  This change was required because
+the length of a stack index is limited to be a unsigned short integer
+and must be a multiple of 32 for use arrays to work as defined.
+
+
+1. 'up' (update search directory) and 'ns' (name stacks) upgraded
+
+This was to fix a problem related to moving stacks files between
+machines with different byte orders in their words.  (e.g. a PC and a
+Sparcstation).  When opening stacks directories the files are now
+checked for the correct byte order in a way which should work except
+for some very unlikely cases.  'Ns' checks that the order is correct
+and 'up' checks that it is wrong.  In either case if any errors are
+found, the number of errors is printed as well as the number of
+errors which would be found if the file were "up swap:"ed and the
+user is asked to proceed.
+
+In addition, 'up' has a new option, tbo:, to just test the byte order
+and return. The same error report described above is given, but
+no bytes are actually swapped. Use this if you aren't sure about
+the origin of your stacks.
+
+The documentation for 'up' ('up ?!') has been almost completely
+rewritten.  The old version was useless and the new should be much
+more helpful.
+
+
+

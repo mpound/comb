@@ -1,0 +1,30 @@
+do - begin a loop					Matthew Miller
+
+
+EXAMPLES:
+do 5 "gt dt:;li,1;gf,20,40"	go through the loop 5 times, getting the next
+				scan, removing a baseline, and fitting a
+				Gaussian to it.
+
+p #=!0-1 dp:;do w:{(#=#+1)<=!1} {gt #;p # nl:;p .ndat(100) nl:;p .ndat(101)}
+
+				This is a macro definition which prints the
+				scan number,delta l, and delta b for each
+				scan in the range between its two arguments.
+
+rt #=#+1 t:;do i:{.test} {st dt: a:} el: {pr "No stack %g\n" #}
+				Retrieve the next stack, save in directory
+				two if it exists, otherwise print a diagnostic
+
+DESCRIPTION:
+Do executes a command string (commands separated by ';') with control of the
+execution dependent on the type of loop. In the default 'n:'case the command
+string will be executed n times. In the 'w:' case execution will continue as
+long as the expression evaluates to non zero. In the 'i:' case the command
+string will be executed once if the expression is non zero and not otherwise.
+
+If an else clause is given, it will be executed iffi the main command has
+not been executed (for any type of loop).
+
+EXPRESSIONs and COMMANDs can be delimited with '{}' pairs to avoid problems
+with nesting quotes. '{}' pairs nest to any reasonable depth.

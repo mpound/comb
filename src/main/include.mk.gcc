@@ -1,0 +1,5 @@
+CC=gcc -ansi -D__sparc -D__builtin_in_va_list
+COMPILE.c=$(CC) $(CFLAGS) $(CPPFLAGS) -c
+
+.c.o:
+	$(COMPILE.c) $(OUTPUT_OPTION) $<

@@ -1,0 +1,45 @@
+pf - parabola fit
+
+EXAMPLES:
+pf -3,15 see:		Fit a parabola to stack 1 between -3 and 15 Km/s
+			(assuming horizontal plot units are velocity).
+			Put the parabola in stack1 and overlay the plot
+			of the present stack 1 with the parabola.
+
+pf -3,14 rm:		Fit and subtract a parabola between -3 and 15.
+
+DESCRIPTION:
+
+Pf fits a positive concave down parabola to the data in stack 1 over the
+horizontal range given.  The archetypical use of pf is in fitting the spectrum
+of IRC+10216.  The parameters of the fit are stored in the header variables
+(see below).
+
+Unless the dp: flag is given, the parameters of the fit will be printed
+on the terminal in horizontal plot units.  A single header will be
+printed for each command line.
+
+See: first plots stack 1 if there is not a current plot, overwrites
+stack 1 with the best fit parabola, and then overlays the parabola on
+the plot.
+
+Rm: subtracts the fitted parabola from the stack, puts the residuals in 
+stack 1 and plots them.
+
+Values returned by pf are which are stored in the stack header are
+ 
+  ftmax - peak temperature of fitted parabola 
+  fterr - error in ftmax
+  fpeak - horizontal location of ftmax in plot units
+  fperr - error in fpeak
+  fwhm - fitted full width at half maximum in plot units
+  fwerr - error in fwhm
+  area - area of parabola in (K * plot units).
+  chisq - reduced chi-squared of the fit
+  nfree - number of free parameters (usually the number of channels - 2)
+ 
+As usual, these are accessible via the "dot mechanism", e.g. 'p .fwhm'.
+
+If the fit did not converge all the values are set to .DR.
+ 
+See Bevington for a discussion of the fitting technique.

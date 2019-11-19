@@ -1,0 +1,235 @@
+                           -- STACK HEADER FORMAT --
+
+               Each stack is divided into blocks of 256 16-bit  words;  the
+          first  of  these  contains header information as described below.
+          The first 128 words of the header block  contain  128  short  in-
+          tegers,  in  an array called IHDR.  The second half of the header
+          block contains real numbers and other constants, and is stored in
+          an array called RHD.  "Name" is a variable name to which the user
+          may refer when a particular header value is  needed.   "Old  NHD"
+          refers  to positions in the stack-header produced by COMB on the
+          Hewlett-Packard 2100 machines previously used for BTL data reduc-
+          tion.
+
+	  The channel values are stored in the array stak(). So, 
+	  "p .stak(32)" or "p .stak1(32)" prints the value of the 32nd 
+	  channel of stack 1.  Stacks 2 and 3 are in stak2() and stak3(),
+	  respectively.
+
+                          STACK HEADER FORMAT - IHDR
+
+          IHDR    Name    Description                               Old NHD
+          -----------------------------------------------------------------
+
+          1       numpt   number of channels                        1
+
+          2       nver    version number of the header-data         -
+                          format (1 in this case)
+
+          3*      nprc    data type:                                6,12,30
+                          0 = unfolded, unprocessed spectral data
+                          1 = unfolded, frequency processed
+                               spectral data
+                          5 = folded, frequency processed
+                               spectral data
+                          1000 = spatial elevation scan
+                          2000 = spatial azimuth scan
+
+          4*      nplc    preferred plotting coordinates:  m+n+p    -
+                          main position: m=0, equatorial coord's
+                                         m=1, galactic coord's
+                          map offsets:   n=0, equatorial coord's
+                                         n=10, galactic coord's
+                                         n=20, user's coordinates
+                                         n=30, equatorial obser-
+                                    ving display coordinates
+                          plot ordinate: p=0, LSR velocity
+                                         p=100, frequency
+                                         p=200, channel number
+                                         p=500, spatial
+                          (0,100,and 200 for spectral data only;
+                          500 for continuum scans)
+
+          5       onstk   old number of the stack in the directory - not used
+
+
+          6       nwts    number of weights in the weight array     206
+
+          7-21    locwt(15)   first channel number at the change    207-221
+                              of each weight
+
+          22      ibsln   order of the baseline removed             33
+
+          23-54   kuse(32)    stored KUSE array (packed binary)     43-74
+
+          55-86   nstk(32)    numbers of the first 32 scans         107-138
+                              added into the stack
+
+          87      nlist   number of scans added into the stack      2
+
+          88      indx    last location in the scan list            (2)
+
+	  89 	  subscn  current subscan number
+
+          90      ftrm    number of fourier components filtered out by ft
+
+          91-122  label   string of up to 64 char
+
+	  123-124 j2sec   seconds before or since (+/-) J2000 of the first
+			  scan in the stack. (i.e. the value equivalent to 
+			  the blsdf keyword J2Second)
+
+          125-126 isdum(2)  blank
+
+	  127-128 numst   number of the stack in the directory
+
+
+
+                          STACK HEADER FORMAT - RHD
+
+          RHD     Name    Description                               Old NHD
+          -----------------------------------------------------------------
+
+          1       fwid    filter width (MHz) [spectral data]        3,17
+                                         or
+                          sample box size (degrees) [continuum      11
+                               scans]
+
+          2       expch   channel number of the frequency at        4,14
+                          which the line center is expected
+
+          3       refch   channel number of the expected line       13,15
+                          center during the reference portion
+                          of a frequency-switched observation
+                                           or
+                          mapping angle (degrees) [continuum        16
+                               scans]
+
+          4       vlsr    LSR velocity of "expch" (km/s)            7,34
+
+          5       exwid   expected line width (# of channels)       5
+
+          6-20*   wght(15)    weights in the weight array           222-251
+
+          21      factt   "fudge factor" by which rescaled data     35-36
+                          has been multiplied
+
+          22      time    sum of the integration times for the      105-106
+                          component scans
+
+          23      pwrav   average power per channel (deg K)         75-76
+
+          24      pwrer   rms error in "pwrav"                      77-78
+
+          25      rms     rms of all channels in the USE array      79-80
+
+          26      tmax    temperature of the peak channel within    81-82
+                          the expected line interval (in)
+
+          27      arerr   error in the area determined by 'in'      83-84
+
+          28      area    total area under the line (deg K-Km/s)    85-86
+			  (in, gf, pf)
+
+          29      vcent   velocity of centroid of integral in 'in'  87-88
+
+          30      fwhm    FWHM of a Gaussian fit or FWZP of a       89-90
+			  parabola fit (gf, pf)
+
+          31      fwerr   fitting error in "fwhm" (gf, pf)          91-92
+
+          32      fpeak   velocity of the peak of the curve         93-94
+                          from a Gaussian or parabola fit (gf, pf)
+
+          33      fperr   fitting error in "fpeak" (gf, pf)         95-96
+
+          34      ftmax   temperature at the peak of the Gaussian   97-98
+                          or parabolic curve (gf, pf)
+
+          35      fterr   fitting error in "ftmax"  (gf, pf)        99-100
+
+          36      rmval   temperature subtracted from the center    37-38
+                          channel during baseline removal
+
+          37      ra      right ascension at map center             103-104
+                          (hours) in epoch
+
+          38      dec     declination at map center                 101-102
+                          (degrees)
+
+          39      l       galactic longitude at map center          20,21
+
+          40      b       galactic latitude at map center           22,23
+
+          41      dra     right ascension offset (hours)            18
+
+          42      ddec    declination offset (degrees)              19
+
+          43      dl      galactic latitude offset (degrees)        24
+
+          44      db      galactic longitude offset (degrees)       25
+
+          45,46   dx,dy   user settable coordinate offsets          31,32
+
+          47*     odra    right ascension observing offset          18,19,
+                          (arcminutes)                              101-102
+
+          48*     oddec   declination observing display offset      19
+                          (arcminutes)
+
+	  49	  epoch	  epoch of polar coordinates
+
+	  50	  vpeak	  velocity of peak temp found in in
+
+	  51      chisq   chisquared value from gf or pf
+
+	  52      nfree   nfree value (# free parameters) from gf or pf
+
+          51-62   rsdm(10)    blank
+
+          63-64*  freq    assumed line frequency (MHz)              8,9,10
+
+
+
+                                       *NOTES:
+
+          IHDR[3] -the term "frequency processed" refers to functions  per-
+                  formed  by  the  GT command.  If the parent scan did not
+                  have sufficient information to provide velocity and  fre-
+                  quency information in the stack, dummy values are insert-
+                  ed and this number is set to 0.
+
+          IHDR[4] -"equatorial observing  display  coordinates"  refers  to
+                  RHD[47] and [48].
+
+          IHDR[54]        -if the stack was made up of more than 32  scans,
+                  an  extra  block is appended to the header containing the
+                  rest of the scan numbers as short integers.  If the stack
+                  consists  of  more  than  288  scans,  the remaining scan
+                  numbers are lost.
+
+          RHD[6-20]       -WEIGHTS:  the weight at a particular channel  is
+                  a  measure  of  expected noise.  It is the equivalent in-
+                  tegration time (in seconds) assuming  an  ideal  receiver
+                  (no  atmosphere or sidelobes) at SSB noise temperature of
+                  1000 K.  Thus:
+                                                            2
+                                ( TREC + TSKY + TSPILLOVER )
+                       WEIGHT = ---------------------------- * TIME
+                                          1000000
+
+                  The weights are configured such that the weight of  chan-
+                  nels  1  through  IHDR[7]-1 is stored in RHD[6], that for
+                  channels IHDR[7] through IHDR[8]-1 is stored  in  RHD[7],
+                  etc.  up  through  the last channel. If more than 16 dis-
+                  tinct weights are needed, the closest two  will  be  com-
+                  bined and replaced with the average.
+
+          RHD[47],[48]    -the values of the offsets, as displayed  on  the
+                  screen  during observations with the 7-m antenna at Craw-
+                  ford Hill:
+                                  ODRA = DRA * COS( DEC + DDEC ) * 900
+                                  ODDEC = DDEC * 60  .
+
+          RHD[63-64]      -the  line  frequency  is  stored  as  a  double-
+                  precision quantity.

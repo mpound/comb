@@ -1,0 +1,25 @@
+if test $1 = "-s"
+then
+	shift;
+	for i in $*
+	{
+		print '\n/*' ${i}'*/\n'
+		/lib/cpp $i | egrep '^[A-Za-z][A-Za-z_0-9* ]+\(.*\)$'
+#		| sed '
+#			/^[^s][^t][^a]/d
+#			'
+#			s/static *//
+#			s:(\([A-Za-z].*\)):(/*\1*/):
+#			s/$/;/'
+	}
+else
+	for i in $*
+	{
+		print '\n/*' ${i}'*/\n'
+		/lib/cpp $i | egrep '^[A-Za-z][A-Za-z_0-9* ]+\(.*\)$' | sed '
+			/^static/d
+			s/^/extern /
+			s:(\([A-Za-z].*\)):(/*\1*/):
+			s/$/;/'
+	}
+fi

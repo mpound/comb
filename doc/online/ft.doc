@@ -1,0 +1,48 @@
+ft - Fourier transform operations on stack 1
+
+EXAMPLE:
+ft see:; pl ch: hst:		Fourier transform stack 1, and show the
+                                amplitude in stack 1 and phase in stack 2.
+ft ift:                         Inverse of the above.
+ft see:; pl ch:; el 18; ft ift: Filter out the 18th Fourier component
+				by interpolation.
+ft rm:3,5			Zero out the 3 brightest Fourier components,
+				ignoring the 5 lowest frequency components.
+
+DESCRIPTION:
+
+ft does a Fourier transform on stack 1.  The "ft see:" mode transforms
+the channels shown in the current plot of stack 1 and places the 
+amplitude in stack 1 and the phase (measured in turns) in stack 2.  
+The inverse operation "ft ift:" takes amplitude in stack 1 and phase in 
+stack 2 and converts back to spectrum.  Because the Fourier transforms 
+are done using fast Fourier transform techniques, the spectrum is padded 
+with zeros on the right to the next biggest power of 2 (e.g. 1024 or 
+2048 channels).  The re-transformed spectrum will show these added channels.  
+The added channels have zero weight.  If the Fourier spectrum was modified, 
+for example by averaging or zeroing out components corresponding to baseline 
+ripple, then these added channels will no longer have a value of zero.
+Since "ft see:" operates only on the channels shown in the current plot,
+the restored stack using "ft ift:" will contain only those channels and
+may be smaller than the original full spectrum.  The "observation type"
+identification number in the stack header has 100 added to it for the
+amplitude plot and 200 added to it for the phase plot.  These values are
+subtracted in the inverse operation.
+
+"ft rm:" does a Fourier transform of the plotted channels of stack 1, then 
+zeros out selected high amplitude channels, then re-transforms the
+selected channels and replaces them in stack 1.  This is a fast method
+of removing well-defined baseline ripple components.  The parameter "nc:"
+gives the number of Fourier components to zero out.  The parameter "ex:" is
+the number of low-frequency components to ignore, since these may contain
+significant data.  The data shown in the plot of stack 1 is transformed,
+and the "nc:" brightest channels in the transform with channel number
+higher than "ex:" are set to zero.  The data is then re-transformed,
+and inserted back into stack 1.  Since the single-precision stack 
+data is converted to double precision and subsequent operations are
+all double precision, there is no loss of accuracy.  The number of 
+components which have been zeroed out appears in the header as header 
+variable ".ftrm"  A value of "nc:" in the range 1 to 5 can effect an
+80% reduction in baseline ripple.
+							AAS
+

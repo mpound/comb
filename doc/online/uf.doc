@@ -1,0 +1,52 @@
+								RW Wilson
+uf - execute a user function which runs as a separate program,
+     but has access to stack 1 from comb.
+
+EXAMPLES:
+
+uf "userpg"		Execute the program 'userpg' with access to stack 1.
+
+DESCRIPTION:
+
+The named program is executed with two pipes set up.  The fd's of the
+pipes are passed to the program as argument 1 and 2.  Stack 1 is sent
+to the program over pipe 1 and it is read back from the program through
+pipe 2.
+
+The directory $COMB/src/user contains two programs userpg.c and ftnuser.c
+and a subroutine ftnsub.f.  These programs take care of all of the
+communication with comb.  I suggest that users copy these sources into 
+new files for each application and put the instructions for making them 
+in the makefile.  If several users want to use this facility, 
+the best procedure is for each to copy these sources and 
+the .h file(s) into his or her own directory and code specific 
+applications there.
+
+C users: userpg.c has a place to insert your code or 
+         a call to your c subroutine.  Your subroutine should
+         always write the process results back onto stack 1. (see
+         userpg.c).
+
+FORTRAN users: ftnuser.c has a call to ftnsub to do the work.  
+               You can change the name of this subroutine by
+	       editting ftnuser.c. ftnuser.c writes the process 
+	       results back onto stack 1 whether you like it or not!
+
+As an example, userpg is currently written to set the first channel 
+of stack 1 to 37 and write the result back onto stack 1.  
+To see this, (cd to $COMB/src/user) and execute:
+
+-> p .stak1(1);uf "userpg";p .stak1(1)
+
+Similarly, the FORTRAN routine ftnuser sets channel 2 to -37.  
+
+-> p .stak1(2);uf "ftnuser";p .stak1(2)
+
+(Actually .stak, .stak1, .stak(1), .stak1(1) all reference the 
+ first channel of stack1.)
+
+Comb will look in your path for the named program, or you can state
+the full path explicitly.
+
+Since a stack has room for 2048 channels, the user function can communicate
+additional information back to comb in pre-arranged end channels.

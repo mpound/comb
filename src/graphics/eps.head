@@ -1,0 +1,17 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%Title: Comb plot
+%%Creator: comb
+%%BoundingBox: 0 0 800 600
+%%EndComments
+%%BeginProlog
+/ln {setdash setlinewidth} def
+/mt {.24 mul exch .24 mul exch moveto} def
+/rm {.24 mul exch .24 mul exch rmoveto} def
+/sh {show} def
+/rt {rotate} def
+/lt {.24 mul exch .24 mul exch lineto} def
+/st {stroke} def
+/sf {.24 mul exch findfont exch scalefont setfont} def
+%%EndProlog
+%%Page: 1 1
+

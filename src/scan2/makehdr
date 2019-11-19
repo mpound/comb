@@ -1,0 +1,18 @@
+#!/bin/sh
+if [ $# != 1 ]
+then
+	echo Usage: makehdr hdrname \(e.g. scan2hdr\)
+	exit 1
+fi
+sed 's;^/;;' < $1 |
+awk '
+$1 == "END" {exit(0)}
+# $1 ~ /\// {sub("/", "", $1)}
+$1 != "blsdf"	{
+	printf( "{\"%s\", 0, 0, 0, 0},\n", $1) > "scan2_entries.h"
+	printf("#define %sN %d\n", $1, n) > "scan2_defs.h"
+	n++
+}
+END	{printf("#define NUMDEFINED %d\n", n) > "scan2_defs.h"}
+'
+#< scan2hdr

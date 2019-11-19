@@ -1,0 +1,56 @@
+up - update a stacks directory					RWW
+
+EXAMPLES:
+
+up "Stacks"			Update the stacks directory Stacks by
+				regenerating the search file.
+
+up "stacks.rev" swap:		Convert 'stacks.rev' which was made on
+				an opposite 'Endian' machine to have
+				the correct byte order for this machine.
+				A check is made first to see if the
+				bytes really should be swapped. You
+				will be told the results of the test and
+				asked to continue.
+
+up "stacks" tbo:		Check to see if the bytes in these stacks
+				should be swapped, but do not swap. The check 
+				is made and a report is given. The bytes are 
+				not swapped and the search file is not 
+				regenerated.
+
+up "stacks.vax" fvax:		Convert 'stacks.vax' which were made on a Vax
+				to work on a this machine which must be
+				a BigEndian machine.
+
+DESCRIPTION:
+Up has three current purposes:
+
+1) Up remakes the search file in a stacks directory.  That file is
+sometimes corrupted (I believe) by having the same stacks directory
+open by two instances of comb which separately update it from their
+separate caches of the file.  The symptom is that 'lk' and the contouring
+routines can't find some or all of the data even though the relative
+coordinates are correct.
+
+2) It converts stacks made on an opposite Endian machine to stacks which
+can be used on the machine it is running on.  This works either way, but
+'up' can not do the conversion from stacks which are correct on the
+machine it is running on to the opposite kind.  The conversion must be
+done on the receiving machine.  In this process, the files are
+completely rewritten, so save a backup (the tar file used to transport
+the stacks?).  
+
+If you just wish to check if the bytes should be swapped, use up 'tbo:'. 
+This will simply run the byte order check, report findings and return. 
+The stacks will not be changed.
+
+3) It converts files written on a Vax to a BigEndian machine with IEEE
+floating point numbers such as Sun or HP.  If you need to convert from
+a Vax to another LittleEndian machine but with with IEEE floats (Dec
+Alpha), it must be done in two steps.  First convert to BigEndian (on
+eg. a Sun) and then convert back to LittleEndian on the receiving
+machine.  At each step the files are rewritten.  As above, save
+backups.
+
+The fhp: and fix: options are obsolete.

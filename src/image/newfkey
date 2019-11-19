@@ -1,0 +1,8 @@
+#!/bin/sh
+# Convenience method to add a new fits keyword.
+# Be sure to renumber so that HISTORY stays just before END
+sort +3 -n -t , fitskeywords.h > fkey.sort
+vi fkey.sort
+sort -t , fkey.sort > fkey.unsort
+mv fitskeywords.h fitskeywords.h.sv
+mv fkey.unsort fitskeywords.h

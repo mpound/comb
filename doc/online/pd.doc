@@ -1,0 +1,28 @@
+pd - Print stack or scan data			RWW
+ 
+
+EXAMPLES:
+pd		print the stack 1 header 
+pd stdt:	print the stack 1 data
+pd sc:		Print the scan header the current scan.
+pd scdt:	Print the data of the current scan.
+pd main:	Print the main header of the current scan file (only for
+		BLSDF and NRAO scans).
+pd sn:		Print all of the scan numbers in stack 1.
+pd date:	print date and time of a stack 1. For a stack 
+		consisting of co-added data, the date and time of the
+		first scan in the list is printed.
+
+DESCRIPTION:
+Pd can be used to print header and/or data from either stack 1 or the
+current scan. The default is to print the stack 1 header. The scan number
+list, date of scan or main header of the scan file can also be printed.
+The main header lists things that don't change with each scan, e.g., 
+Telescope, IF frequency, backend type. See header documentation 
+("docs", "keyw", "nrao") for more info on scan header formats and
+variables.
+
+Pd date: prints out the date in FITS format (CCYY-MM-DDThh:mm:ss) of stack 1
+For stacks created in pre-2000.0 versions of comb, there will be no date 
+stored with the stack (.j2sec=0), so no date is printed out.  
+

@@ -1,0 +1,25 @@
+
+c - Calculate a value					RWW
+
+
+EXAMPLES:
+
+c #2=log(3|27)			set global variable 2 = log base 3 of 27
+c $=$3				set string variable 0 = string variable 3
+c #1=2				assign the value 2 to global numeric
+				variable 1.
+c $5="hello"			assign the value "hello" to string variable 5
+rt 10;c .label="Orion A";st 10	assign the value "Orion A" to the header variable
+				.label in stack 10.
+c #=#+1				increment global numeric variable 0
+c .rms1=.25			change the value of rms in the stack 1
+				header to 0.25
+c .stak1(68)= 10		set channel 68 of stack1 to 10 for a test.
+
+DESCRIPTION:
+
+C is used to evaluate an expression without printing the result.  The normal
+use of c is for the side effect of assigning a new value to a global or header
+variable during evaluation.
+
+Note: INTEGER data types are just special cases of REALs.

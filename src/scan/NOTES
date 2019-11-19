@@ -1,0 +1,122 @@
+Marc,
+
+You point out correctly that I haven't gotten around to putting in your
+changes.  Sorry.
+
+Yes, the whole get and scan thing isn't what I might do if I were
+starting from scratch in a vacuum.  In addition the file scan2.c is
+used as is in obs and may be used in other programs, so I have avoided
+any Comb includes, etc. in it.
+
+As you probably remember, gt can search the data file for a specific
+observation type.  In addition gt, me, and ad will change to the next
+(previous) data file if you run off either end of the file that you are
+in.  The routines starting with scnlmt in scan.c were designed to do
+these things for the old fortran versions of gt and ad.  Opend_, read_
+and get_ in scan.c are the routines which the higher level routines (gt,
+etc.) call without knowing which type of scan file is being used, and
+sci.fileType is used to keep track of which type of file is open.
+Opend doesn't do anything unless the scan file isn't open or the file
+name has changed since the previous time that it did something.  Gt
+only calls nxtscn if it needs to scan and nxtscn only calls opend if it
+initiates a file change.
+
+In gt, opend is called routinely at the beginning in case it is needed,
+then read is called to read in the raw data in the case of the old file
+type, or a few header values (which might be used to decide on the need
+for this scan) from the new.  If the scan is really needed, get is
+called to do the real work as you surmised.
+
+The old file structure was based on the HP2100 which used 16 bit words
+and the disk had sectors of 128 words.  The operating system would
+read or write a requested sector from a named file.  The superheader
+is a block of 16 words at the beginning of the file in a block the same size
+as a scan.  Its components are:
+
+	short nszsc	Number of sectors (256 bytes) per scan
+	short nfsc	Scan number of first scan in file minus one
+	short numpts	Max number of sbpctral channels
+	short nstrt	Location in a scan (words) where the data starts
+	short invrt	True if spectra are inverted
+	short longtd	Some encoding of the longitude of the observatory
+	short lattd	Latitude
+	short fif	Frequency of the first IF (MHz)
+	short map	True for continuum scan data (Never used)
+	short endscan	Last scan in this file
+
+	the remainder were used only by obs and obscom
+	char datfn[6]
+	short maxscan,dmy1,dmy2;
+
+In Opend, the file is opened, then the first 9 shorts read into the
+superheader block in the scan structure.  The test:
+
+		if (scan_.nszsc < 1 || scan_.nszsc > MAXNSZ ||
+		    scan_.nstrt < 78 || scan_.nstrt > 128 ||
+		    (scan_.map & 0xfe)) {
+			if(OpenScan2() == 0) {
+			    return;
+			}
+goes to OpenScan2 if it finds values out of range.  In a scan2 file,
+the first part of the file is ascii, so it will be easily rejected by
+these tests on shorts.  As you said, OpenScan2 will reject a file
+which doesn't have the "blsdf" field giving an error return.  Looking
+at the BOOTSTRAP structure at the beginning of pdfl file, it seems
+a lot like our old superheader, so a test for which file you opened
+will depend on limiting values which they use.  Our old superheader
+has zeros after the first 14 or so words:
+
+:r! od -d /cdata/c88b | head     yeilds:
+
+0000000  00007 00000 00512 00128 00001 03376 01838 04694
+0000020  00000 10001 25400 14434 00000 10000 00000 00000
+0000040  00000 00000 00000 00000 00000 00000 00000 00000
+*
+0003400  00001 01600 00002 00484 14658 00000 00000 00000
+0003420  00000 00000 00000 00113 00012 00002 00030 14542
+0003460  00100 00096 00100 63436 00275 01500 00000 00000
+
+whereas for cn7v it is:
+
+0000000  00003 00000 00256 00128 00001 03376 01838 04694
+0000020  00000 10001 25454 14198 00000 10000 00000 00000
+0000040  00000 00000 00000 00000 00000 00000 00000 00000
+*
+0001400  00001 00320 00003 00000 14715 00000 00000 00000
+0001420  00000 00000 00000 00405 00001 00002 00030 14342
+0001440  00000 00060 00130 00130 00130 00130 12064 00000
+
+Your best bet would probably be to test for pdfl file at the same time
+the test is being made for the old Bell Labs format in opend.  You might
+have to read more than the 18 bytes that are read now.
+
+As for the structure_of_scan:
+
+struct of_scan
+{
+	short ndat[896];			Where old scan data goes
+	short nszsc,nfsc,numpts,nstrt;		Superheader
+	short invrt,longtd,lattd,if1,map,iexist;More Superheader, unused
+	int lnfil,nbknd,mbknd,ncur,inver,kontrl,numbch;
+Length in words of old scan, backend number, requested backend number (the
+peculiar method of making nbe:, etc work, 3 which are used only by get1
+and the number of bad chans.
+	short nbadch[8];			List of bad channels from bc
+	float tsky,tsys,fmult;			Values which get provides for pl
+	int ndfn;		/* Fortran index of last char in datfn
+				 * == strlen(datfn) */
+	char datfn[24];				Data file name
+The following were added when I put in scan2 and are used mostly by pl.
+	short iobstp, ibad;	/* ndat(13) and ndat(34) replacements */ -
+						observation type and quality
+	int iobssec;		/* Time of start of scan (sec since 1/1/70) */
+	float azimuth, elevation; /* Az set to < 0 for old scans */
+} ;
+extern struct of_scan scan_;
+
+You could start off by using backend numbers and tell people not to use nbe:,
+etc.
+
+It is getting too late.  I have run out of steam.
+
+Bob

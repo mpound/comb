@@ -1,0 +1,31 @@
+fl - flag a location on the plot			Matthew Miller
+
+EXAMPLES:
+
+fl 3 ch:			draw line at channel 3
+fl 115232 fr:			draw line at frequency 115232
+fl 57 lt:0			draw dotted line at location 57 in
+				whatever coordinates the current
+				graph is plotted in
+pl;cp;fl 0			draw a line at x=0 on a contour plot
+
+DESCRIPTION:
+
+Fl draws a vertical line on the current plot at a horizontal location given
+in any type of units (channel, frequency, or velocity).  The default type of
+unit is the current plot; thus, if the last plot was made in velocity, fl will
+interpret the given horizontal location as a velocity.  Different units may be
+used by using 'ch' (channels), 'fr' (frequency), or 'vl' (velocity).
+
+As a side effect, fl will also draw a line on a contour plot if a spectrum was 
+recently plotted.
+
+The line may be drawn in any line type by setting 'lt' to the number of the
+desired type.  The default value is 9 (thin solid line).  The range of line
+types is 0 to 255.  The actual line type depends on the device.  Values
+between 0 and 99 are coded by the two digits.  The ten's digit controls the
+thickness or color with 0 thin and 9 thick.  The units digit controls
+the dottedness with 0 most dotted and 9 solid.  Special line types are:
+200 - the border of a plot,  201 - ticks on the border, 202 - the grid line with
+zero value, and 203 - all other grid lines.  Line type 255 will be suitable 
+for plotting data.

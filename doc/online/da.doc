@@ -1,0 +1,69 @@
+da - Define an area of an image
+
+EXAMPLES:
+
+da po:[20,20 -20,20 -20,-20 20,-20] an:1	Area 1 is a square with 40
+				arcmin sides centered on the origin
+
+da p:				List the vertices of area 1.
+
+ro "areas.da";da an:1 p:;da an:3 p:	List the vertices of areas 1 and 3
+				in the file areas.da in a form for comb to
+				read later.
+
+ri "areas.da"			Re-define areas 1 and 3 from the listing
+				in the file areas.da.  The area number is
+				in the file.  Ths file could, of course,
+				have been edited using your favorite editor.
+
+da cr:				Define area 1 using the cursor on a graphics
+				display.  If you are using a 5620 with a
+				TEK4014 window see the note below.
+
+da po:[20,20 -20,20 -20,-20 20,-20 .DR,.DR 2,2 -2,2 -2,-2 2,-2] an:2
+				Area 2 is a square with 40 arcmin sides centered
+				on the origin with a 4 arcmin hole in the
+				middle.
+
+cp ;da pl: lt:0			Make a contour plot of 'old' image and overlay
+				an outline of area 1, using a dotted line.
+
+DESCRIPTION:
+
+Da defines the vertices of a polygonal area.  The coordinates are given
+in current offset units.  The vertices may be given as either numbers or with a
+graphics cursor (see note).  When using the cursor, move the cursor to
+each vertex in turn and hit the space bar for all but the last vertex.
+The last vertex is indicated using the special character
+(e) which you will be told about when the cursor comes on.
+The area is closed with a line from the last vertex
+back to the first.  A vertex with x = .DR ends the current sequence
+(automatic closure), allowing a second separate part of the area.  If
+sub areas are nested, points which can be reached with an odd number of
+boundary crossings from the outside are inside the area and others
+outside.  An area is needed in sp and vm to delineate the area of
+interest. The maximum number of areas which can be defined is 10 (0 thru 9).
+
+When using the cursor in an xterm window it is necessary to type return
+after either space or e so that xterm will pass the character on to comb.
+I haven't found any way to adjust xterm so that it behaves like a real
+tek4014 in this regard.
+
+------------------------------------------------------------------------
+NOTE FOR 5620 USERS (or other users of a separate graphics window):  If
+you want to use the graphics cursor in a tek4014 window on a 5620, you
+should run 'sleep 1000000' IN THE TEK4014 WINDOW.  This keeps the shell
+from getting some of the characters which comb needs when reading the
+cursor value, (at least for 1000000 seconds).  I have found that if I
+forget to run sleep and try to read the cursor, I usually have to
+delete the window, reload tek4014, and restart comb to get
+resequenced.
+
+To use the cursor in a tek4014 window you must first click the
+mouse to select that window, then move the mouse cursor to a vertex and
+click button 1 again to move the crosshairs to that spot.  Then hit the
+space bar (or 'e').  At the end of that sequence you will have to click
+the mouse on the comb window to get in touch with comb again.
+
+
+

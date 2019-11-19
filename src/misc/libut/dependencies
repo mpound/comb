@@ -1,0 +1,6 @@
+exchq.o: exchq.c
+filbts.o: filbts.c
+ibit.o: ibit.c
+ifdif.o: ifdif.c
+round.o: round.c
+swab.o: swab.c

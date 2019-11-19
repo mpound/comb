@@ -1,0 +1,34 @@
+                        The History Mechanisms
+                      --------------------------
+
+Comb has a history mechanism to recall, edit, and execute 
+previously-issued commands, much like the history in various 
+UNIX shells. Comb's history is based in the Korn Shell (ksh).
+It is essentially a one-line version of the screen-editor program, 
+defined by your environment variable EDITOR (vi or emacs).
+You do not have to be running  ksh as your normal UNIX shell
+to make use of the comb history mechanism. Commands you type at
+the -> prompt are stored  in $HOME/.combhistory. 
+
+The history is entered by the escape key (ESC) for vi mode, or the 
+control key (CNTL) for emacs mode. The sequence ESC-k [CNTL-P] will 
+scroll back through the stored command commands lines which you can 
+then edit using normal vi [emacs] commands. The sequence ESC-j [CNTL-N] 
+scrolls forward. Searching is accomplished by ESK-/ [<whatever it is
+in emacs>].
+
+In addition to the ksh-like history mechanism, comb also has a 
+``command archive'' mechanism (left over from the days before ksh),
+allowing archiving, re-execution, or editting of the immediately 
+previous command line. It is completely distinct from the ksh-like 
+history.  Comb keeps the previous command line and allows the user to 
+access it with the following commands:
+
+      . or .e    Execute the previous (old) command as it is.
+      .p         Print the old command.
+      .an        Store the old command in archive n, n = 0 through 9
+      .n         Retrieve the command in archive n.
+      .s/xxx/yy  Edit the old command substituting the string yy
+                 for the first occurence of xxx. The delimiter may be
+                 any character, not just `/' (similar to sed).
+

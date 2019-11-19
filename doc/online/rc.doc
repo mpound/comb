@@ -1,0 +1,56 @@
+rc - define, store, and read relative coordinate systems
+
+EXAMPLES:
+gt 50;rc fs:		Make a relative coordinate system with the same center
+			coordinates and offset type as stack 50.
+rc "B335" sl:		Name the current relative coordinate system B335 and
+			store it in your private file of rc systems.
+rc nd:			Store the name of the current rc system in the default
+			file of the foreground directory as the default system
+			for that directory (read automaticly when the stacks
+			directory is named).
+rc u:[pa:33]		Change the current rc system to a user defined system
+			whose y axis has a position angle of 33 degrees in the
+			coordinate system in which the center coordinates are
+			specified.
+rc u:[eqp:1,-3]		Change the current rc system to a user defined system
+			whose equator (x axis) passes through the point
+			(1,-3) in the current rc system.			
+
+DESCRIPTION:
+In comb a relative coordinate system is needed to make maps and
+retrieve by position.  Usually it is a coordinate system centered on
+the object of interest and parallel to polar or galactic coordinates,
+however a user defined coordinate system may have any angle.  A
+relative coordinate system might also be Ra-dec or l-b.
+
+The name is used for storing or retrieving a relative coordinate system
+in a file or printing its defining values.
+
+The fs: option (from stack 1) is usually the easiest way to make a
+relative coordinate system.  It makes an rc system with the same center
+coordinates and offset type as stack 1.
+
+One may also specify the center coordinates in rd: Ra(Hr)-Dec(deg) or
+lb: l(deg)-b(deg), and the offset type independently as: 
+
+r:  polar - dra(hr)-ddec(deg);
+g:  galactic - dl(deg)-db(deg); 
+o:  observing polar offsets - dra(')-ddec('); 
+as: observing polar offsets in arcseconds dra(")-ddec(") or dl(")-db("),
+    depending on the center coordinate type; or
+u:  user defined offsets - dx-dy with units of ' or deg.  
+
+The rotation of a user defined system may be specified either by giving the 
+position angle for its y axis in the coordinate system of the center coordinates 
+or by specifying a point in the current system to lie on the equator (x axis).  
+In the latter case the position angle will be calculated for you.
+ 
+If a test point is defined in one system, its coordinates will be printed
+out in each subsequently defined system to help you understand what is
+happening.
+
+RELATED MACROS:
+
+The macro "prec" in .GMACROS (dm g:) calculates precessed RA-DEC coordinates
+from given coordinates and epochs. 

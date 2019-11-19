@@ -1,0 +1,44 @@
+wf - Write an image or spectrum to a FITS file			RWW
+
+EXAMPLES:
+
+cm 50,-50 -30,50 51 41 vl:8,12;wf	Make a space-space image and write the
+				result as a FITS file on the tape drive
+				(assuming that wf has not been previously
+				given a file name).
+
+wf "fits.out" im:2 o:"OrionA" tel:"BTL-7M"	Write a FITS file of image
+				2 in the file fits.out.  Put object and
+				telescope cards in the header.
+
+wf ff:"A_Spectrum" st:		Write out stack 1 as a FITS spectrum
+
+c #=9 ;do 120 {rt #=#+1;wf "/dev/rmt12" st:1};wf ct:
+				write 120 stacks as FITS files on the mag tape
+				at high density.  Close the tape at the end
+				(Writes 2 EOF's and back spaces over the 2nd.
+
+wf "fits.out" im:2 bitpx:16	Write a FITS file of image 2 in the file 
+				fits.out. Force BITPIX to be 16.
+
+DESCRIPTION:
+
+Wf writes a FITS file of a given image or spectrum on the magnetic tape
+(startup default) or a named file.  When writing a spectrum, you must
+give the st: flag. Optionally name the Object and
+telescope.  vc and cm can also name the object.  The vc or cm name
+will be overwritten if you specify a name in wf.  Object and telescope
+names are set to blank and must be given for each call to wf.
+
+The 'revy:' flag is used to force the FITS file to have cdelt2 negative and
+the lines of data in the file starting at the top of the image.  Dmin and
+dmax can be used to set the scale of the short ints in the image array.
+These features are only useful if you want to use the FITS image
+array in some non-FITS format.  The label 'bitpx:' is used to force the output
+FITS file to have a certain BITPIX (8,16,-32). 
+
+!! NOTE !! When writing to a device (file name starts with "/dev"), wf
+leaves it open for writing between calls.  This greatly improves the
+efficiency of writing tapes, but can leave the tape with only one EOF
+if you manually remove it before either quitting comb or giving the
+'wf ct:' command.

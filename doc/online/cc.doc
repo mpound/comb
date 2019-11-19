@@ -1,0 +1,21 @@
+cc - change center channel				Matthew Miller
+
+EXAMPLES:
+cc vl:60			change the velocity to 60
+cc vl:.vlsr1+5			add 5 to the current velocity
+cc 115270			change the frequency to 115270 megahertz
+cc .freq1+30			add 30 to the line frequency
+cc oe:-.2			Change expch (and refch) so that the
+				line is displayed .2 km/s lower in velocity
+				without changing other header values.
+
+DESCRIPTION:
+Cc appropriately changes the signal and reference channels of stack 1
+given a new velocity and/or line frequency.  The new velocity and line
+frequency may be entered absolutely, or relative to their previous
+values.  The new values are recorded in the stack header.
+
+The 'oe:' option shifts the displayed velocity of the spectrum by changing
+only the expch (and refch if freq sw data).  It is designed to correct for
+an oscillator error in the observing system.  The shift from the original
+expch is kept in rsdum(1).

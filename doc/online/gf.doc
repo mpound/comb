@@ -1,0 +1,48 @@
+gf - Gauss fit
+
+EXAMPLES:
+gf 50,70		Fit a Gaussian to the data in stack 1 between channels
+			50 and 70 (if horiz plot units are channels), modify
+			the header variables in stack 1 and print the results.
+
+gf,50,70,see:dp:	Fit a Gaussian as above, but replace the data in stack
+			1 with the function and make an overlay plot. Don't
+			print.
+
+rs -1; gf,50,70 rm:     Fit a Gaussian to an absorption line by inverting the
+			line with 'rs -1'. Remove the Gaussian after the 
+			fit.
+
+
+DESCRIPTION:
+
+Gf fits a positive Gaussian function to the data in stack 1 using a gradient
+search method. The fit is made only over the 'horizontal interval of fit' which
+is given in plot units. The parameters of the fit are stored in the header
+variables (see below). They are also printed on the terminal unless suppressed
+by the 'dp' flag.
+
+The 'action in stack 1' node controls additional action. Default is none.  
+The 'see:' flag causes the data in stack 1 to be replaced by the fitted
+Gaussian and plotted as an overlay. The 'rm:' flag causes the Gaussian 
+function to be subtracted from stack 1 to show the residuals.
+
+The 'wid' node allows you to specify the width of the Gaussian in plot units.
+
+Values returned by gf are which are stored in the stack header are
+
+  ftmax - peak temperature of fitted Gaussian
+  fterr - error in ftmax
+  fpeak - horizontal location of ftmax in plot units
+  fperr - error in fpeak
+  fwhm - fitted full width at half maximum in plot units
+  fwerr - error in fwhm
+  area - area of Gaussian in (K * plot units).
+  chisq - reduced chi-squared of the fit
+  nfree - number of free parameters (usually the number of channels - 2)
+
+As usual, these are accessible via the "dot mechanism", e.g. 'p .fwhm'.
+
+If the fit did not converge all the values are set to .DR. 
+
+See Bevington for a discussion of the fitting technique.

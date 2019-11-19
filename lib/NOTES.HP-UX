@@ -1,0 +1,16 @@
+12/27/91 - Fresh Tar from hoh-2 on langer (HP 9000/735)
+
+1) $M/machinedep.h: Set SYSTEM_V to be 1.
+2) $G comment out the hp7580 in d.names and d.routines, get rid of pp.driver.c
+	and hp_plot.c in the makefile.
+3) $L mv xref.hp_700 xref. Don't do this on Jansky where nm hasn't changed.
+4) $S/misc/libedit/sh_config.h comment out the FLOCK line
+5) $S/graphics/show.c: in ShowInBox put two calls to dmy() in to keep the
+	optimizer from botching.
+
+On Jansky the following additional changes needed to be made:
+6) in cp.c pl.c and redirect.c the name strings.h changes to string.h
+7) In misc/libut bcopy_v.c needs to be compiled and linked to obj.
+8) in parse/entree/E.wrex.c I had to remove a reference to index.  Fixed on hoh-2 now.
+9) in misc, math_routines.c has a name which is too long for the directory
+or make to deal with, so make ignored it.  I made a shorter name.

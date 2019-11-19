@@ -1,0 +1,3 @@
+pd.o: pd.c ../../main/C.h ../../main/History.h ../../stacks/C.h \
+ ../../scan/C.h ../../misc/C.h pd.dc.h pd.ec.h
+pdt_.o: pdt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

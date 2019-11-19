@@ -1,0 +1,45 @@
+                        Introduction
+                  --------------------------
+
+Comb is an analysis package for single-dish radio astronomical spectral
+line data reduction.  It can be installed on any computer using the
+UNIX (or variant like LINUX) operating system.  In general, you want to
+run comb on a tty capable of line graphics; 'xterm' is a good choice.
+A new public version of comb is released each year, after sufficient
+changes have accumulated at the programming sites. Intermediate
+versions are available on request.
+
+Most comb commands consist of two-character names chosen to be
+suggestive of their function.  There are also a few single character
+commands.  The command "lc" (list commands) gets you a summary list.
+Appending the string " ?!" to any command name, will give the on-line
+documentation about that command. The string " ??" appended to the
+command will give the input arguments for that command. The string " ?"
+appended to the command will make comb prompt you for each argument to
+the command. This is known as 'hand-hold mode' and is a good way to
+learn the inputs for each command.  For help on command-line syntax,
+see the Help topics 'syntax' and 'special_chars'.
+
+There are a couple of concepts you need to be familiar with to
+understand how comb works: see the Help topics 'glossary' and
+'variables'.
+
+
+	          Comb on the World Wide Web
+                  --------------------------
+
+The Comb page on the WWW http://www.astro.umd.edu/~mpound/comb.html.  It
+contains information about source code updates, and FAQ, and other
+useful stuff.
+
+A most excellent "How To" guide written by Tom Kuiper can be found at
+http://dsnra.jpl.nasa.gov/COMB/Comb.HOWTO.html
+
+
+		     Who You Gonna Call? 
+                    ---------------------
+
+The maintainers of comb are Bob Wilson (rwilson@cfawilson.harvard.edu)
+and Marc Pound (mpound@astro.umd.edu). Comments, questions,
+complaints, wish-lists, and small denomination bills can be directed 
+to them.

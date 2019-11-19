@@ -1,0 +1,6 @@
+#!/bin/sh
+#This version will only work with the extra cost Sun ANSI cc compiler.
+	cd $COMB/bin; cp ldcmb.acc ldcmb; cp mvcmb.std mvcmb;chmod 777 mvcmb
+	cd $COMB/src/main; cp include.mk.acc include.mk
+	cd $COMB/src/main; cp machinedep.h.sunos machinedep.h
+	cd $COMB/lib; cp xref.std xref

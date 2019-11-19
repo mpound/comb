@@ -1,0 +1,220 @@
+# The screen is treated as 511 wide by 389 high.
+# At present we are using only the smallest characters: 7 wide by 10 high.
+full plot
+	# graph window
+	# side   ch0width ch0height ch1width ch1height ch2width ch2height
+# left
+	   2       18        0         0        0         0        0
+# bottom
+	   2        0        2         0        3         0        0
+# right
+	 511        9        0         0        0         0        0
+# top
+	 389        0        0         0        0         0        4
+
+	# x ovrflow	y ovrflow
+	     2		   2
+
+	# x label	y label
+	     4		   4
+
+	# x sideways?	y sideways?
+	    no		 no
+
+	# places
+	# x    y  txtype width height indent sidways? centered?
+	  0    3    2     60     1      0      no	yes
+	  0    2    1     60     1      0      no       yes
+	  2    3    1     39     1      0      no       no 
+	  4    5    0     60     1      0      no       no 
+
+full square plot
+	# graph window
+	# side   ch0width ch0height ch1width ch1height ch2width ch2height
+# left
+	   2       18        0         0        0         0        0
+# bottom
+	   2        0        2         0        3         0        0
+# right
+	 511        9        0         0        0         0        0
+# top
+	 389        0        0         0        0         0        4
+
+	# x ovrflow	y ovrflow
+	     2		   2
+
+	# x label	y label
+	     4		   4
+
+	# x sideways?	y sideways?
+	    no		  no
+
+	# places
+	# x    y  txtype width height indent sidways? centered?
+	  0    3    2     60     1      0      no	yes
+	  0    2    1     60     1      0      no       yes
+	  2    3    1     39     1      0      no       no 
+	  4    5    0     60     1      0      no       no 
+
+small plot
+	# graph window
+	# side   ch0width ch0height ch1width ch1height ch2width ch2height
+# left
+	   4       18        0         0        0         0        0
+# bottom
+	   4        0        2         0        0         0        0
+# right
+	 511        9        0         0        0         0        0
+# top
+	 389        0        0         0        0         0        4
+
+	# x ovrflow	y ovrflow
+	     2		   2
+
+	# x label	y label
+	     4		   4
+
+	# x sideways?	y sideways?
+	    no		  no
+
+	# places
+	# x    y  txtype width height indent sidways? centered?
+	  0    3    2     60     1      0      no	yes
+
+small square plot
+	# graph window
+	# side   ch0width ch0height ch1width ch1height ch2width ch2height
+# left
+	   4       18        0         0        0         0        0
+# bottom
+	   4        0        2         0        0         0        0
+# right
+	 511        9        0         0        0         0        0
+# top
+	 389        0        0         0        0         0        4
+
+	# x ovrflow	y ovrflow
+	     2		   2
+
+	# x label	y label
+	     4		   4
+
+	# x sideways?	y sideways?
+	    no		  no
+
+	# places
+	# x    y  txtype width height indent sidways? centered?
+	  0    3    2     60     1      0      no	yes
+
+valid format
+	# graph window
+# left
+	6 0 2 0 0 0 0
+# bottom
+	46 0 1 0 0 0 0
+# right
+	450 8 0 0 0 0 0
+# top
+	340 0 0 0 0 0 4
+
+	# x overflow	y overflow
+	2		2
+
+	# x label	y label
+	4		4
+
+	# x sideways?	y sideways?
+	no		no
+
+	# auxiliary windows
+	# window 2
+# left
+	graph window
+# bottom
+	6 0 0 0 0 0 0
+# right
+	graph window
+# top
+	40 0 1 0 0 0 0
+
+	# window 3
+# left
+	460 8 0 0 0 0 0
+# bottom
+	graph window
+# right
+	710 0 0 0 0 0 0
+# top
+	graph window
+
+	# places
+# place 0
+	233 350 2 9 2 0 no yes
+# place 1
+	450 350 1 12 2 2 no no
+# place 2
+	455 215 0 8 1 0 no yes
+
+comb
+	# graph window
+	# side   ch0width ch0height ch1width ch1height ch2width ch2height
+# left
+	   3       18        0         0        0         0        0
+# bottom
+	 120        0        2         0        3         0        0
+# right
+	 511        9        0         0        0         0        0
+# top
+	 389        0        0         0        0         0        3
+
+	# x ovrflow	y ovrflow
+	     2		   2
+
+	# x label	y label
+	     6 		   4
+
+	# x sideways?	y sideways?
+	    no		 no
+	# auxiliary windows
+	# window 2 for the use array
+# left
+	graph window
+# bottom
+	 116 0 2 0 3 0 0
+# right
+	graph window
+# top
+	 3 0 2 0 3 0 0
+
+	# places
+	# x    y  txtype width height indent sidways? centered?
+	  0    3    2     60     1      0      no	yes
+	  0    2    1     60     1      0      no       yes
+	  1    3    1     23     1      0      no       no 
+	  0   104   1     21     1      0      no       no
+	173   104   1     21     1      0      no       no
+	337   104   1     21     1      0      no       no
+	  0    93   1     21     1      0      no       no
+	173    93   1     21     1      0      no       no
+	337    93   1     21     1      0      no       no
+	  0    82   1     21     1      0      no       no
+	173    82   1     21     1      0      no       no
+	337    82   1     21     1      0      no       no
+	  0    71   1     21     1      0      no       no
+	173    71   1     21     1      0      no       no
+	337    71   1     21     1      0      no       no
+	  0    60   1     21     1      0      no       no
+	173    60   1     21     1      0      no       no
+	337    60   1     21     1      0      no       no
+	  0    49   1     21     1      0      no       no
+	173    49   1     21     1      0      no       no
+	337    49   1     21     1      0      no       no
+	  0    38   1     72     3      0      no       no
+	173    38   1     21     1      0      no       no
+	337    38   1     21     1      0      no       no
+	  0    27   1     21     1      0      no       no
+	173    27   1     21     1      0      no       no
+	337    27   1     21     1      0      no       no
+	  0    16   1     21     1      0      no       no
+	173    16   1     21     1      0      no       no
+	337    16   1     21     1      0      no       no

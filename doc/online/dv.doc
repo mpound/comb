@@ -1,0 +1,63 @@
+dv - Declare Variables					Bob Wilson
+
+
+EXAMPLES:
+dv "flux(10) peak" s:"name"		Declare an array of 10 reals called
+					flux, a single real peak and a string
+					called name.
+
+dv n:".flux(10) .peak" s:".name"	Same as above if you prefer this style.
+
+dv n:".flux(10) .peak" s:".name" l:	Same as above, but this may only be
+					done from within a macro and the
+					variables will only be visible in that
+					macro (and will disappear when the macro
+					completes).
+
+c .peak=.stak(.expch)			Set peak to the value at the expected
+					channel in stack 1.
+
+p .flux(5)=5.5				Set the 5th element of flux
+
+DESCRIPTION:
+
+'dv' allows users to declare new variables in Comb.  The values of 
+declared variables are accessed by the usual "." method.  By default the
+variables will be global in scope and may be used in the same way that
+header variables are.  With the 'l:' flag, the declared variables
+become local to the macro in which they are defined.  They would hide
+similarly named global or scan variables.  You may define both string and
+numeric variables in the same command.  Within the name strings, names
+may be separated by spaces and/or commas and may optionally be preceded
+by a period.
+
+Numeric variables are initialized to zero and strings to an empty string
+when declared.  Re-declaration of the same name will re-initialize the
+variables and will allow array sizes to change.  Switching a variable
+from string to numeric or vice versa will trigger a warning, but can be done.
+Names can be up to 63 chars and strings can be any length, but the parser
+starts complaining at a length of 8192.
+
+Scan and stack header variables are reserve words, as are the scan and
+stack data variables ndat() and stak(), and the special variable DR (DRAGON).
+These predefined values are also reserve words:
+
+  Name     Value                     Type       Description
+  ----  -------------------------   ------      ---------------
+  PI    3.14159265358979323846      double      you know, pi.
+  AMU   1.660540E-24                float       atomic mass unit
+  C     2.99792458E10               double      speed o' light in cm/s
+  E     2.7182818284590452354       double      natural log base
+  G     6.67259E-8                  float       gravitational constant, cm^3/gm/s^2
+  K     1.380658E-16                float       Boltzmann constant, erg/K 
+  PC    3.085678021E18              double      1 parsec in cm
+  MSUN  1.989E33                    float       1 solar mass in grams
+
+The value of fundamental physical constants comes from the NIST web site:
+
+	http://physics.nist.gov/cuu/Constants/index.html
+
+You can override any value with "c" or "p", of course.
+
+Finally, you can't use "#" or "$" in a variable name because it confuses
+the parser.

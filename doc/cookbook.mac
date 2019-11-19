@@ -1,0 +1,202 @@
+%TEX82 macro package for the AIPS Cookbook - experimental
+%Hacked up by mwp for COMB Cookbook
+
+%            COOKBOOK TEX macro package
+
+%uses boxes 1, 2, 3  for \output
+%     boxes 6        for \phantom
+%     boxes 7, 8, 9  for \hangpar (and hence \itemize, \enumerate)
+%     boxes 9        for \disp.. (display lines)
+%     boxes 9        for \code..\endc (literal text)
+
+%uses counter 1  for page number
+%     counter 7  for enumeration
+
+\font\fteenrm=cmr10 at 14.4pt
+\font\fteeni=cmmi10 at 14.4pt
+\font\fteensy=cmsy10 at 14.4pt
+\font\fteenex=cmex10 at 14.4pt
+\font\fteenit=cmti10 at 14.4pt
+\font\fteensl=cmsl10 at 14.4pt
+\font\fteentt=cmtt10 at 14.4pt
+\font\fteenbf=cmbx10 at 14.4pt
+\font\twelvett=cmtt12
+\font\twelverm=cmr10 at 12pt
+\font\ttlfont=cmbx10 at 25pt
+\font\eightrm=cmr8
+\font\sixrm=cmr6
+\font\eightss=cmssq8
+\font\tenss=cmss10
+
+\def\us{\tenss}
+\def\tenpoint{\def\rm{\fam0\tenrm}%     switch to 10-point type
+  \textfont0=\tenrm  \scriptfont0=\sevenrm  \scriptscriptfont0=\fiverm
+  \textfont1=\teni   \scriptfont1=\seveni   \scriptscriptfont1=\fivei
+  \textfont2=\tensy  \scriptfont2=\sevensy  \scriptscriptfont2=\fivesy
+  \textfont3=\tenex  \scriptfont3=\tenex    \scriptscriptfont3=\tenex
+  \textfont\itfam=\tenit   \def\it{\fam\itfam\tenit}%
+  \textfont\slfam=\tensl   \def\sl{\fam\slfam\tensl}%
+  \textfont\ttfam=\tentt   \def\tt{\fam\ttfam\tentt}%
+  \textfont\bffam=\tenbf   \scriptfont\bffam=\sevenbf
+     \scriptscriptfont\bffam=\fivebf   \def\bf{\fam\bffam\tenbf}%
+  \tt % \ttglue=.5em plus .25em minus .15em
+  \let\ss=\tensy      \let\af=\tensy
+  \normalbaselineskip=12pt %plus 0.1pt minus 0.15pt
+%  \normallineskip=2pt
+%  \normallineskiplimit=2pt
+  \def\parsdef{9pt plus 3pt minus 3pt} % was 10pt +- 3
+  \parindent 20pt\parskip\parsdef
+  \setbox\strutbox=\hbox{\vrule height 8.5pt depth 3.5pt width 0pt}%
+  \let\sc=\eightrm \let\big=\tenbig  \normalbaselines\rm}
+
+\def\lgpoint{\def\rm{\fam0\fteenrm}%     switch to 10-point type
+  \textfont0=\fteenrm  \scriptfont0=\tenrm  \scriptscriptfont0=\sevenrm
+  \textfont1=\fteeni   \scriptfont1=\teni   \scriptscriptfont1=\seveni
+  \textfont2=\fteensy  \scriptfont2=\tensy  \scriptscriptfont2=\sevensy
+  \textfont3=\fteenex  \scriptfont3=\fteenex    \scriptscriptfont3=\fteenex
+  \textfont\itfam=\fteenit   \def\it{\fam\itfam\fteenit}%
+  \textfont\slfam=\fteensl   \def\sl{\fam\slfam\fteensl}%
+  \textfont\ttfam=\fteentt   \def\tt{\fam\ttfam\fteentt}%
+  \textfont\bffam=\fteenbf   \scriptfont\bffam=\tenbf
+     \scriptscriptfont\bffam=\sevenbf   \def\bf{\fam\bffam\fteenbf}%
+  \tt % \ttglue=.5em plus .25em minus .15em
+  \let\ss=\fteensy      \let\af=\fteensy
+  \normalbaselineskip=16pt plus 0.15pt minus 0.2pt
+%  \normallineskip=2.8pt
+%  \normallineskiplimit=2.8pt
+  \def\parsdef{11pt plus 4pt minus 3pt} %was 14 plusminus 4
+  \parindent 28pt\parskip\parsdef
+  \setbox\strutbox=\hbox{\vrule height 11.9pt depth 4.9pt width 0pt}%
+  \let\sc=\tenrm \normalbaselines\rm}
+
+\def\pd{\global\parskip\parsdef}
+
+\def\deg{^{\circ}} %\def\deg{^{\hbox{\hskip-.2pt\:x\char5}}}
+
+% WE MAY WANT THIS--MWP
+%\gdef\tpage{F}                    % \tpage is T for title page
+%\def\cbegin{\centerline{\ttlfont A I P S \quad C O O K B O O K}\vskip 30pt
+%    \centerline{\fteenrm \titlea}\vfill
+%    \centerline{\fteenrm The National Radio Astronomy Observatory}\vskip 5pt
+%    \centerline{\rm Edgemont Road}\vskip 2pt
+%    \centerline{\rm Charlottesville, VA 22903--2475}\vskip 4pt
+%    \centerline{\eightrm Operated by Associated Universities, Inc.}\vskip 2pt
+%    \centerline{\eightrm under contract with the National Science Foundation}
+%    \vskip 15pt\gdef\tpage{T}\eject}
+% 
+\def\fullbar{\hrule height 0.15pt width 8.47in}
+\def\lft#1{#1\hss}
+\def\ctr#1{\hss#1\hss}
+\def\rt#1{\hss#1}
+\def\hp#1{\vbox{\hsize=5.42in\noindent{#1}}}
+
+\def\rquad{\qquad\qquad}
+\def\IIS{\hbox{I\/\raise1.0ex\hbox{$\scriptstyle{2}$}S}}
+\let\iis=\IIS
+\def\noteq{\not=}
+\def\toleft{\leftarrow}
+\def\toright{\rightarrow}
+ 
+\def\hangpar#1#2{\par\hangindent\hangparind\indent
+    \llap{#1\enspace}\ignorespaces#2}
+\def\hangnxtpar#1{\hangpar{}#1}
+\def\hanginit{\global\setbox8=\hbox{\hskip\hangparind}\def\hangstack{T}}
+\def\hangpop{\global\setbox8=\hbox{\unhbox8\unskip}}
+\def\hangfix{}
+\def\hangparind{0pt}
+\def\hangstack{F}
+ 
+\def\brkhere{\penalty-1000{}}
+\def\nofbreak{{\par\brkhere\parskip0pt\noindent}}
+
+\def\tabeffect{{\mathfnt\char'177}}% \TAB (surprise)
+\def\qs{{\tt\ }}
+
+% NOTE LaTeX redfines TeX's \line, so put in our own version of \line 
+% called \myline
+\def\myline{\hbox to\hsize}
+\def\dispar#1#2{\global\setbox9=\vbox{\hsize=4.5in\noindent{#2}}\myline{\vbox
+       to 1\ht9{\vbox{\hsize=1.0in\noindent{#1}}\vfill}\box9\hfill}}
+\def\dispc#1{\parskip 3pt\par\vskip 2pt\myline{\hfil{\us #1}\hfil}}
+\def\disps#1{\parskip 3pt\par\vskip 2pt\myline{\hskip 100pt{\us #1}\hfil}}
+\def\dispt#1#2{\parskip 3pt\par\vskip 3pt
+   \global\setbox9=\vbox{\hsize=3.75in\noindent{{\tolerance=1200
+   #2}}}\myline{\hbox{{\tt -> }{\us #1}}\hfil\box9}}
+\def\disptt#1#2{\parskip 3pt\par\vskip 5pt
+   \global\setbox9=\vbox{\hsize=3.75in\noindent{{\tolerance=1200
+   #2}}}\myline{\vbox to 1\ht9{\hbox{{\tt -> }{\us #1}}\vfill
+   }\hfil\box9}}
+\def\dispf#1#2{\parskip 3pt\par\vskip 3pt
+   \global\setbox9=\vbox{\hsize=3.75in\noindent{{\tolerance=1200
+   #2}}}\myline{\hbox{{\tt -> }{\us #1}}\hfil}
+   \vskip 2pt\myline{\hfil\box9}}
+\def\combmsg#1{\parskip 3pt\par\vskip 3pt\myline{\hbox{{\tt #1}}\hfil}}
+\def\dispz#1{\parskip 3pt\par\vskip 3pt\myline{\hbox{{\tt -> }{\us #1}}\hfil}}
+\def\displ#1#2{\parskip 3pt\par\vskip 3pt
+   \global\setbox9=\vbox{\hsize=2.5in\noindent{{\tolerance=1200
+   #2}}}\myline{\hbox{{\tt -> }{\us #1}}\hfil\box9}}
+\def\displl#1#2{\parskip 3pt\par\vskip 5pt
+   \global\setbox9=\vbox{\hsize=2.5in\noindent{{\tolerance=1200
+   #2}}}\myline{\vbox to 1\ht9{\hbox{{\tt -> }{\us #1}}\vfill
+   }\hfil\box9}}
+\def\dispx#1#2{\parskip 3pt\par\vskip 3pt
+   \global\setbox9=\vbox{\hsize=3.75in\noindent{{\tolerance=1200
+   #2}}}\myline{\hbox{{\us #1}}\hfil\box9}}
+\def\dispxx#1#2{\parskip 3pt\par\vskip 5pt
+   \global\setbox9=\vbox{\hsize=3.75in\noindent{{\tolerance=1200
+   #2}}}\myline{\vbox to 1\ht9{\hbox{{\us #1}}\vfill}\hfil\box9}}
+\def\displx#1#2{\parskip 3pt\par\vskip 3pt
+   \global\setbox9=\vbox{\hsize=2.5in\noindent{{\tolerance=1200
+   #2}}}\myline{\hbox{{\us #1}}\hfil\box9}}
+\def\displxx#1#2{\parskip 3pt\par\vskip 5pt
+   \global\setbox9=\vbox{\hsize=2.5in\noindent{{\tolerance=1200
+   #2}}}\myline{\vbox to 1\ht9{\hbox{{\us #1}}\vfill}\hfil\box9}}
+\def\dispy#1#2{\parskip 3pt\par\vskip 3pt
+   \global\setbox9=\vbox{\hsize=3.75in\noindent{{\tolerance=1200
+   #2}}}\myline{\hbox{{\tt #1}}\hfil\box9}}
+\def\dispa#1#2{\parskip 3pt\par\vskip 5pt
+   \global\setbox9=\vbox{\hsize=3.75in\noindent{{\tolerance=1200
+   #2}}}\myline{\vbox to 1\ht9{\hbox{{#1}}\vfill}\hfil\box9}}
+\def\displa#1#2{\parskip 3pt\par\vskip 5pt
+   \global\setbox9=\vbox{\hsize=2.5in\noindent{{\tolerance=1200
+   #2}}}\myline{\vbox to 1\ht9{\hbox{{#1}}\vfill}\hfil\box9}}
+\def\dispe#1{\parskip 3pt\par\noindent{{#1}}\parskip\parsdef}
+\def\ind{\phantom{FOR}}
+
+\def\code#1{\parskip 3pt\centerline{\vbox{#1}}}
+\def\endc{\vskip 5pt\centerline{\box9}\parindent20pt}
+\def\beginc#1{\parindent#1\parskip 3pt\par}
+\chardef\other=12
+%\def\ttverbatim{\begingroup \catcode`\\=\other \catcode`\{=\other
+%     \catcode`\}=\other \catcode`\$=\other \catcode`\&=\other
+%     \catcode`\#=\other \catcode`\%=\other \catcode`\~=\other
+%     \catcode`\_=\other \catcode`\^=\other
+%     \obeyspaces \obeylines \tt}
+%{\obeyspaces\gdef {\ }} % \obeyspaces now gives \ , not \space
+%\def\begintt{\let\par=\endgraf \ttverbatim \parskip=0pt
+%   \catcode`\|=0 \rightskip=-5pc \ttfinish}
+%{\catcode`\|=0 |catcode`|\=\other % | is temporary escape character
+%  |obeylines % end of line is active
+%  |gdef|ttfinish#1^^M#2\endtt{#1|global|setbox9=|vbox{#2}|endgroup}}
+%\catcode`\|=\active
+%{\obeylines\gdef|{\ttverbatim\spaceskip=\ttglue\let^^M=\ \let|=\endgroup}}
+
+\def\ust{{\rm st}\ }
+\def\uth{{\rm th}\ }
+\def\und{{\rm nd}\ }
+\def\urd{{\rm rd}\ }
+\def\spind{\mathop{\char`S\char`p\char'056\char`I\char`n\char`d\char`e\char`x}}
+\def\dol{{\tt \char'044}}
+\def\CR{{\sevenrm \hbox{\ \raise0.4ex\hbox{C}\hskip-.17em\lower0.4ex\hbox
+      {R}}}}
+\def\CRn{{\sixrm \hbox{\raise0.4ex\hbox{C}\hskip-.17em\lower0.4ex\hbox
+      {R}}}}
+% Use the following in for FIGURE CAPTIONS at the beginning of each
+% entry:
+\def\fig{\hskip-\parindent \hangindent=0.72truein \hangafter=1}
+% therefore the format is:
+%  \section \centerline {FIGURE CAPTIONS}
+%
+%   \fig Fig.~1.--- This is the first figure.
+%
+%   \fig Fig.~2.--- This is the second, and last, figure.

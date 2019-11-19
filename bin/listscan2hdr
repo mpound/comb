@@ -1,0 +1,1 @@
+sed '/^END/ q' $1|less

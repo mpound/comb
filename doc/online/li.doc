@@ -1,0 +1,37 @@
+li - fit a baseline to stack 1 and remove it from the data or replace
+	the data with it						RWW
+ 
+
+EXAMPLES:
+gt,80a1300;us,80_160;li,1	Remove a linear baseline from 80a1300
+				excluding chans 80 to 160 from the fit.
+gt 80a1300;li,1,80		Remove a linear baseline from 80a1300
+				excluding 80 chans around the center chan.
+gt 80a1165;li,15,see:		Fit a 15'th order polynomial to scan 1165
+				and replace stack 1 with the polynomial.
+
+gt s3b4106 nbe:;st 2;gt bbe:;us -20_120;li 1 xt:;rt 1;pl
+				Get the narrow and broad backend spectra,
+				remove a linear baseline from the outer
+				parts of the broad backend and use the same
+				baseline on the narrow backend.  Plot it.
+
+DESCRIPTION:
+li makes a least squares fit of a polynomial of specified order (up to
+15) to the data in stack 1. Channels for which the use array is 0 and
+chans within wid of the sig or ref chan are excluded from the fit.
+
+As indicated by the action node, the resulting polynomial will be
+subtracted from stack 1 unless you request see. See causes stack 1 to
+be replaced by the polynomial. "li xt:" causes the same polynomial which is
+removed from stack 1 to be removed from stack 2 after being scaled. The
+headers will be checked for compatibility.  If either stack 1 or 2 has
+a baseline removed, the header variable rmval will be changed by the
+amount of change in the expected signal channel (.expch1 or .expch2).
+
+li does NOT recalculate the stack rms after the baseline removal.
+The combination "li; rm; st ..." will store the new rms value in
+the stack header variable .rms.
+
+The value subtracted from the central channel is stored in the stack header
+variable .rmval.

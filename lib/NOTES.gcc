@@ -1,0 +1,7 @@
+
+ gcc -ansi -D__builtin_in_va_list  works on Solaris 2.4
+> and is also ok for SOlaris 2.3 (just -ansi is fine
+> on 2.3). I suggest that include.mk.gcc have 
+> CC=gcc -ansi -D__built_in_va_alist
+
+

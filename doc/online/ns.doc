@@ -1,0 +1,62 @@
+ns - Name stacks directory				Matthew Miller & MWP
+
+
+EXAMPLES:
+ns "STACKS"		set the current foreground directory to
+			"STACKS" and create it if it does not exist
+ns "STACKS" dt:		set the current background directory to
+			"STACKS" and create it if it does not exist
+ns "./stacks"		set the foreground directory to "stacks" in the
+			current directory even if another default path
+			is in effect.
+ns p:			Print the name and last stack of the open directories.
+ns cl:			Close directory one, and set current dir to background
+ns cl:dt:		Close directory two, and set current dir to foreground 
+ns "STACKS" t:		If STACKS exists, open it and set .test to 1, otherwise
+			just set .test to 0.
+ns "STACKS" q:		If STACKS exists, open it, otherwise create it without
+			asking.
+
+DESCRIPTION:
+Ns is used to name the current foreground directory and the current
+background directory.  If 'dt:' is not used, then the current foreground
+directory is set to "STACKS".  If 'dt:' is used, then the current background
+directory is set to "STACKS".
+
+A default stacks path will be set up when comb is started if you have
+defined and exported the environment variable LSTACKS.
+It may also be set or changed with the sp: option in the 'op' command.
+In either case if this path is defined and a stacks name not beginning
+with '/' or '.' is used, the default path will be prepended to
+the name that you give.
+
+If "STACKS" does not exist there are 3 possibilities:
+
+1)  By default you will be asked if you really want to create a new
+stacks directory (as opposed to having made a typo).  If you agree, it
+is created for you.
+
+2)  If you had set the t: flag in the ns command, the variable .test
+will be set to 0 and the new directory will not be created.  When the
+t: flag is set and the stacks directory exists, .test is set to 1.
+
+3)  If you had set the q: flag in the ns command, the new stacks directory
+will be silently created.
+
+The foreground and background directories are used for convenience.
+They are always the last name used for them (i.e. the foreground
+directory is the last name used without the 'dt' flag, and the
+background directory is the one used with the 'dt' flag.)  Em, st, rt
+and lk may access either the foreground directory or the background
+directory (foreground by default).  Some other commands may only access
+the foreground directory .
+
+The data, index, and search files may now be made readonly and still
+opened by comb.  This will prevent accidental modification by both comb
+and other unix processes.  It is recommended that any stacks which you
+aren't actively changing have data, index, and search made readonly.
+Macro and defaults files should probably be left writable during data
+analysis.  If data or index is readonly, but search writable, up
+will remove the old search, but be unable to finish the job.  The
+recovery from this is to make data and index writable while running up.
+(This is not nice behavior, but would be too hard to fix.)

@@ -1,0 +1,118 @@
+
+cm - make a space-space contour map
+
+Examples:
+
+The number of options makes it difficult to give comprehensive examples.
+The best scheme is to start off with 'cm ?' and respond to each line.
+After a few plots, you should start typing changes to the last plot
+without using handhold mode.  eg:
+
+cm vl:10,20		to change the range of integration
+cm ir:1.5 ci:		to change to cone interpolation with a radius of
+			1.5 min of arc.
+
+cm np:[51,101]		change the grid spacing to 51 in x and 101 in y
+
+cm oc:			Use the last set of contour levels and line types
+			which were specified in this stacks file.
+
+Eventually you can type in new maps directly:
+
+cm 10,-10,-8,5,21,14 vl:8,12 ir:1 ci: st:2 		
+			If the rel coordinate system is odra-oddec this will 
+			map from 10' to -10' in ra and -8' to 5' in dec with 
+			a number of points right for observations spaced at 1'.
+			The map is smoothed to 1 arcminute using cone 
+			interpolate.
+
+cm m:"temp,8,12"	make a map of peak temperature between velocities
+			8 and 12 km/s. "temp" is a global macro (see 'dm g:').
+
+DESCRIPTION:
+
+Cm makes a space-space image in the current relative coordinate system.
+The image is put in image 1 and a contour plot is also made.  A FITS file
+or tape or a re-plot with different contour steps can be made from image 1.
+In most cases the number of spatial points should be chosen so that they
+match the location of the observations, although two points per observation
+with some smoothing may be useful.
+
+COORDINATES:  
+
+Normally contour maps are made in the current relative coordinate system.  
+THIS IS NOT A TRUE PROJECTION.  You may specify a projection in the 'op' 
+command.  If the current rel coordinate system has offsets "odra, oddec" 
+then you will get an equal area plot in which the size of the ra offset is 
+multiplied by the cosine of the local declination and the units will be 
+arcmin.  If ra-dec offsets are used (rc r:), then the plot will be a 
+coordinate plot with the ra axis scaled so that it is equal area at the 
+center of the plot and the units will be total ra and dec in HMS format.  
+In the case of galactic and x-y plots there is no equal area scaling.
+
+INTERPOLATION TYPES:
+
+With bump interpolation (ni:, use the nearest datum) the interpolation 
+radius will have to be large enough to include at least one observation per
+map point.  For cone interpolation (ci:) it controls the radius of the 
+smoothing function (weight ~ 1 - (distance/interp radius)).  In either case 
+a large interpolation radius will use a lot of memory for the array of 
+lists of scan numbers to be considered for each map point.
+Other interpolation types are Bessel (bi:) and Gaussian (gi:). 
+
+For Gaussian interpolation, the input is the full-width at half maximum 
+of the Gaussian with which the data are to be smoothed.  The weight for 
+any position y with respect to the current position x in any map made with  
+Gaussian interpolation is 
+
+	weight(y) = exp((ln(.5)*(d/hwhm)^2);
+
+where d is the the distance between points x and y and hwhm is the half width 
+at half max (=0.5*FWHM) of the Gaussian you choose.  Weights are calculated 
+for all points within the interpolation radius you choose (ir:). Weights 
+for ir > hwhm are, of course, small. If you choose ir << hwhm, or FWHM < the 
+data point interval, it reduces to the case of near point interpolate or 
+cone interpolate with small radius.
+
+Note that if you are simulating how another telescope would see your data, 
+you need to include the correction for the fact that your data are 
+sampled with a Gaussian already. Gaussians add in quadrature.
+
+MAPS WITH MACROS INSTEAD OF T*DV:
+
+A contour map can be made with any macro which returns some value for
+each stack.  (In fact, vl: is just a special case of using the macro "T*dV").
+The macro string should be a macro (with any necessary arguments) which is
+in the stacks, local or global macro files.  The macro should use the
+'v' command to return the value to be plotted.  The macro will be
+run on each stack which is used to construct the map and the value
+used for that stack will be that given by v.  For examples, type 'dm g: p:'
+and look at T*dV, temp, vpek, or tpek.  The latter two apply a Gauss fit 
+to the stack first. 
+
+OTHER PARAMETERS:
+
+If automatic contour level selection is used, ~10 levels will be
+selected using the same algorithm that is used for scaling the axes of
+graphs.  The number of levels may be specified with the nl: parameter,
+but it is more useful to specify the step size with st:.  sc: (specify
+contours) allows you to pick the contour levels and line types in any
+way (see the example above for the easiest way to use sc:).  Line types
+are explained in the documentation for fl - type 'fl ??' to read it.
+The step size and levels you specify with sc: are stored in the
+defaults file in the current foreground stacks directory and will
+continue to be accessible with the os: or oc: command any later time
+that you run comb with that stacks directory.  The contour selection
+mode will be remembered during the current execution of comb.
+
+Stack number and center frequency limits can be used to exclude some
+stacks in a file from the mapt.
+
+Hatch mark sizes are expressed in the scale of the map's coordinates.
+In odra-oddec, a hatch mark size of .5 will be .5'arc long.  
+
+Data whose weight is below acceptable minimums can be rejected
+from the map by setting the mwt: variable.  Try values between 0
+and a few.  Negative values of mwt are not recommended.
+
+Specifying a label replaces the default label for the current map only.

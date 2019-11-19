@@ -1,0 +1,687 @@
+// Attempt by marc to uniform-ize the macros.
+// so we could have an "apropos"-like command.
+//
+//****************************************************************
+//* this is the GLOBAL MACROS file. In general, only the owner   *
+//* of comb should have write permission for this file.          *
+//* Macros are grouped here according to type; groups are set    *
+//* off by "====".  All macros have comments explaining their    *
+//* use except where its obvious.                                *
+//****************************************************************
+
+//================================================================
+// an example of comments and line continuation.
+// double forward slash delineate comments.  
+// backslash (no space afterwards) indicates commands continue 
+// on next line.
+//================================================================
+xxxx - p //This is a comment. \
+ "This macro is\
+ on three lines"
+
+//=====================================
+// on-line help files - DO NOT REMOVE
+//=====================================
+bugs - e '${PAGER-more} $COMB/doc/online/bugs.doc'
+comb - pr "Your comb path is ";e {echo $COMB}
+docp - e '${PAGER-more} $COMB/doc/online/special_chars.doc'
+doch - e '${PAGER-more} $COMB/doc/online/header.doc'
+docs - e '${PAGER-more} $COMB/doc/online/scan.doc'
+//help - e '${PAGER-more} $COMB/doc/online/helpfil'
+help - Help
+keyw - pr "\nThis is a list of Bell Labs Spectral Data Format Keywords\n";\
+	pr "Lines beginning with / are recognized but currently unused keywords\n\n";\
+	pa t:1;e '${PAGER-more} $COMB/src/scan2/scan2hdr'
+motd - e {${PAGER-more} $COMB/lib/hello;grep '^[1-9]' $COMB/doc/online/news.doc}
+//news - e '${PAGER-more} $COMB/doc/online/news.doc'
+news - News
+nrao - e '${PAGER-more} $COMB/doc/online/nrao.doc'
+faq_ - e '${PAGER-more} $COMB/doc/online/faq.doc'
+
+//====================================================
+// New help interface -- MWP 5/96
+// ?!, !! and ?? of course will still work.
+// But this allows help files on topics other
+// than commands.
+//====================================================
+Help - e {head -7 $COMB/doc/online/helpfil} ;dv s:"topic";\
+   ltop; gtop;dv s:"helpcmd" ;\
+   do w:{.topic<>"x"} {do i:{.topic=="?"} {ltop;gtop};\
+     do i:{(.topic<>"x")*(.topic<>"?")} {c $1="$COMB/doc/online/".topic".doc";\
+     c $2="${PAGER-more} $COMB/doc/online/".topic".doc";\
+     c $3="test -f "$1"; echo $?"; ro str:"helpcmd";e $3;ro q:;\
+     sc fmt:"%lf" v:"#" str:.helpcmd;pr "\n";\
+     do i:{#==1} {pr "No help found on topic %s.\n",.topic} el:{e $2} ;gtop}}
+ 
+gtop - pr "\n Enter a Topic, ? to list Topics, or x to quit: ";\
+       sc fmt:"%s" v:".topic" stdin:
+ 
+//use : delimeter for sed instead of /
+ltop - c $1={/bin/ls -c $COMB/doc/online|sed '/helpfil/d;s:\.doc::;};\
+//	c $2={s:@::;:^$:d'|/usr/bin/pr -5 -o 2 -t};\
+//	c $2={s:@::;:^$:d'|/usr/bin/pr -a -5 -w 80 -o 2 -t};\
+// sadly, pr is not the same on all machines, so must use less pretty paste\
+// If you have pr, you can try substituting one of the above lines\
+// for nicer output\
+	c $2={s:@::;:^$:d'|/usr/bin/paste - - - - - -};\
+       pr " Available Help topics are:\n\n";e $1$2
+//====================================================
+
+//====================================================
+// News interface -- MWP 6/96
+//  NOTE: news items must begin with a sequential number
+//        and have TWO blank lines between items!
+//====================================================
+News - dv s:"newscmd topic" n:"newsnum";ntop;htop;\
+        do w:{.topic<>"x"} {do i:{.topic=="?"} {ntop;htop};\
+        do i:{(.topic<>"x")*(.topic<>"?")} { \
+        sc fmt:"%lf" v:".newsnum" str:.topic;\
+// tricky -- use the +/ feature of more to find the topic number,\
+// but pipe the result thru PAGER-more so user gets her own pager \
+        pr "more +/'^%.0g' $COMB/doc/online/news.doc|sed '/skipping/d'|sed '/^%.0g/q' | sed '/^%.0g/d'|${PAGER-more}",.newsnum,.newsnum-1,.newsnum-1 gs:1;\
+        e $1;htop}}
+
+ntop - pr "\n\tNews Headlines\n\n";\
+	c $1={grep '^[1-9]' $COMB/doc/online/news.doc};e $1;
+htop - pr "\n Enter a Headline number, ? to list Headlines, or x to quit: ";\
+       sc fmt:"%s" v:".topic" stdin:
+ 
+
+
+// edit on-line documention file for !0
+// only owner of comb should have permission to write doc files!
+edoc - e {vi $COMB/doc/online/!0.doc} 
+
+//=====================================
+// macros which can be used with "cm" 
+//=====================================
+
+//******************************************
+//* integrated intensity                   *
+//* This is the default macro used by "cm".*
+//* DO NOT REMOVE IT!!                     *
+T*dV - in !0,!1 dp:;v .area1               
+//******************************************
+
+T*DV - in !0,!1 dp:;v .area1   // integrated intensity
+temp - in !0 !1 dp:;v .tmax    // Peak Temperature
+tmax - in !0 !1 dp:;v .tmax    // Peak Temperature
+Vpek - in !0 !1 dp:; v .vpeak  // Peak velocity, regardless of stack rms
+Vcen - in !0 !1 dp:; v .vcent  // centroid velocity, regardless of stack rms
+
+// stack rms ; average rms is #9/#8 when done.
+rms_ - rt .numst u:yes;rm dp:;c #9=#9+.rms;c #8=#8+1;v .rms 
+rms2 - v .rms  // alternate quicker method
+
+// contour Peak temp, peak v, vcen, fwhm,  only if sufficient S/N.
+// the first three have "gf" run first
+tpek - gf, !0, !1 dp:;v ?((.ftmax>4*.fterr)*(.fwhm>3*.fwerr)|.ftmax|.DR)
+vpek - gf, !0, !1 dp:;v ?((.ftmax>4*.fterr)*(.fwhm>3*.fwerr)|.fpeak|.DR)
+fwhm - gf, !0, !1 dp:;v ?((.ftmax>4*.fterr)*(.fwhm>3*.fwerr)|.fwhm|.DR)
+// make sure the stack rms's have been calculated and stored for vcen macro!
+vcen - in !0 !1 dp:;v ?((.area>3*.arerr)|.vcent|.DR)
+
+//============================================
+// Macros that do things with stacks or scans
+//============================================
+
+// Description: Averaging data scans in a DO loop
+// This combines and plots all scans from N1 to N2 with an increment 
+// or step of N3: 
+// Usage: cosc N1,N2,N3
+// Mnemonic: COmbine Scans
+// Synopsis: get the scan given in the first parameter and store it in stack 2; while
+// the scan number is less than or equal to the second parameter, combine and
+// then retrieve the next scan; when done, plot stack 2 
+// Author: Tom Kuiper
+cosc -  p "Storing" nl:; p #=!0;\
+        gt #;st 2;\
+        do w:{(#=#+!2)<=!1}\
+          {gt #;p "Combining" nl:; p #;\
+           co;};\
+        rt 2; pl hst:;
+
+//=====================================
+// Channel-related macros
+//=====================================
+
+// Description: Print channel width in km/s
+// Usage: chnw
+// Mnemonic: CHaNnel Width
+// Synopsis: none
+// Alias: dvel
+// Related: dvel, vlct
+// Author: Bob Wilson
+chnw - pr "%.8g" 2.99792458E5*.fwid/.freq
+
+// Description: Print channel width in km/s, identical to chnw
+// Usage: dvel
+// Mnemonic: Delta VELocity (i.e. "dV")
+// Synopsis: none
+// Alias: chnw
+// Author: Marc Pound
+dvel - chnw 
+
+// Description: Print channel # of a particular velocity V.
+// Usage: chan, V 
+// Mnemonic: CHANnel 
+// Synopsis: none
+// Alias: none
+// Author: Bob Wilson
+chan - p .expch+(!0-.vlsr)*.freq/.fwid/299792.458
+
+// Description: Print velocity of a particular channel #, N
+// Usage: vlct, N
+// Mnemonic: VeLocity Channel Transform (???)
+// Synopsis: none
+// Alias: none
+// Author: Bob Wilson
+vlct - pr "%.8g" .vlsr+(!0-.expch)*.fwid*2.99792458E5/.freq
+
+// Description: Drop N channels from each end of a spectrum
+// Usage: drop,N
+// Mnemonic: DROP channels
+// Synopsis: Sets use array for N channels at each end of spectrum
+// Alias: none
+// Related: zero, zerp, zevl
+// Author: Marc Pound
+drop - c #=!0;us 1_!0 st:;us (.numpt+1-#)_.numpt st:
+
+
+// Description: print the mean value of the stack
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+mean - c #=1;dv n:".mean .cnt" l:;c .mean=0;c .cnt=0;\
+        do w:{#<.numpt+1} {\
+        do i:{.stak(#)<>.DR} {c .mean=.mean+.stak(#);c .cnt=.cnt+1};c #=#+1};\
+        pr " Mean value of stack is %g", .mean/.cnt
+
+
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Author: Marc Pound
+// Related: zerp, zevl
+// zero channels !0 thru !1 inclusive; set use array; recalculate rms
+zero - pl ch:;c #=!0;c #1=!1;c #3=#;\
+        do w:{(#3)<=(#1)} {c .stak(#3)=0;c #3=#3+1};us #_#1 st:;rm
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Author: Marc Pound
+// Related: zero, zevl
+// ...plot afterwards
+zerp - zero,!0,!1;pl 
+ 
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related: zero, zerp
+// Author: Marc Pound
+// zero velocities !0 thru !1 inclusive
+zevl - c #9=.expch+(!0-.vlsr)*.freq/.fwid/299792.458;\
+       c #8=.expch+(!1-.vlsr)*.freq/.fwid/299792.458;zero,#9,#8
+ 
+//=====================================
+// various Unix shell commands
+//=====================================
+
+biff - e {biff !0}
+clea - e {clear}
+date - e {date}
+grep - e {grep !0}
+head - e {head !0}
+lpqq - e {lpq}
+lpq- - e {lpq -P!0}
+lprm - e {lprm !0}
+mail - e {mail}
+mann - e {man !0}
+more - e '${PAGER-more} !0'
+less - e '${PAGER-less} !0'
+mtrw - e "mt rew"
+mtst - e "mt stat"
+ping - e {ping !0}
+shel - e {sh -i}
+SHEL - e {$SHELL -i}
+stty - e {stty !0}
+tail - e {tail !0}
+
+//================================================
+// Macros which use the cursor 
+//================================================
+
+// use cursor to set use array (single use array window)
+// Description: 
+// Usage:
+// Mnemonic: USe array with CuRsor; (US via CR)
+// Synopsis:
+// Alias: crus
+// Author: Marc Pound
+uscr - pr " Enter use array endpoints with cursor "; \
+        cr 2 px:;us x(0)_x(1);
+crus - uscr
+ 
+// set multiple windows in use array, until 'e' is entered
+// Description: 
+// Usage:
+// Mnemonic: USe array with Cursor, Multiple 
+// Synopsis:
+// Alias: none
+// Author:
+uscm - pr " Set multiple use arrays with cursor. 'e' to finish\n";\
+        cr 1;do w:{crsr(0)} \
+        {c #3=x(0) ;cr 1;us #3_x(0) st:;do i:{crsr(0)} {cr 1}};pl
+
+// use cursor to unset use array (single window)
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+usst - cr 2 ;us x(0)_x(1) s:
+ 
+// retrieve spectrum at cursor position
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+rtcr - cr;rt rc:x(0) y(0) !0    
+
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+rtcc - rtcr,                    
+
+// retrieve stack at cursor, store stuff in global variables
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+crrd - rtcr ptol:.75; ph .ra+.dra nl: gs:6; ph .dec+.ddec gs:7
+
+//pick a spectrum from a velocity-space plot
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+vcpk - cr 1 px:;rt rc:!0,x(0) ptol:.75 u:yes 
+ 
+// zoom a spectrum, cursor points are lower left corner
+// and upper right corner of zoom box
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+zoom - pr " Use cursor to enter LL and UR corners of zoom box\n ";\
+        cr 2;pl h:f:x(0),x(1),v:f:y(0),y(1)
+
+// fit a gaussian between two cursor positions
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+crgf - pr " Enter 2 endpoints with cursor for gaussian fit\n";\
+	cr 2;gf x(0) x(1) see:
+gfcr - crgf
+
+// integrate spectrum between two cursor positions
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+crin - pr " Enter integration limits with cursor\n";\
+	cr 2;in x(0) x(1)
+// Alias: crin
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+incr - crin
+
+// eliminate bad channels at cursor positions. !0 is the
+// number of chans to replace
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+crel - c #=!0;c #1=#;cr # px:;do # {el x(#-#1);c #1=#1-1}
+elcr - crel
+
+// eliminate channels until 'e' is entered. the 'e-th' channel is
+// also eliminated.
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+elcm - c #=1;cr 1 px:;do w:{crsr(0)} {el x(0);cr 1 px:;c #=#+1}; el x(0);pl;\
+	pr " Eliminated %g channels\n", #
+
+// print cursor positions until 'e' is entered
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+crpm - pr " Move cursor to desired position. Enter 'e' to quit\n";\
+//	cr 1;do w:{crsr(0)} {pr " (%g,%g)\n" x(0) y(0);cr 1} \
+	cr 1 p:;do w:{crsr(0)} {cr 1 p:} \
+
+// put label (!0) at cursor
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+crla - cr 1;gm ti:"!0" x(0), y(0)   
+
+// flag spectrum with vertical line at cursor
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+crfl - cr 1;fl x(0); 
+
+// gmli and vcli draw a line between cursor points and compute
+// position-velocity diagram along line.
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias;
+// Related:
+// Author: Marc Pound
+gmli - p " Enter line endpoints with cursor";cr 2 p:;\
+	gm mv:x(0),y(0);gm li:x(1),y(1);
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias:
+// Related:
+// Author: Marc Pound
+vcli - gmli;vc bp:[x(0),y(0)] ep:[x(1),y(1)] vl:!0,!1 sp:0.5 ci:
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: 
+// Related:
+// Author: Marc Pound
+crli - gmli 
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: 
+// Related:
+// Author: Marc Pound
+crvc - vcli,!0,!1
+
+// make a "sl" slice along the line  [default is image 1]
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+slli - gmli; wait;sl bp:[x(0),y(0)] ep:[x(1),y(1)] 
+// use image !0 instead
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+sll2 - gmli; wait;sl bp:[x(0),y(0)] ep:[x(1),y(1)]  im:!0
+
+//=====================================
+// image related macros
+//=====================================
+
+// Usage: subI,!0,!1,!2,!3,!4,!5
+// get a subimage from image !0 and put it into image !1.
+// use lower left corner (!2,!3) and upper right corner (!4,!5)
+// plots subimage box on contour plot of image !0
+// Description: 
+// Usage:
+// Mnemonic:
+// Synopsis:
+// Alias: none
+// Related:
+// Author: Marc Pound
+subI - pr "Getting subimage from image %s to image %s\n","!0","!1";\
+         cp im:!0 a:;da po:[!2,!3 !2,!5, !4,!5, !4,!3] pl: an:1;\
+        im si:[!0,!1,an:1]
+
+
+//=====================================
+//  Miscellaneous
+//=====================================
+
+bell - pr "\07"                 // Ring the Bell
+
+// calculate beam area in SR given beam x,y HPBWs in arcsec 
+bmsr - c #=(3.14159265359)^3/(4.*ln(2.))*(!0/648000.)*(!1/648000.);\
+        pr "A %g\" by %g\" beam has area %e sterradians\n",!0,!1,#
+
+// coadd all stacks from !0 to !1 without checking 
+codc - rt !0;c #1=!0;st 2; c #=!1;\
+	do w:{(#1)<(#)} {rt &+1;c #1=.numst;co dc:}
+
+// draw a box with x limits !0, !1 and y limits !2,!3 
+dbox - line,!0,!2,!1,!2;line,!1,!2,!1,!3;line,!1,!3,!0,!3;\
+	line,!0,!3,!0,!2 
+edit - dm ed:
+edt2 - dm st:dt:
+edst - dm st:ed:
+
+// find all macros named !0
+Find - p " Global macros...";dm g:p:"^!0";\
+        p " Local macros...";dm l:p:"^!0";\
+        p " Foreground dir...";dm st:p:"^!0";\
+        p " Background dir...";dm dt:p:"^!0"
+find - Find !0
+
+// reset the plot window 
+gmrs - gm nb:1,1;gm sc:1,1
+plrs - gmrs;pl hst: tk:yes u:yes g:yes fy:yes l:yes d:yes fhr:
+
+// draw line from (!0,!1) to (!2,!3)
+line - gm mv:!0,!1;gm li:!2,!3 lt:255 
+// as above but use linetype !4
+Line - gm mv:!0,!1;gm li:!2,!3 lt:!4
+
+mark - gm ti:"X" !0,!1          // X marks the spot
+
+// print T vs V in a two column format (for mongo).
+mgop - p #1=0 dp:;do w:{(#1=#1+1)<=.numpt} {\
+        p .vlsr1+(#1-.expch1)*.fwid1*2.99792458E5/.freq1 nl:;\
+        p "     "nl:;p .stak(#1)}
+
+// draw +/- (!0)*(.rms) ["sigma"] lines on spectrum 
+Nsig - pl vl:;c #=!0;c #8=.vlsr1-(.expch1)*.fwid1*2.99792458E5/.freq1;\
+       c #7=.vlsr1+(.numpt-.expch1)*.fwid1*2.99792458E5/.freq1;\
+       rms ;gm mv:#8,#*.rms; gm li:#7,#*.rms;\
+       gm mv:#8,-#*.rms; gm li:#7,-#*.rms
+nsig - Nsig,!0
+
+// draw +/- 1 sigma lines on a spectrum
+1sig - Nsig,1
+
+// precess equatorial coordinates (!0,!1) from epoch !2 to epoch !3
+prec - ro p:"grep Test";rc "original" rd:0,0 ep:!2 r: ch: tp:!0,!1;\
+	pr "\nEpoch !2 coordinate is the 'Test Point' above \
+(decimal hours and degrees).\n\n";\
+       rc "precessed" rd:0,0 ep:!3 r: ch: ;\
+	pr "\nEpoch !3 coordinate is the 'Test Point' above \
+(decimal hours and degrees).\n";ro q:;pr "Use 'ph' to print in HH:MM:SS format.\n"
+
+rcgc - rc {GC} read:; op rc: //galactic center: (l,b) coordinate system
+
+// print the resolution in pc(AU) of beam at x pc 
+// usage: reso,beam,dist
+// where beam is the beamsize in arcsec and dist is the dist in pc
+reso - dv n:"beam dist res" l:; c .beam=!0;c .dist=!1; c .res=.beam*.dist; \
+        pr "The resolution of a %g arcsec beam at a distance of %g pc is %.4g pc = %.4g AU
+",\
+        .beam,.dist,.res/206265, .res;
+	
+// wait for carriage return
+wait - pr " Press <Return> to continue";pa w:
+
+// print the wavelength of the observations in mm
+wave - pr " %g MHz is %.8g mm." .freq1, 2.99792458E5/.freq1
+
+// print the freq in MHz given the wavelength in mm
+freq - pr " %g mm is %.8g MHz." !0, 2.99792458E5/!0
+
+//==============================================
+// BOXN: plots N^2 spectra in an NxN box  {MWP}
+//==============================================
+// arguments:
+// !0 - N of N by N box, then reused for specifying X box
+// !1 - deltaX (=deltaY), spacing of spectra in arcm offsets
+// !2 - Temp min for scale
+// !3 - Temp max for scale
+// !4 - label for center plot
+// ----------------------------------------------
+// #0-#3 = !0-!3
+// #4 - specifyer Y box
+// #5 - counter X
+// #6 - counter Y
+// #7 - extrema of X and Y in arcm offsets
+// #8 - center Y of box in arcm offsets
+// #9 - center X of box in arcm offsets
+// .ndat(1) an extra variable space because I need one!
+boxN -  //if N not odd -- pr "\nN must be odd\n";\
+	c #=!0;c #1=!1;c #2=!2;c #3=!3;\
+        c .ndat(1)=#;gm nb:#,#;c #7=((#-1)*#1)/2;\
+        c #5=(#7); c #6=-(#7);\
+	//p "scale factor" nl:;p 1.35*((#/5)^.6);\
+        do i:{(#)>=5} {gm sc:1.35*((#/5)^.6),1.35*((#/5)^.6)};\
+        //c #9=.odra;c #8=.oddec;pr "!4", gs:8;c #4=0;c #=0;\
+        c #9=0;c #8=0;pr "!4", gs:8;c #4=0;c #=0;\
+        do w:{(#5)>=-(#7)} {\
+          do w:{(#6)<=(#7)} {\
+                rt rc:#9+#5,#8+#6 t:ptol:.5;gm #,#4; plnl,#9+#5,#8+#6;\
+                c #6=#6+#1;c #4=#4+1;\
+          };\
+          c #5=#5-#1 ;c #=#+1 ;c #6=-(#7) ;c #4=0 \
+        };plcn
+plcn - rt rc:#9,#8 t:;gm (.ndat(1)-1)/2,(.ndat(1)-1)/2;\
+        do i:{.test} {\
+            pl d:no mlb:$8 vlb:"Temp." hlb:"V(LSR)" v:#2,#3\
+            u:yes g:yes fy:yes l:yes d:no\
+        }
+plnl - do i:{.test} {\
+        pr "(%.2f,%.2f)" !0,!1 gs:1;\
+        pl u:no d:no g:yes vlb:"" hlb:"" mlb:$1 v:#2,#3 fy:1 l:no}
+
+//=============================================================
+// some diagnostics to run after installing comb
+//=============================================================
+
+Diag - diag
+test - ro fn:"/tmp/comb.env" t:yes;e {echo $COMB};ro q:; \
+    sc fmt:"%s" v:"$0" fn:"/tmp/comb.env";p $0;
+rest - sc fmt:"%s" v:"$0" fn:"/tmp/comb.env";p $0;sc rw:
+
+diag - dv s:"combenv" l:;ro str:"combenv" t:yes;e {echo $COMB};ro q:;\
+    sc fmt:"%s" v:"$0" str:.combenv;\
+    p " ********************************************************";\
+    p " * Running diagnostics. I will wait between each test...";\
+    pr " * The COMB path is %s\n", $0;pr "%s/lib" $0 gs:9;\
+    p " * Testing gt...";p " * getting a Bell Labs scan."; \
+    nf $9"/ct2a";nf p:; gt 5;pl mlb:"BELL LABS SCAN";wait;\
+    p " * Checking out stacks...";ns $9"/sampleSTACKS";ns p:; \
+    p " * Here's a look map (lk).";\
+    look; da po:[10,-9 10,11 -10,11 -10,-9] an:1 pl:;\
+    p " * You should see stacks which fill the box at 1' spacing."; wait;\
+    rt rc:0,0; pl mlb:"Orion A"; p " * Here is a nice Orion A spectrum.";\
+    wait;p " * Doing Gaussian fit (gf).";gfgf;wait;\
+    p " * Testing contour map (cm) and graphics manipulate (gm)...";\
+    cmcm; gm df:[5,10,-10,1.7,1.7,fill:];\
+    gm ti:"HPBW" 10.85,-8.8;line,11,-8.5,8.8,-8.5;line,8.8,-8.5,8.8,-11;\
+    p ' * Here is a nice Orion A contour map. The beam is 100"';wait;\
+    p ' * Printing it (hc)...'; hc;wait;\
+    p ' * Testing subimage (im si:)...';imsi;\
+    p ' * subimage should be from x=-5 to x=5 and y=-5 to y=5';wait;\
+    p " * Testing slice (sl)..." ; slsl;\
+   wait;p " * Testing velocity contour map (vc)...";vcvc;\
+   gm ti:"Whatta outflow\!\!",-5,-35;\
+   wait;p " * Testing virial mass (vm)...";prvm;vmvm; \
+   p " *";p " * Diagnostics complete. Have a nice day.";bell;p " *";\
+   p " * If you are not on a LittleEndian machine (PC, DEC, etc),";\
+   p " * you can run a further check on NRAO scans by typing 'nrad'";\
+   p " **************************************************************"
+
+nrad - bell; p " ********************************************************";\
+    p " * Running NRAO scan diagnostics...";dv s:"combenv" l:;\
+    ro str:"combenv" ;e {echo $COMB};ro q:;\
+    sc "%s" v:"$" str:.combenv; pr "%s/lib" $0 gs:9; \
+    p " * getting a NRAO PDFL scan.";nf $9"/example.PDFL";gt 703 ss:2;\
+    pl mlb:"NRAO PDFL SCAN";wait;\
+    p " * getting a NRAO SDD scan.";nf $9"/example.SDD";gt 3 ss:1;\
+    pl mlb:"NRAO SDD SCAN"; p " * Here's the header:";pd main:;pd sc:;\
+	p "* ...done."
+
+//========================================================
+//  The rest are peculiar to Bell Labs
+//========================================================
+
+perr - e "perr"
+qpri - e "/usr/local/bin/qprint !0"
+apri - e "/usr/local/bin/aprint !0"
+obst - e 'obsstatus'

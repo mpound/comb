@@ -1,0 +1,8 @@
+#!/bin/sh
+
+cd ${COMB}/src/cmd
+for i in *
+do
+	echo -n "$i	"
+	(cd $i;ed makefile < $L/make_ed_script)
+done

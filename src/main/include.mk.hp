@@ -1,0 +1,1 @@
+CC=cc -Aa -D_HPUX_SOURCE

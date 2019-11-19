@@ -1,0 +1,73 @@
+sl - Make a slice through an image and plot the results       RWW & MWP 
+
+EXAMPLES:
+
+sl 10,-2 -4,6			Generate the data along a slice between the
+				two points (10,-2) and (-4,6) in image 1 and i
+	                        write it in the file 'slice' in your home 
+				directory.
+
+sl h:-2,2 v:1,5	ps:4		Make the slice but force the horizontal and
+				vertical scales to the specified limits. 
+				Normally sl autoscales based on the extrema
+				of the data. Use plot symbol 4 (crosses) 
+				instead of a line.
+
+sl im:2 ovl: lt:0 add:3         Generate the data along the previous slice. Use
+                                image 2, overlay the plot on the previous 
+				plot using a dotted line. Add 3 to the y-values.
+
+cr 2;sl x(0),y(0) x(1),y(1) fn:"slice1"
+				Make the slice, but use the cursor to
+				define the points.  (If using a tek4014 window
+				in a 5620 see the note in 'da ?!'.)  The data 
+				will be put in the file slice1 in the current
+				directory. This is similar to the macro 'slli'
+				in .GMACROS.
+
+sl logy: fn:"/dev/null"		make the plot using the logarithm of the image, 
+			        but don't write a file.
+
+sl im:2 m: fact:1E4		Add an additional column from image 2 to an
+				existing slice file.  Scale the data by 10000.
+				Note you can only merge once, since slice 
+				assumes the existing file has four columns.
+
+DESCRIPTION:
+
+Sl will produce a plot of the values at the points in an image along a slice.
+The default is a linear-linear plot but linear-log plot is also possible 
+(this does not affect the printed output described below.) Line types as 
+described in "fl" are available.
+
+The normal execution writes out four columns for each point, suitable for
+plotting with mongo or some other package.  The first two are the x and y offset
+positions relative to the center of the map (in map units).  The third is the
+distance from the first point and the fourth is the map value at that
+point.  An example follows:
+
+14       -9        0     0.5162
+13       -8     1.41      1.043
+12       -8     2.24      1.474
+11       -7     3.61      1.583
+10       -7     4.47      2.169
+ 9       -6     5.83      2.109
+ 8       -6     6.71      3.088
+ 7       -5     8.06      4.641
+ 6       -5     8.94      5
+
+Running sl again into the same file with the merge (m:) option but with
+another image will add another column of data.  For each position in
+the existing file the value of the closest grid point of the new image
+will be used.  This will work best if the two images have the same
+gridding. A copy of the original file (before merging) is kept in 
+"file".old (e.g., slice.old).
+
+Each data value is multiplied by the scale factor.  This is useful
+since mongo doesn't scale data or to correct a map for beam efficiency,
+etc.
+
+RELATED MACROS:
+
+'slli' is a macro in .GMACROS which will generate a slice along a
+line between two cursor points.

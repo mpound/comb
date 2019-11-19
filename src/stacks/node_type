@@ -1,0 +1,15 @@
+# define FIELDS 5			/* number of fields */
+
+/****************************/
+/* type definition for node */
+/****************************/
+
+typedef struct
+{
+	unsigned short branchField;	/* field on which branch is made */
+	unsigned char bit;		/* bit on which branch is made */
+	unsigned char bits;		/* bits described by this node */
+	unsigned int value[FIELDS];	/* bit sub fields */
+	LINKS l;			/* tree links */
+}
+NODE;

@@ -1,0 +1,72 @@
+ro - Redirect comb's output to a file, pipe, or string variable		RWW & MWP
+
+EXAMPLES:
+
+ro t:;pd dt:
+		Redirect the output of pd to the default or current output
+		file.  The file defaults to $HOME/comb.out.  The file will be
+		closed (if previously used), truncated to zero length,
+		and reopened before writing to it.  The redirection
+		will be canceled at the end of the line if it is typed
+		at the tty.  The output file is left open, however,
+		between calls to 'ro' for efficiency.
+
+ro "temp";...;gf,8,12;....;ro q:
+		Put the output of the commands between the ro and the ro q: at
+		the end of the file temp in the current directory.  This line
+		could safely be put in a macro as it turns the redirection off.
+
+ro p:"grep hlb";cm ?? 
+  	 	Run the output of the commands following ro through a
+		pipeline. (grep for "hlb" in the cm input tree).
+
+ro p:;pd dt:	Run the output of pd through the default pipeline (${PAGER}-more).
+
+ro str:"$1";pd sc:  Copy the header of the current scan global string 1.
+
+dv s:"ScanHdr";ro str:"ScanHdr";pd sc:  Copy the header of the current scan to a 
+					variable called "ScanHdr"
+
+ro str:".ScanHdr";pd sc:  Same as above.
+
+
+DESCRIPTION:
+
+'ro' redirects comb's standard output.  The default output file is the
+file comb.out in your home directory.  If you give a file name in either
+command, that file will be used until another name is given.  The stdout
+will be returned to the tty before reading more input commands.
+
+'ro p:'  Feeds comb's standard output through a pipeline.  The default pipe
+is to more (or your designated pager).  The pipeline will be set up by /bin/sh.
+
+'ro str:' redirects comb's output to a string variable. Any legal string
+variable can be used, although if you use a pre-defined header variable the
+output will be truncated at the length of that variable. The 't:' flag has
+no effect on 'ro str:' --- multiple redirects to the same string variable will
+overwrite the string rather than append to it. The size of the output
+string can be any length, but 'p' can only handle 8192 character and 'pr' 
+only 512 characters.
+
+'ro q:' returns comb's standard output to the same terminal or file it went to
+when comb was started.  This is not normally necessary as it is reset
+at the end of each command line.
+
+'ro t:' truncates the file before writing in it by closing it if it is already
+open and then reopening with zero length for writing.
+
+NOTE: 'ro' does not nest with 'ro q:'.  'ro' can be used repeatedly
+without using the 'q:' option.  The 'q:' option always returns the stdout
+to its original state.
+
+Many of comb's diagnostics and prompts are written to the stderr and
+won't go into the file.
+
+'ro' doesn't close the output file every time the output stops flowing
+to it.  It only closes the file when given the 't:' option or when a
+new file name is given.  This might be confusing if you rm or edit
+the output file with some other Unix process.  In particular if you
+use comb to write in a file, then use the file in another window and
+remove it, and then go back to the same comb process and write to the
+same file, you will be writing to a file which has no directory entry
+unless you use the 't:' option of 'ro'.

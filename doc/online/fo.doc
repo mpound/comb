@@ -1,0 +1,13 @@
+fo - fold freq switched data
+
+
+EXAMPLES:
+fo		fold the data in stack 1.
+
+DESCRIPTION:
+Fold does a weighted average of the channels around the 'signal' channel
+with the negative of those around the 'reference' channel in stack 1. Only
+channels with overlap are retained in the final spectrum.
+
+Fold sets the '4' bit in the header variable 'nprc'. It will refuse to fold
+data which was not frequency switched or has been previously folded.

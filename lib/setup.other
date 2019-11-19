@@ -1,0 +1,5 @@
+#!/bin/sh
+#This version is for non-Sun and non-HP C compilers.
+	cd $COMB/bin;  cp ldcmb.std ldcmb; cp mvcmb.std mvcmb;chmod 777 mvcmb
+	cd $COMB/src/main;  cp include.mk.std include.mk
+	cd $COMB/lib; cp xref.std xref

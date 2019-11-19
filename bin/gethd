@@ -1,0 +1,18 @@
+#!/bin/sh
+case $# in
+	0)  case `basename $0` in
+		listhd) unblock | more;;
+		gethd) unblock;;
+	    esac;;
+	1)  case `basename $0` in
+		listhd) unblock < $1 | more;;
+		gethd) unblock < $1 > ${1}.hdr;;
+	    esac;;
+	*) echo 'usage: $0 fitsfile (can also be used in a pipe) ';;
+esac
+#case `basename $0` in
+#	listhd) unblock < $1 | more;;
+#	gethd) unblock < $1 > ${1}.hdr;;
+#	listhd) dd if=$1 cbs=80 conv=unblock | sed '/^END$/q' | more;;
+#	gethd) dd if=$1 cbs=80 conv=unblock | sed '/^END$/q' > ${1}.hdr;;
+#esac

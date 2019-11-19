@@ -1,0 +1,62 @@
+af -  Attach (read in) a FITS file to an image 
+
+EXAMPLES:
+
+af "fits.out";cp	The file fits.out in the current directory is
+			opened, associated with image 1, and a contour
+			plot of it is made.
+
+af "oria.13co" im:3	The file oria.13co is opened as image 3.
+
+af "myspectrum" st:     Read in the FITS spectrum myspectrum from 
+			disk into stack 1.
+
+c #=10;do 100 {af "/dev/rmt12" st:1;st #;c #=#+1}   
+			Read in 100 FITS spectra from tape and store them 
+			in the the first 100 stack locations.
+
+DESCRIPTION:
+
+A FITS file is the same as a FITS tape, except that it is on disk and
+doesn't have 2880 byte records.  A file on a FITS tape may be read onto
+disk with $COMB/bin/rfitstape and a FITS file may be written to tape with
+$COMB/bin/wfitstape.  Or, more simply, specify /dev/rmtN as the filename.
+
+af opens the given FITS file and reads its header into a new data
+structure associated with the designated image.  If the header is not
+acceptable, an error message might be given and the image closed.  For
+the present unrecognized header lines are printed on your screen and
+ignored. Spectra can only be read into memory, i.e., stacks 1, 2, or 3.
+
+NOTE: 
+
+When reading in CLASS FITS spectra written by the FCRAO program SPA (and 
+possibly some other programs), the LSR Velocity of the spectrum (.vlsr) will 
+be the velocity of channel 1. This is because SPA sets the FITS keywords 
+CRPIX1=1 and VELO equal to the velocity of that channel.  The velocity 
+axis of the spectrum will still be correct; but the displayed LSR velocity 
+will not match that of the source.  To fix this, use "cc" to change .vlsr 
+and .expch (=CRPIX1) to the source values (usually the center channel), e.g., 
+
+-> af "SPA.FITS.spectrum" st:1
+
+-> p .numpt		   ! print number of channels
+128
+
+-> p .expch                ! print channel of CRPIX1 
+1
+
+-> vlct,.expch 		   ! print velocity of CRPIX1
+-10.429101
+
+-> cc vl:9.0 		   ! change VLSR to source velocity (km/s)
+
+-> p .expch
+64.5
+
+-> vlct,.expch
+9
+
+-> p .vlsr		   ! Voila!
+9
+

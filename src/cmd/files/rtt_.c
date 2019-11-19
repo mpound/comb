@@ -1,0 +1,37 @@
+# include "../../parse/P.tree.h"
+
+Node rtt_[] =
+{
+/*000*/ "Retrieve stack","rt",NORMAL,0,0,0,{1,2,3,4,5,6,7,10,11,12,13,
+        16,0},
+/*001*/ "Stack number(s)","n",LEAF,0,0,0,{Btwo(40),Btwo(-1),8,2,
+        Btwo(1),Btwo(0),Btwo(0),1,0,Btwo(76),Btwo(0),0},
+/*002*/ "Directory name","f",LEAF,0,1,0,{Btwo(118),Btwo(80),3,1,
+        Btwo(65),Btwo(0),Btwo(0),4,0,Btwo(78),Btwo(0),0},
+/*003*/ "Use directory two","dt",LEAF,0,2,0,{Btwo(48),Btwo(-1),8,1,
+        Btwo(1),Btwo(0),Btwo(0),6,0,Btwo(82),Btwo(0),0},
+/*004*/ "Stack use array","u",LEAF,0,3,0,{Btwo(52),Btwo(-1),8,1,
+        Btwo(1),Btwo(0),Btwo(0),2,0,Btwo(84),Btwo(0),0},
+/*005*/ "Destination","dest",LEAF,0,4,0,{Btwo(56),Btwo(-1),8,1,
+        Btwo(1),Btwo(0),Btwo(0),3,0,Btwo(86),Btwo(0),0},
+/*006*/ "Test existence (.test)","t",LEAF,0,5,0,{Btwo(60),Btwo(-1),8,
+        1,Btwo(1),Btwo(0),Btwo(0),6,0,Btwo(88),Btwo(0),0},
+/*007*/ "Relative coordinate","rc",NORMAL,0,6,0,{8,9,0},
+/*008*/ "ra/odra/dl/l/dx","x",LEAF,7,0,0,{Btwo(0),Btwo(92),16,1,
+        Btwo(1),Btwo(0),Btwo(0),1,0,Btwo(90),Btwo(0),0},
+/*009*/ "dec/oddec/db/b/dy","y",LEAF,7,1,0,{Btwo(8),Btwo(96),16,1,
+        Btwo(1),Btwo(0),Btwo(0),1,0,Btwo(94),Btwo(0),0},
+/*010*/ "Position tolerance(')","ptol",LEAF,0,7,0,{Btwo(16),Btwo(100),
+        16,1,Btwo(1),Btwo(0),Btwo(0),1,0,Btwo(98),Btwo(0),0},
+/*011*/ "Center Frequency (MHz)","fr",LEAF,0,8,0,{Btwo(24),Btwo(104),
+        16,2,Btwo(1),Btwo(0),Btwo(0),1,0,Btwo(102),Btwo(0),0},
+/*012*/ "Stk","sn",LEAF,0,9,0,{Btwo(64),Btwo(108),8,2,Btwo(1),Btwo(0),
+        Btwo(0),1,0,Btwo(106),Btwo(0),0},
+/*013*/ "Match stack","",EXCLSV,0,10,0,{Btwo(110),Btwo(-1),14,15,0},
+/*014*/ "Don't match stack","dmy",LEAF,13,0,0,{Btwo(-1),Btwo(-1),0,1,
+        Btwo(1),Btwo(0),Btwo(0),0,0,Btwo(0),Btwo(0),0},
+/*015*/ "Match stack","ms",LEAF,13,1,0,{Btwo(72),Btwo(-1),8,1,Btwo(1),
+        Btwo(0),Btwo(0),1,0,Btwo(112),Btwo(0),0},
+/*016*/ "Cmd string to execute","c",LEAF,0,11,0,{Btwo(183),Btwo(116),
+        1,1,Btwo(501),Btwo(0),Btwo(0),4,0,Btwo(114),Btwo(0),0}
+};

@@ -1,0 +1,21 @@
+This version will only work with the gcc compiler.  The SunPro compiler
+will come soon (if it isn't too much of a pain).
+
+There are 4 things which have to be customized for different platforms
+now:
+
+1) In $COMB/bin there are two versions of ldcmb.  To set up for gcc:
+
+	cd $COMB/bin; rm ldcmb; ln ldcmb.gcc ldcmb
+
+2) In $COMB/main there are two versions of include.mk.  For gcc:
+
+	cd $COMB/src/main; rm include.mk; ln include.mk.gcc include.mk
+
+3) In $COMB/main machinedep.h needs to have SUN_OS and SYSTEM_V set to
+1 and all of the others to 0.
+
+4) In $COMB/lib there are three versions of xref.  For Solaris 2.x:
+
+	cd $COMB/lib; rm xref; ln xref.solaris xref
+ 

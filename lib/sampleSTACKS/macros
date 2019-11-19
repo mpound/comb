@@ -1,0 +1,47 @@
+//*****************************************************************************
+//
+// DO NOT DELETE THESE MACROS - they are used in the comb diagnostics
+//  macro "diag" in $COMB/lib/.GMACROS.
+//
+//*****************************************************************************
+
+look - op ortho:;lk 12 -12 -12 12
+cmcm - op ortho:;cm 11 -11 -11 11 23 23 vl:-20,20 ci: a: ir:1.2 \
+	u:"THIS IS A LONG STRING"
+wfaf - e {/bin/rm -rf /tmp/testcomb.fits};\
+	wf ff:"/tmp/testcomb.fits" im:1 o:"THIS IS A COMB TEST" \
+	tel:"A LONG TELESCOPE NAME" ;\
+	af "/tmp/testcomb.fits" im:2
+
+gfgf - pr " * You should see:\n * Gaussian fit from -29.69 to 30.13 Km/s\n";\
+pr " * scan # tpeak(K) err(K) center(Km/s) err  fwhm(Km/s) err  area(KKm/s) chisq nfre\n";\
+pr " *  9776  71.177   0.070     8.365   0.003   5.595  0.006  423.9141     212.9   90\n"; gf -30,30  see:;cave
+
+imsi - im si:[1,2 po:[-5,5,-5,5]];cp 2 a: mlb:"ORIONA Map Subimage"
+
+vcvc - vc bp:[0,-11] ep:[0,11] sp:1 ir:1.5 ci: vl:-40,40 \
+	sc:[-0.5,0,0.5,69,1,69,1.5,69,2,69,2.5,69,3,69,3.5,69,4,69,5,69,\
+	     10,69,15,69,20,69,25,69,30,69,35,69,40,69,45,69,50,69,55,\
+	     69,60,69,65,69,70,69,75,69]
+
+vmvm - vm an:1 ir:1 ci: vl:[-20,20] fwid:.25,480
+
+prvm - pr " * You should see: \n";\
+pr " * Vir Mass     T*DV*DA      Avg Line     Area         Harm mean    Vel Disp\n"; \
+pr " * Scaled       K-km/s-Sr    K-km/s       Steradians   radius 'Arc  Km/s\n";\
+pr " * 18362.7      0.00429748   126.97       3.38464e-05  6.1487       3.12379\n";\
+	cave
+
+//
+// caveat
+//
+cave  - pr " * (Numbers may vary slightly depending on your machine/OS.)\n";
+
+slsl - sl bp:[10,4] ep:[-10,4] lt:0 im:1 fn:"/dev/null" \
+	mlb:"Slice From (10,4) to (-10,4)";\
+	p " * Peak should be about 240. Minimum should be about 80."
+
+wcwc -	op ortho:;rt rc:0,0;wc 11 -11 -11 11 23 23 vl:0,20; cp pl:0_16 a:
+
+//
+//*****************************************************************************

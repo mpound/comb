@@ -1,0 +1,15 @@
+%!
+/ln {setdash setlinewidth} def
+/mt {.24 mul exch .24 mul exch moveto} def
+/rm {.24 mul exch .24 mul exch rmoveto} def
+/sh {show} def
+/rt {rotate} def
+/lt {.24 mul exch .24 mul exch lineto} def
+/st {stroke} def
+/sf {.24 mul exch findfont exch scalefont setfont} def
+initgraphics
+50 3328 mt
+-90 rt
+currentpoint translate
+1 setlinejoin 1 setlinecap /Courier 1 sf
+

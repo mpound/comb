@@ -1,0 +1,102 @@
+This document contains a list of what entree and the parser will accept in
+a '.t' file. It should help in writing a '.t' file for a new command.
+
+The three node types and their forms are:
+
+1) Normal
+	"description" "label";
+	{
+		children
+	}
+
+2) Exclusive
+	"description" "label": exclusive options;
+	{
+		children
+	}
+
+3) Leaf
+	"description" "label":leaf options;
+
+
+EXCLUSIVE OPTIONS   There are two 'exclusive options'. They may apear in
+either order. 
+
+	ex("variable name")
+
+The first is required and not really an option. Parse will set the named
+variable to the child number (0 if the node was not entered or the first	
+child was used.
+
+	fl("variable name")
+
+Parse will set the named variable to 1 if the node was not entered, otherwise
+to 0.
+
+
+LEAF OPTIONS
+	Dummy leaves have no options and appear as follows:
+		"description" "label":;
+
+	Other leaves must have one of the six data types:
+		real		This is actually of type double
+		int
+		scan		A scan number of the form '80a1234'
+		str("length")
+		cmd("length")
+		exp("length")
+
+	Multiple data types are indicated by putting slashes between the types.
+The last type given will be the starting type.  Data type will be returned in 
+a variable with the leaf's variable name (see below) with a 't' postpended.
+
+	The data type may be preceeded by an external designation:
+
+		extern("variable name","description")
+
+The description is for the benefit of the user using ? or ??.  "Variable
+name" will be assigned the value of the leaf variable after the call
+to parse.  To initialize the leaf variable before calling parse, use
+auto("variable name") (see below).
+
+	Real,int,and scan data types may be ranges.  Put 'range' after
+the data type:
+		real range
+		int range
+		scan range
+
+	After data type and range may come a list designation:
+		list("length")
+The leaf variable will be a list, the number of elements filled will be
+returned in a variable with the leaf variable's name with a postpended 'e'.
+
+	Following these may come a flag:
+		fl("variable name")
+A flag variable will be set to 1 if the leaf was not entered and 0 if it was.
+
+	After all of this may come a default type:
+		old("starting value")
+		old
+		set("value")
+		auto("expression")	preset value
+		auto
+		flag
+		toggle("yes")
+		toggle("no")
+		toggle
+Old and toggle must have values if the leaf does not have the 'extern'
+option and must not for 'extern' leaves.
+
+	Finally comes the variable name preceeded by a '-' and followed
+by a ';':
+		- "variable name";
+
+	In c all variable names are pointers but in fortran they are
+variable names directly.  At the beginning of the file must be a call
+to parse.  In c it is:
+		parse("cmnd_.gstr")
+In fortran it should be:
+		parse("gstr")
+
+	Probably the best way to find out what to do with .t files
+is to look at the file for a similar command.

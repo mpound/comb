@@ -1,0 +1,10 @@
+#undef var
+#undef nl
+#undef gs
+#undef vart
+#undef nlt
+#undef act
+#undef gst
+#undef gsf
+#undef nvart
+#undef nvar

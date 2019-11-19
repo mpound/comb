@@ -1,0 +1,15 @@
+v - Compute value for map
+
+in,!0,!1 dp:;v .area1	- Compute value for map of integrated intensity.
+			  This is the default macro for cm, the macro
+			  named "T*dV".
+
+gf,!0,1 dp:; v .fwhm    - Compute a value for map of line width.
+
+This command computes a value and either:
+
+    1) If a contour map is being made puts it where the value routine
+	will find it. In this case the 'v' is embedded in the macro
+	passed to 'cm'.
+
+    2) If no contour map is being made, 'v' prints the value just like 'p'.

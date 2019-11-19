@@ -1,0 +1,401 @@
+This is TeX, Version 3.14159 (Web2C 7.4.5) (format=latex 2005.1.21)  27 FEB 2006 10:50
+**\AtBeginDocument{\RequirePackage{pslatex}} \def\PSLATEXTMP{\futurelet\PSLATEX
+TMP\PSLATEXTMPB} \def\PSLATEXTMPB{\ifx\PSLATEXTMP\nonstopmode\else\input\fi} \P
+SLATEXTMP cookbook.tex
+(./cookbook.tex (/usr/share/texmf/tex/latex/base/latex209.def
+File: latex209.def 1998/05/13 v0.52 Standard LaTeX file
+
+
+          Entering LaTeX 2.09 COMPATIBILITY MODE
+ *************************************************************
+    !!WARNING!!    !!WARNING!!    !!WARNING!!    !!WARNING!!   
+ 
+ This mode attempts to provide an emulation of the LaTeX 2.09
+ author environment so that OLD documents can be successfully
+ processed. It should NOT be used for NEW documents!
+ 
+ New documents should use Standard LaTeX conventions and start
+ with the \documentclass command.
+ 
+ Compatibility mode is UNLIKELY TO WORK with LaTeX 2.09 style
+ files that change any internal macros, especially not with
+ those that change the FONT SELECTION or OUTPUT ROUTINES.
+ 
+ Therefore such style files MUST BE UPDATED to use
+          Current Standard LaTeX: LaTeX2e.
+ If you suspect that you may be using such a style file, which
+ is probably very, very old by now, then you should attempt to
+ get it updated by sending a copy of this error message to the
+ author of that file.
+ *************************************************************
+
+\footheight=\dimen102
+\@maxsep=\dimen103
+\@dblmaxsep=\dimen104
+\@cla=\count79
+\@clb=\count80
+\mscount=\count81
+(/usr/share/texmf/tex/latex/base/tracefnt.sty
+Package: tracefnt 1997/05/29 v3.0j Standard LaTeX package (font tracing)
+\tracingfonts=\count82
+LaTeX Info: Redefining \selectfont on input line 101.
+)
+\symbold=\mathgroup4
+\symsans=\mathgroup5
+\symtypewriter=\mathgroup6
+\symitalic=\mathgroup7
+\symsmallcaps=\mathgroup8
+\symslanted=\mathgroup9
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 293.
+LaTeX Font Info:    Redeclaring math alphabet \mathsf on input line 294.
+LaTeX Font Info:    Redeclaring math alphabet \mathtt on input line 295.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 301.
+LaTeX Info: Redefining \em on input line 311.
+
+(/usr/share/texmf/tex/latex/base/latexsym.sty
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup10
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 47.
+)
+LaTeX Font Info:    Redeclaring math delimiter \lgroup on input line 375.
+LaTeX Font Info:    Redeclaring math delimiter \rgroup on input line 377.
+LaTeX Font Info:    Redeclaring math delimiter \bracevert on input line 379.
+
+(/usr/share/texmf/tex/latex/base/latex209.cfg
+File: latex209.cfg 2001/06/05 v1.0 teTeX customized LaTeX 2.09 compatibility mo
+de setup
+)
+(/usr/share/texmf/tex/latex/tools/rawfonts.sty
+Package: rawfonts 1994/05/08 Low-level LaTeX 2.09 font compatibility
+
+(/usr/share/texmf/tex/latex/tools/somedefs.sty
+Package: somedefs 1994/06/01 v0.03 Toolkit for optional definitions
+)
+LaTeX Font Info:    Try loading font information for U+lasy on input line 44.
+
+(/usr/share/texmf/tex/latex/base/ulasy.fd
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+)))
+(/usr/share/texmf/tex/latex/base/article.cls
+Document Class: article 2004/02/16 v1.4f Standard LaTeX document class
+(/usr/share/texmf/tex/latex/base/size10.clo
+File: size10.clo 2004/02/16 v1.4f Standard LaTeX file (size option)
+)
+\c@part=\count83
+\c@section=\count84
+\c@subsection=\count85
+\c@subsubsection=\count86
+\c@paragraph=\count87
+\c@subparagraph=\count88
+\c@figure=\count89
+\c@table=\count90
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+Compatibility mode: definition of \rm ignored.
+Compatibility mode: definition of \sf ignored.
+Compatibility mode: definition of \tt ignored.
+Compatibility mode: definition of \bf ignored.
+Compatibility mode: definition of \it ignored.
+Compatibility mode: definition of \sl ignored.
+Compatibility mode: definition of \sc ignored.
+LaTeX Info: Redefining \cal on input line 506.
+LaTeX Info: Redefining \mit on input line 507.
+\bibindent=\dimen105
+) (./cookbook.mac) (./cookbook.aux)
+\openout1 = `cookbook.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 101.
+LaTeX Font Info:    ... okay on input line 101.
+(/usr/share/texmf/tex/latex/misc/pslatex.sty
+Package: pslatex 1996/07/24 v1.2 pslatex emulation (DPC)
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 65.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> OT1/ptmcm/m/n on input line 65.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ptmcm/m/n on input line 65.
+LaTeX Font Info:    Redeclaring symbol font `letters' on input line 66.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `normal'
+(Font)                  OML/cmm/m/it --> OML/ptmcm/m/it on input line 66.
+LaTeX Font Info:    Overwriting symbol font `letters' in version `bold'
+(Font)                  OML/cmm/b/it --> OML/ptmcm/m/it on input line 66.
+LaTeX Font Info:    Redeclaring symbol font `symbols' on input line 67.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `normal'
+(Font)                  OMS/cmsy/m/n --> OMS/pzccm/m/n on input line 67.
+LaTeX Font Info:    Overwriting symbol font `symbols' in version `bold'
+(Font)                  OMS/cmsy/b/n --> OMS/pzccm/m/n on input line 67.
+LaTeX Font Info:    Redeclaring symbol font `largesymbols' on input line 68.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `normal'
+(Font)                  OMX/cmex/m/n --> OMX/psycm/m/n on input line 68.
+LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
+(Font)                  OMX/cmex/m/n --> OMX/psycm/m/n on input line 68.
+LaTeX Font Info:    Redeclaring symbol font `bold' on input line 69.
+LaTeX Font Info:    Overwriting symbol font `bold' in version `normal'
+(Font)                  OT1/cmr/bx/n --> OT1/ptm/bx/n on input line 69.
+LaTeX Font Info:    Overwriting symbol font `bold' in version `bold'
+(Font)                  OT1/cmr/bx/n --> OT1/ptm/bx/n on input line 69.
+LaTeX Font Info:    Redeclaring symbol font `italic' on input line 70.
+LaTeX Font Info:    Overwriting symbol font `italic' in version `normal'
+(Font)                  OT1/cmr/m/it --> OT1/ptm/m/it on input line 70.
+LaTeX Font Info:    Overwriting symbol font `italic' in version `bold'
+(Font)                  OT1/cmr/m/it --> OT1/ptm/m/it on input line 70.
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 74.
+LaTeX Font Info:    Redeclaring math alphabet \mathit on input line 75.
+)
+LaTeX Font Info:    Try loading font information for OT1+ptmcm on input line 10
+2.
+
+(/usr/share/texmf/tex/latex/psnfss/ot1ptmcm.fd
+File: ot1ptmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OT1/ptmcm.
+)
+LaTeX Font Info:    Try loading font information for OML+ptmcm on input line 10
+2.
+
+(/usr/share/texmf/tex/latex/psnfss/omlptmcm.fd
+File: omlptmcm.fd 2000/01/03 Fontinst v1.801 font definitions for OML/ptmcm.
+)
+LaTeX Font Info:    Try loading font information for OMS+pzccm on input line 10
+2.
+
+(/usr/share/texmf/tex/latex/psnfss/omspzccm.fd
+File: omspzccm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/pzccm.
+)
+LaTeX Font Info:    Try loading font information for OMX+psycm on input line 10
+2.
+
+(/usr/share/texmf/tex/latex/psnfss/omxpsycm.fd
+File: omxpsycm.fd 2000/01/03 Fontinst v1.801 font definitions for OMX/psycm.
+)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 102.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 102.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 102.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 103.
+ (./cookbook.toc
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 2.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 2.
+LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <7.4> not available
+(Font)              size <7> substituted on input line 2.
+LaTeX Font Warning: Font shape `OT1/cmtt/m/n' in size <7.4> not available
+(Font)              size <7> substituted on input line 2.
+LaTeX Font Warning: Font shape `OT1/cmr/m/sc' in size <7.4> not available
+(Font)              size <7> substituted on input line 2.
+LaTeX Font Warning: Font shape `OT1/cmr/m/sl' in size <7.4> not available
+(Font)              size <7> substituted on input line 2.
+LaTeX Font Warning: Font shape `U/lasy/m/n' in size <7.4> not available
+(Font)              size <7> substituted on input line 2.
+ [1
+
+])
+\tf@toc=\write3
+\openout3 = `cookbook.toc'.
+
+ [2]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 112.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 112.
+
+[3]
+Overfull \vbox (0.94pt too high) detected at line 198
+ []
+
+
+Overfull \vbox (0.11491pt too high) detected at line 222
+ []
+
+
+Overfull \vbox (0.11491pt too high) detected at line 229
+ []
+
+
+Overfull \vbox (0.1399pt too high) detected at line 242
+ []
+
+
+Overfull \vbox (0.1399pt too high) detected at line 243
+ []
+
+[4]
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 254.
+
+ [5] [6] [7]
+Overfull \hbox (6.85318pt too wide) in paragraph at lines 488--488
+\OT1/ptm/m/n/10 present work-ing di-rec-tory for the spec-tra. Since
+ []
+
+
+Overfull \hbox (0.76324pt too wide) in paragraph at lines 496--496
+\OT1/ptm/m/n/10 there are no spec-tra in the di-rec-tory,so the data
+ []
+
+
+Overfull \vbox (3.18011pt too high) detected at line 498
+ []
+
+[8]
+Overfull \hbox (0.92284pt too wide) in paragraph at lines 499--499
+\OT1/ptm/m/n/10 Store it in the next avail-able stack, in this case,
+ []
+
+
+Overfull \hbox (5.69272pt too wide) in paragraph at lines 506--506
+\OT1/ptm/m/n/10 Repeat the FITS file-reading op-er-a-tion 10 more
+ []
+
+
+Overfull \hbox (7.13242pt too wide) in paragraph at lines 506--506
+\OT1/ptm/m/n/10 data. Note the use of ``;'' to con-cate-nate \ss COMB
+ []
+
+[9]
+Overfull \vbox (2.069pt too high) detected at line 561
+ []
+
+
+Overfull \vbox (0.12456pt too high) detected at line 590
+ []
+
+[10]
+Overfull \vbox (0.12456pt too high) detected at line 634
+ []
+
+
+Overfull \vbox (2.069pt too high) detected at line 663
+ []
+
+
+Overfull \vbox (1.37456pt too high) detected at line 669
+ []
+
+[11]
+Overfull \vbox (2.069pt too high) detected at line 681
+ []
+
+LaTeX Font Info:    Try loading font information for OMS+pcr on input line 729.
+
+(/usr/share/texmf/tex/latex/psnfss/omspcr.fd
+File: omspcr.fd 
+)
+LaTeX Font Info:    Font shape `OMS/pcr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 729.
+ [12]
+Overfull \vbox (0.98567pt too high) detected at line 749
+ []
+
+
+Overfull \hbox (3.24466pt too wide) in paragraph at lines 772--772
+\OT1/ptm/m/n/10 Transfer all stacks from \OT1/ptm/m/sl/10 SES-TRe-duced \OT1/pt
+m/m/n/10 to \OT1/ptm/m/sl/10 SEST.xf\OT1/ptm/m/n/10 , com-bin-ing stacks
+ []
+
+[13] [14]
+Overfull \vbox (1.36952pt too high) detected at line 909
+ []
+
+
+Overfull \vbox (0.12456pt too high) detected at line 920
+ []
+
+[15]
+Overfull \vbox (3.18011pt too high) detected at line 960
+ []
+
+
+Overfull \vbox (2.069pt too high) detected at line 978
+ []
+
+[16]
+Overfull \vbox (1.94443pt too high) detected at line 1067
+ []
+
+[17] [18]
+Overfull \vbox (3.17012pt too high) detected at line 1165
+ []
+
+
+Overfull \hbox (0.78294pt too wide) in paragraph at lines 1173--1173
+\OT1/ptm/m/n/10 the plot. The la-bels are stored in global strings
+ []
+
+
+Overfull \vbox (2.42949pt too high) detected at line 1174
+ []
+
+
+Overfull \vbox (3.18011pt too high) detected at line 1183
+ []
+
+[19] [20]
+Overfull \vbox (0.11491pt too high) detected at line 1291
+ []
+
+
+Overfull \vbox (0.1399pt too high) detected at line 1306
+ []
+
+[21] [22] [23] [24] [25] [26] [27] [28] [29] [30] [31]
+Overfull \hbox (48.08589pt too wide) in paragraph at lines 1432--1437
+[]\ss COMB \OT1/ptm/m/n/10 uses an ed-i-tor for edit-ting macro files and com-m
+and lines stored in \OT1/pcr/m/n/10 ksh\OT1/ptm/m/n/10 -like his-tory file (\OT
+1/ptm/m/sl/10 $HOME/.combhistory\OT1/ptm/m/n/10 ).
+ []
+
+[32] [33]
+Overfull \hbox (43.42653pt too wide) in paragraph at lines 1513--1521
+\OT1/ptm/m/n/10 Facilities for view-ing FITS im-ages on a Sun work-sta-tion run
+-ning Sun-View are lo-cated in the file \OT1/ptm/m/sl/10 /usr/comb/src/util/FIT
+SView\OT1/ptm/m/n/10 .
+ []
+
+[34]
+Overfull \vbox (3.05275pt too high) has occurred while \output is active []
+
+
+[35] [36]
+Underfull \hbox (badness 10000) in paragraph at lines 1618--1624
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1625--1632
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1633--1640
+
+ []
+
+[37] (./cookbook.aux)
+LaTeX Font Warning: Size substitutions with differences
+(Font)              up to 0.4pt have occurred.
+ ) 
+Here is how much of TeX's memory you used:
+ 948 strings out of 95756
+ 10857 string characters out of 1190795
+ 53870 words of memory out of 1000001
+ 3915 multiletter control sequences out of 10000+50000
+ 53964 words of font info for 161 fonts, out of 500000 for 1000
+ 26 hyphenation exceptions out of 1000
+ 25i,6n,22p,421b,277s stack positions out of 3000i,1500n,5000p,200000b,15000s
+
+Output written on cookbook.dvi (37 pages, 100780 bytes).

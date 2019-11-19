@@ -1,0 +1,12 @@
+e - execute a shell command				Matthew Miller
+
+EXAMPLES:
+
+e "echo hello"			echo "hello"
+e "sh"				escape to the shell; ctl-d will return
+				to comb
+
+DESCRIPTION:
+
+The argument of e is sent to the shell and executed.  All shell conventions
+apply.

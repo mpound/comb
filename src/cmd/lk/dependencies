@@ -1,0 +1,4 @@
+lk.o: lk.c ../../main/C.h ../../main/History.h ../../coordsys/C.h \
+ ../../stacks/C.h ../../stacks/include.h ../../graphics/C.h lk.dc.h \
+ lk.ec.h
+lkt_.o: lkt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

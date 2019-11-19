@@ -1,0 +1,18 @@
+#!/bin/sh
+# get rid of the damn bells
+cd ${COMB}/src
+
+for i in coordsys error graphics image main misc misc/libut misc/libedit\
+	parse parse/entree scan2 scan stacks user fits/fitshd
+
+do
+	echo "$i	\c"
+ (cd $i; cat makefile | sed 's/echo //' > junk;mv junk makefile;chmod 644 makefile)
+done
+
+cd cmd
+for i in *
+do
+	echo "$i	\c"
+ (cd $i; cat makefile | sed 's/echo //' > junk;mv junk makefile;chmod 644 makefile)
+done

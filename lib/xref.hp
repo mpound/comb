@@ -1,0 +1,6 @@
+(cd ../obj;nm -rpo *.o) |\
+awk 'NF > 3 && $4 !~ /\$/  {printf "%-20s %1s %-10s\n",$4,$3,$1}' |\
+#awk ' BEGIN {FS = ":"}
+#	{print $1}'|\
+#sed 's/^_//' |\
+sort >xref.out

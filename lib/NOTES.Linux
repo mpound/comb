@@ -1,0 +1,13 @@
+Be sure to set the BYTEREVERSED variable in machinedep.h.  The only '1's in
+machinedep.h should be BYTEREVERSED and LINUX.
+
+If you want to use $L/sampleSTACKS, first you must do
+
+	up ".../comb/lib/sampleSTACKS" swap:
+
+to do the bytereversing.  Since there is no fix for the bytereversed
+.GCOORDS file it would best be emptied.
+
+I have had a lot of trouble with tar extracting files with bad times.
+This caused the build to fail.  If any test files have future dates,
+rm them.  If any .c files have future or strange dates, touch them.

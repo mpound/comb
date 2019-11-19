@@ -1,0 +1,7 @@
+redirect.o: redirect.c C.h ../../main/C.h ../../main/History.h \
+ ../../parse/P.tree.h ../../parse/../main/machinedep.h ../../parse/C.h \
+ ../../parse/P.struct.h ../../parse/P.constant.h ../../error/C.h \
+ rout.dc.h rout.ec.h rout.uc.h rin.dc.h rin.ec.h rin.uc.h
+routt_.o: routt_.c ../../parse/P.tree.h \
+ ../../parse/../main/machinedep.h
+rint_.o: rint_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

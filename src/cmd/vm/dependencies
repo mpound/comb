@@ -1,0 +1,4 @@
+vm.o: vm.c ../../stacks/C.h ../../coordsys/C.h ../../stacks/include.h \
+ ../../main/dragon.h ../../main/C.h ../../main/History.h \
+ ../../image/C.h ../../misc/C.h ../../error/C.h vm.dc.h vm.ec.h
+vmt_.o: vmt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

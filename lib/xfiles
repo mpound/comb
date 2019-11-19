@@ -1,0 +1,20 @@
+.o
+comb/bin/cmbt
+comb/bin/comb
+comb/src/scan/sdd.c
+comb/src/scan/pdfl.c
+comb/src/scan/sddnew.c
+comb/src/scan/pdflnew.c
+comb/src/scan/ieeeflt.c
+comb/src/scan/ieee.h
+comb/src/scan/.pdfl.c.26Apr99
+comb/src/scan/.sdd.c.26Apr99
+comb/src/scan/.scan.c.26Apr99
+comb/src/scan/.ieeeflt.c.26Apr99
+comb/src/scan/.include.h.26Apr99
+comb/src/scan/obsmode.c
+comb/src/graphics/.show.c.12Mar98
+comb/src/graphics/.show.c.12Mar98 40K
+comb/src/graphics/.lj.driver.c.12Mar98 9K
+comb/src/graphics/.tek.driver.c.12Mar98 12K
+comb/src/graphics/.im.driver.c.12Mar98 13K

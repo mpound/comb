@@ -1,0 +1,28 @@
+is - Interpolate a spectrum for a given position in relative coordinates
+
+
+EXAMPLES:
+
+is 5 2		Make an interpolated spectrum at rel coordinates (5,2)using the
+		previous interpolation radius and interpolation type.
+
+is 5,2,1.5 ci:fwid:.25 t:
+		Make an interpolated spectrum as above with an interpolation
+		radius of 1.5'Arc using cone interpolation.  Use stacks
+		with a filter width of .25MHz.  Set the variable .test to
+		zero instead of forcing an error if no stacks are found
+		within the interpolation radius, else .test = 1.
+
+DESCRIPTION:
+
+Is makes an interpolated spectrum at a given point (in relative coordinates)
+much as cm and vc do for points in maps.  The resulting spectrum is put in
+stacks 1 & 2.  The default interpolation type is cone interpolation and the
+default radius is 0.8'Arc.  If the default filter width of 0 is left, the
+filter width of the first stack which is found will be used, otherwise
+the value which is given will be used.
+
+The position in the header of the stack will have the center of the current
+relative coordinate system if the location is within 10 deg of the center,
+otherwise the stack will have its center position set to the true position
+and the offsets set to 0.

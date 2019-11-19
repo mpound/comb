@@ -1,0 +1,36 @@
+p - print a value					Matthew Miller
+
+
+EXAMPLES:
+p 57				print 57
+p log(3|27)			print log base 3 of 27
+p $3				print the value of string variable 3
+p .ndat				print the current scan number
+p #1=2				assign the value 2 to global numeric
+				variable 1 and print it
+p $5="hello" dp:		assign the value "hello" to string
+				variable 5 but don't print it. 
+				Same as c $5="hello".
+p .numst nl:;p .dl nl:;p .db	print the stack number of the stack in stack
+				1 followed by the l and b offsets.
+p #=#+1 dp:			increment global numeric variable 0. 
+				Same as c #=#+1.
+p .rms1=.25			change the value of rms in the stack 1
+				header to 0.25
+p .stak2(68)			print the value of channel 68 of stack2.
+p .stak1(68)= 10		set channel 68 of stack1 to 10 for a test.
+
+DESCRIPTION:
+P is used to evaluate an expression and print the result.  Often p is
+used for the side effect of assigning a new value to a global or header
+variable during evaluation.  In this case the dp: flag can be used to
+suppress printing. 
+
+The 'nl' flag will make p print two spaces instead of a line feed at the end.
+
+The dp: flag suppresses the printing; this feature is superseded by the
+command "c".
+
+Note: INTEGER data types are just special cases of REALs.
+
+SEE ALSO: "c ?!" , "ph ?!"

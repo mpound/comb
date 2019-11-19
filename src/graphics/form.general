@@ -1,0 +1,79 @@
+full plot
+	# graph window square?
+	no
+
+	# number of extra windows
+	0
+
+	# number of places
+	4
+
+full square plot
+	# graph window square?
+	yes
+
+	# number of extra windows
+	0
+
+	# number of places
+	4
+
+small plot
+	# graph window square?
+	no
+
+	# number of extra windows
+	0
+
+	# number of places
+	1
+
+small square plot
+	# graph window square?
+	yes
+
+	# number of extra windows
+	0
+
+	# number of places
+	1
+
+valid format
+	# graph window square?
+	yes
+
+	# number of auxiliary windows
+	2
+
+	# x scaled?	y scaled?	square?
+# window 2
+	yes		yes		no
+# window 3
+	yes		yes		yes
+
+	# number of places
+	3
+
+comb
+	# graph window square ?
+	no
+
+	# number of auxiliary windows
+	1
+
+	# x scaled?	y scaled?	square?
+# window 2 for use array
+	yes		no		no
+
+	# number of places
+	30
+
+squished
+        # special test by mwp for boxes with coincident edges
+	# graph window square ?
+	no
+	# number of extra windows
+	0
+
+	# number of places
+	0

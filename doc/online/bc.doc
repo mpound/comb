@@ -1,0 +1,38 @@
+bc - designate bad hardware channels for suppression by
+	subsequent use of get. El those chans in stack 1.	RWW
+
+
+EXAMPLES:
+bc 241			Declare chan 241 bad, assuming plotting in channels.
+bc cl:			Clear the bad channel storage.
+bc 5_6,cl:		Clear the bad chan storage, then set channels 5 and 6
+			bad.  This assumes that channels are the current plot
+			units. If the current horizontal plot units are
+			velocity, the channels between 5 and 6 km/s will be
+			declared bad.
+cr;bc x(0)		Read the cursor once and declare a single bad chan.
+cr,2;bc x(o)_x(1)	Read the cursor twice and set the channels between the
+			two positions bad.
+cr 2;bc x(0);bc x(1)	Read the cursor twice and set the two channels bad.
+
+DESCRIPTION:
+
+Bc stores a pair of hardware chan numbers (1 to 768) which get will use as
+a range of chans to be replaced when a backend including those chans is
+specified. If the range is not at either edge of the backend, the chans
+will be replaced by the average of the chan just above the range and
+the chan just below the range. If the range extends to either edge of the
+backend, the one adjacent chan inside the backend will be used as the
+replacement value.
+
+Get automatically removes THE bad chan in the expander with out having to use
+bc.
+
+The bad chans are specified in current plot units. The cursor can be used
+by using cr and then x(0), etc.
+
+There is storage for 4 sets of bad chans. If the cl: flag is given, bc
+clears the old bad chans before storing the new (if any). Otherwise the
+new ones are added to the end of the list if there is room.
+
+Eliminate ("el") is called by bc to fix the current stack 1.

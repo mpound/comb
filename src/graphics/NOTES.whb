@@ -1,0 +1,33 @@
+Mar 23 (Mon) 1987
+To Add a Hardcopy Device:
+
+1) Write a Driver
+Info here on necessary routines, etc.
+
+2) Write a forms file
+Your best bet is to copy & scale someone else's.
+
+3) Add it to the Device Lists and Makefile
+Add a line to d.names:
+	"new_driver",new_driver,
+Add a line to d.routines
+	new_driver(),
+Note that both new lines MUST BE AT THE SAME PLACE, i.e, they
+must have the same line number.
+Add new_driver.o to the OBJECT list in Makefile, and add to or create any other
+dependancy lines if necessary.
+
+4) Make the graphics object files
+Run "make" in $COMB/src/cmd/graphics
+
+5) Add it to the Hardcopy command
+Add a line to ../cmd/hc/hc.t:
+	"New Driver" "nd":;
+and run "make" in $COMB/src/cmd/hc
+
+6) Make a test version of Comb and try it out
+Run the command "ldcmb", which makes cmbt.  Run "cmbt" to test your driver.
+If there are problems, chances are that you can skip steps 3 & 5 above.
+
+If your device is a terminal, i.e. the output goes to a screen rather than
+a peice of paper, change step 5 from "hc" to "pl".

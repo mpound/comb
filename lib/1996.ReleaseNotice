@@ -1,0 +1,94 @@
+Dear [Potential] Comb User:
+
+The official 1996.0 release of comb, the Bell Labs spectral line reduction
+package, is now available for public use.  You MUST have an ANSI C compiler
+(gcc will work) to install comb 1996.0. There are 3 ways to get the compressed
+(gzip) UNIX tar file of comb 1996.0:
+
+1) via the Comb Page on the World Wide Web
+   http://astro.berkeley.edu/pound/comb.html
+   
+   click on "latest release" to grab the source code.
+   click on "manifest file" to grab the file list.
+
+2) anonymous ftp (Note the FTP site has changed. See below)
+
+3) we can send you a tar tape.
+
+ Use the -o option to tar when de-archiving the comb tar file. This prevents 
+ owner conflicts in some O/S's.
+
+***********************************************************************
+* NOTE: If you have installed a beta version of comb 1996.0 (previous *
+* to Sept 10, 1996), then you don't have the official version.        *
+***********************************************************************
+
+Comb 1996.0 has been install successfully on the following machines:
+
+	   type                   O/S
+	Sparcstation (1-Ultra2) SunOS 4.x, Solaris 2.x
+	Sun 4             	SunOS 4.x, Solaris 2.x
+	HP 300                  HP-UX
+	HP 700                  HP-UX 9.0 (System V)
+	PC 386/87 or better     Linux
+
+and should also work on these:
+
+	Sun 3             	SunOS 4.x, Solaris 2.x
+	IBM RS6000              AIX       (System V)
+	DECstation 5000         Risc Ultrix
+	VAX 11/780              BSD
+
+With HISTORY turned off, it may work on
+	SGI 			IRIX 5.2
+
+If you have other questions, or wished to be removed from this
+mailing list, contact either one of us.
+
+		Sincerely,
+
+		Robert W. Wilson
+		Center for Astrophysics
+		rwilson@cfawilson.harvard.ecu
+		(617) 496-7744
+
+		Marc W. Pound
+                Univ. of CA, Berkeley
+                Astronomy Dept.
+                pound@teddi.berkeley.edu
+		(510) 642-8285
+
+================================================================
+To get comb in compressed UNIX tar format via ftp:
+ftp to creek3.berkeley.edu, login as anonymous. cd to pub/comb.
+set type to binary. mget comb.*
+
+i.e.:
+
+yourmachine% ftp creek3.berkeley.edu
+Connected to creek3.berkeley.edu.
+220 creek3 FTP server (UNIX(r) System V Release 4.0) ready.
+Name (creek3.berkeley.edu:you): anonymous
+331 Guest login ok, send ident as password.
+Password: <your email address here>
+230 Guest login ok, access restrictions apply
+ftp> cd pub/comb
+250 CWD command successful.
+ftp>binary
+200 Type set to I.
+ftp> dir
+200 PORT command successful.
+150 ASCII data connection for /bin/ls (128.32.92.49,60104) (0 bytes).
+total 3006
+-rw-r--r--   1 388      other        383 Sep 10 19:44 README
+-rw-r--r--   1 388      other       5975 Sep 11 19:43 comb.1996.0.MANIFEST.gz
+-rw-r--r--   1 388      other    1517382 Sep 11 19:43 comb.1996.0.tar.gz
+226 ASCII Transfer complete.
+227 bytes received in 0.89 seconds (0.25 Kbytes/s)
+ftp> mget comb.*
+ .
+ .
+ .
+ftp> bye
+221 Goodbye.
+yourmachine%

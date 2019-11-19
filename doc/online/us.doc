@@ -1,0 +1,45 @@
+us - Make changes in the use array				RWW
+
+
+EXAMPLES:
+us			The use array is set for all chans.
+us 40_50		If the current plot is in chans, the use array will
+			be cleared for chans 40 to 50. If the plot is in
+			velocity, channels in the range 40 to 50 km/s will
+			be cleared.
+cr,2;us x(0)_x(1) ref:	The cursor's will be read twice to find the range
+			of chans to be cleared. A similar range will be
+			cleared around the reference chan
+us st:			Store the use array so that future gt's and rt's.
+			will use it.
+us 40_50 rt:s:		Retrieve the stored use array and then set chans 
+			40 to 50(if plotting chans).
+
+DESCRIPTION:
+The normal action of use is to reset 'r' or set 's' a range of channels
+in the use array. The horizontal range to be acted on is expressed in
+the current horizontal plot units (channels, velocity, or frequency) It
+may also be given using the cursor.
+
+Additional functions retrieve 'rt' the stored use array and/or
+compliment 'co' the use array before the 'r' or 's' action is
+considered. After the 'r' or 's' action, the 'ref' flag causes freq
+switched data to have that function repeated after being shifted by ref
+- sig channels. The final action which is possible is to store the
+resulting use array for later use. The stored use array can be
+retrieved either when specifically requested or when new data is
+obtained by get or retrieve (but see retrieve for the stack use
+option).  Any combination of the above actions is possible.
+
+If the range of horizontal values is not given, there are three possible
+results:
+	1) If the 'r' or 's' flag is given, the use array will be reset or set
+	for all chans in stack1.
+	2) As a special case which violates one's expectation of the input
+	tree, us with no arguments will set all chans of the use array.
+	3) If 'r' and 's' are not given, but other function(s) are, only the
+	specified functions will be performed.
+
+
+'uscr', 'uscm', and 'usst' are macros to clear or set the use array with 
+the cursor.  They reside in .GMACROS (dm g:).

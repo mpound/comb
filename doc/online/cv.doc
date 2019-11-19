@@ -1,0 +1,37 @@
+cv - Convolve the data in stack 1 with a filter function in stack 3
+	putting the result in stack 1.					RWW
+
+EXAMPLES:
+rt 9;st 3;rt 10;cv	Convolve stack 10 with stack 9.
+
+rt 10;c .stak(1)=1; c .numpt=1;c .expch=1;st 3;rt 10;cv
+			Set up a null filter in stack 3 and apply it (with
+			no change in stack 10).
+
+rt 10;c .stak(1)=-1;c .stak(2)=1;c .numpt=2;c .expch=1.5;st 3;rt 10;cv
+			Set up a first derivative filter and apply it.
+			Note that expch1 will change.  The change in
+			expch1 and the spectrum would be different by
+			about 1 if .expch3 were set to 1.501.
+
+rt 10;c .stak(1)=.25;c .stak(2)=.5;c .stak(3)=.25;c .numpt=3;c .expch=2
+st 3;rt 10;cv		Set up a Hanning smoothing function and apply it.
+			There will be no change in .expch1.
+
+DESCRIPTION:
+Cv does a convolution of stack 1 with stack 3 and replaces stack 1 with
+the result.  Although the convolution is symmetric, this function is
+set up to apply a filter in stack 3 to data in stack 1.  Each channel
+in stack 1 is replaced by:
+
+	sum [.stak1(ch - i) * stak3(int(expch3 + 0.499999) + i)]
+	 i
+
+where i is limited to values with valid channels in both stacks.  If
+the center channel of stack 3 (expch3) is not an integer, then expch1
+is adjusted to reflect the fractional channel shift in the spectrum
+assuming that expch3 is set to the 'center' of the convolving
+function.  .numpt3 must be set to the number of points in the
+convolving function.  If you wish to preserve the amplitude of the
+spectrum in stack 1, you must normalize the function in stack 3
+correctly.

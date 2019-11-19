@@ -1,0 +1,15 @@
+S.routines.o: S.routines.c S.struct.h T.struct.h node_type \
+ S.constant.h T.decl.h
+T.routines.o: T.routines.c T.struct.h node_type C.h ../error/C.h \
+ ../main/machinedep.h T.decl.h
+data.o: data.c ../error/C.h C.h ../coordsys/C.h include.h ../main/C.h \
+ ../main/History.h ../main/machinedep.h ../main/dragon.h
+value.o: value.c C.h ../coordsys/C.h include.h ../main/C.h \
+ ../main/History.h ../main/dragon.h ../error/C.h
+default.o: default.c ../stacks/C.h ../coordsys/C.h include.h
+errors.o: errors.c ../coordsys/C.h ../stacks/C.h include.h
+stk.global.o: stk.global.c ../stacks/C.h ../coordsys/C.h include.h
+interp.o: interp.c C.h ../coordsys/C.h ../misc/C.h include.h
+search.o: search.c S.constant.h S.struct.h T.struct.h node_type C.h \
+ ../coordsys/C.h ../main/dragon.h ../main/C.h ../main/History.h \
+ include.h ../error/C.h ../misc/C.h

@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# Script to make tar file of comb
+# When de-archived, files will be written to comb/..
+#  RWW - Wed Aug 21 07:53:21 PDT 1996
+#
+if [ $# -ne 1 ]
+then
+	echo Usage: tarcomb outfile
+	exit 1
+fi
+(cd $COMB
+PATHNAME=`/bin/pwd`
+COMBNAME=`basename $PATHNAME`
+cd ..
+tar cvFFfXh - $COMB/lib/xfiles $COMBNAME) > $1
+

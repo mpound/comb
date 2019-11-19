@@ -1,0 +1,1640 @@
+% this version is hacked up by mwp. I stole the AIPS cookbook LaTeX macros. 
+%
+%             Using the Cookbook Macro Package
+% A task sample inputs section: (see p 6 bottom of AIPS Cookbook for example)
+%
+%      Form:  <start-of-paragraph-text:>
+%             \disp..{tt-text \CR}{explanation-text}
+%             \pd
+%
+%      or:    <start-of-paragraph-text:>
+%             \disp..{tt-text \CR}{explanation-text}
+%             \dispe{continue-the-paragraph-text}
+%
+%      (where \pd is the same as \parskip\parsdef)
+%
+%      useful macro: \qs   forces a full-size space in text
+%
+%      basic disp.. macros:
+%        \dispt     1 expl. line,       prompt ->,   normal expl size
+%        \disptt    more than 1 expl. line,  prompt ->,   normal expl size
+%        \dispf     1 expl. line,       prompt ->,   normal expl size on next
+%                                                    line (commands are long)
+%        \displ     1 expl. line,       prompt ->,   small (horiz.) expl size
+%        \displl    m.t. 1 expl. line,  prompt ->,   small (horiz.) expl size
+%        \dispx     1 expl. line,       no prompt,   normal expl size
+%        \dispxx    m.t. 1 expl. line,  no prompt,   normal expl size
+%        \displx    1 expl. line,       no prompt,   small (horiz.) expl size
+%        \displxx   m.t. 1 expl. line,  no prompt,   small (horiz.) expl size
+%
+%	 \dispz{XX} gives  
+%		-> XX    
+%
+%	 \disptt{XX}{explanation} gives 
+%		-> XX      explanation explanation explanation
+%			   explanation continued
+%	 \displ{XX}{explanation} gives 
+%					explanation explanation
+%		-> XX                   explanation continued 
+%
+%	 \displl{XX}{explanation} gives 
+%		-> XX                   explanation explantaion
+%					explanation continued
+%
+%	 \dispf{XX; YY; XX; ZZ; ASASDALalkaLAjksd}{explanation} gives
+%		->XX;YY; XX; ZZ; ASASDALalkaLAjksd
+%			   explanation explanation explanation 
+% Odds and ends:
+%        \ust           as in $1^{\ust}$
+%        \und           as in $2^{\und}$
+%        \urd           as in $3^{\urd}$
+%        \uth           as in $4^{\uth}$
+%        \qquad         2 quads horizontal space
+%        \rquad         4 quads horizontal space
+%        \dol           a \tt dollar sign
+%        \eg            puts in {\it e.g.,}
+%        \Eg            puts in {\it E.g.,}
+%        \ie            puts in {\it i.e.,}
+%        \Ie            puts in {\it I.e.,}
+%        \botpage       puts in a \vskip ...\eject
+%        \boxit{t}{s}{text}   boxes {text} with lines of width {t}
+%                             and space {s} : \boxit{1pt}{5pt}{damn!}
+%
+% 
+%5. Fonts:
+%       \tt     program names
+%       \us     things the user types in verbatim
+%       \it     things user substitutes something for
+%	\em     emphasize -- is currently same font as \it
+%	\sl     UNIX system file names.
+\def\eg{{\it e.g.,\ }}
+\def\Eg{{\it E.g.,\ }}
+\def\ie{{\it i.e.,\ }}
+\def\Ie{{\it I.e.,\ }}
+% some more definitions. These work in math mode and regular mode.
+\def\kms{\ifmmode{\,km\,s^{-1}}  				    % km/s
+    \else{\thinspace km\thinspace s$^{-1}$}\fi}
+\def\msun{\ifmmode{\rm M_\odot}\else{${\rm M_\odot}$}\fi}	    % solar mass
+
+\def\deg{\ifmmode{^\circ} 		% degree symbol
+    \else{$^\circ$}\fi}
+\def\arcm{\ifmmode{^\prime}   		% arcminute
+    \else{$^\prime$}\fi}
+\def\arcs{\ifmmode{^{\prime\prime}} 	% arcsecond
+    \else{$^{\prime\prime}$}\fi}
+
+\documentstyle{article}
+\pagestyle{headings}
+\input cookbook.mac
+\oddsidemargin 0.0pt
+\textwidth 6.25in
+\textheight 8.25in
+\font\twlsc  = cmcsc10 scaled\magstep1  % small caps
+\font\ss = cmsy8 scaled\magstep1
+\def\COMB{{\ss COMB\/}\ } 		% COMB in special font
+\def\C{{\ss COMB\/}} 			% COMB in special font for 's and stuff
+
+\title{The COMB Cookbook}
+\author{Marc W. Pound, John Bally and Robert W. Wilson}
+\date{August 22, 1990 --- for August 1990 version of COMB}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+\section{Introduction}
+\label{sec-intro}% label sections so they can be referred to without having
+%                  to figure out the section number. 
+%                  e.g., "In Section \ref{sec-intro}, blah blah blah..."
+
+\COMB is a powerful analysis package for single-dish radio astronomical
+spectral line data reduction.  It can be installed on any computer
+using the UNIX\footnote{UNIX is a registered trademark of AT\&T.}  
+operating system (see Appendix A).  At present, it is most 
+frequently used on SUN workstations, although it has been installed on 
+VAX and other computers, including 386 machines running UNIX.
+The program was written mostly by R. W. Wilson 
+at AT\&T Bell Laboratories in C and FORTRAN.
+
+\subsection{The COMB Philosophy}
+\COMB (pronounced c\"{a}m) has been designed to make spectral 
+line data reduction easy and
+{\em automatic}. As the Bell Labs database has grown (it now exceeds 700,000
+spectra), this automatic feature has been indispensible. \C's 61 simple
+commands can be concatenated using semi-colons (a l\'a UNIX), nested in 
+do-loops, or made into saveable macros (which themselves can be nested).
+Even for an inexperienced user, the process of reducing hundreds of spectra
+and making a contour map (or FITS image) can be reduced to a task requiring 
+less than ten minutes.
+
+\subsection{About the Cookbook}
+This cookbook will acquaint neophyte users of \COMB with the
+basic tools necessary to reduce their data painlessly. It is intended
+to supplement \C's on-line documentation by providing simple recipes
+for the basic reduction operations. Section \ref{sec-start} provides 
+information about getting started. Section \ref{sec-data} introduces data 
+format. 
+Section \ref{sec-com} describes commands syntax and arguments. Section 
+\ref{sec-gdic} tells 
+how to get external data, such as FITS, into \C. Section \ref{sec-man}
+deals with simple manipulation of spectra 
+such as baseline removal, plotting and storing. Section \ref{sec-map}
+is all about making maps. Section 
+\ref{sec-mac} describes how to set-up and use macros. 
+Throughout this cookbook, {\us input to
+be typed by the user appears in this font (a carriage return is implied
+at the end of each user input)}, {\tt this font will be used for command 
+names, command arguments and \COMB output messages,}, and {\sl this font
+is used for UNIX file names.} We will use \dol\ to symbolize the UNIX 
+operating system prompt and the {\tt ->} symbol is your friendly \COMB prompt.
+
+This cookbook was written using the \LaTeX\ Document Preparation System developed
+by Leslie Lamport. A copy of the cookbook \LaTeX\ document is in the file 
+{\sl /usr/comb/doc/cookbook.tex}.
+
+\section{Getting Started}
+\label{sec-start}
+
+\COMB can be run from any type of terminal. It is, of course, most useful 
+on one with some sort of graphics capability.
+In order to have \COMB plot graphics on a CRT, you need a graphics terminal
+or a window which emulates a graphics terminal. The graphics terminals which
+are supported are hp2648, hp2623, tek4010, and vt100 (with retrographics). 
+(\COMB has a very nice interface to tek4112, AT\&T 5620 and 
+AT\&T 630 terminals, but they aren't common.) It will be most convenient if 
+your environment variable TERM
+is set to one of the above if you are using one of those terminals. The most
+common way to get \COMB graphics is with a terminal emulator. With a PC,
+PCPLOT\footnote{PCPLOT is a registered trademark of IBM.} 
+minimally emulates the vt100/tek4014 combination. With a Macintosh,
+Versaterm is a very nice emulator of vt100/tek4014. 
+In either of these cases have TERM=vt100 in your environment. With a Sun 
+workstation, the best emulator
+is package is {\tt gterm} from NOAO/IRAF. With TERM=SUN or TERM=sun, \COMB
+expects a tek4014 emulator such as {\tt gterm} in the window.
+After you have installed \COMB (see appendix A), sit down at your terminal 
+and type {\us comb}.  If you have {\tt gterm}, do this in the {\tt gterm} window. 
+\smallskip
+\dispx{\dol \ {\us comb}}{Start \COMB}
+\combmsg{Welcome to comb}
+\medskip
+\dispz{}
+\smallskip
+
+Most \COMB commands consist of
+two-character names chosen to be suggestive of their function.
+There are also a few single character commands.
+The command {\tt lc} (list commands) gets you a summary list.
+Appending the string {\us\ ?!} to any command name, will give
+the on-line documentation about that command. The string {\us\ ??} appended to the
+command will give the input arguments for that command.
+\smallskip
+\disptt{lc}{Produce a listing of \COMB commands along with a one-line 
+	    description.}
+\disptt{pl ?!}{Give detailed description of the {\tt pl} (plot) command which 
+	       displays spectra on the screen.}
+\disptt{e 'ls'}{Execute the UNIX command {\tt ls} for the directory. \COMB doesn't care if you use single or double quotes, as long as they are matched.}
+\disptt{q}{Exit \COMB\ldots}
+\dispa{\dol}{\ldots and get the shell prompt from UNIX.}
+\smallskip\noindent
+Typing {\tt help} at the \COMB prompt will give 
+you instructions about how to get information about syntax,
+data formats, and commands.  
+
+\section{Data Formats: Scans and Stacks}
+\label{sec-data}
+
+\COMB assumes that data exists in two forms -- raw spectra which have
+been untouched by human hands called {\em scans\/} and spectra which
+may have been processed called {\em stacks.}  These data are located on disk
+in directories.  At Bell Labs, scans are stored by the telescope computer in files
+in the directory {\sl /cdata\/} and can be accessed by the {\tt gt} (get) 
+command, \eg\ {\us gt 86a614} will get the 614\uth\ spectrum from the raw data file
+{\sl /cdata/c86a.}
+Any filename can be specified to be the raw data file with {\tt nf} (name file),
+\eg {\us nf '/mydirectory/mydata'}.  
+
+At most institutions, raw data files will not exist, 
+and all spectra will reside in ``stacks directories''.  
+A stacks directory contains several files called {\sl data, default,
+index, macros, {\rm and} search\/} which have the following functions:
+\smallskip
+\dispa{data}{Contains the raw headers and spectra in binary form.}
+\dispa{default}{ASCII file containing information on user preferences such as 
+                relative coordinates.}
+\dispa{index}{A table of pointers to the data location corresponding to
+	      the begining of each stack in {\sl data}.}
+\dispa{macros}{ASCII files containing the user macros applicable to these 
+              stacks only.}
+\dispa{search}{A lookup table linking stack numbers to locations in the sky.}
+\smallskip
+
+Stack directories are accessed from inside \COMB by {\tt ns} (name stacks), \eg 
+{\us ns '/usr/jb/data/Orion'}.
+Stacks in a directory are numbered sequentially starting at 1.  The first
+three stacks, however, are special temporary (``core-resident'') 
+locations for spectra, similar to the stack on a pocket calculator, and are
+not actually ``members'' of the stacks files.
+\smallskip
+\dispa{Stack 1}{The current spectrum. When you {\tt gt} or {\tt rt} 
+      (retrieve) a spectrum, it is automatically stored in stack 1. {\tt pl} 
+      will always plot the contents of stack 1.}
+\dispa{Stack 2}{Generally used as an accumulator for co-adding spectra.}
+\dispa{Stack 3}{an additional temporary location.}
+\smallskip
+\noindent Stacks 4 through 9 are by default left empty by \COMB when automatically
+storing data, and hence ignored by commands like {\tt cm} that use
+stacks data (you can reset these defaults.) Thus, they 
+can be used as special storage locations. They are part of the stacks 
+files and will be saved between \COMB sessions.
+
+A stacks directory can be created in several ways. The {\tt ns}
+command will create a new directory if the named one doesn't yet exist.
+Spectra can then be stored using {\tt st} (store).  Alternatively,
+a stand-alone program (see \S \ref{sec-stand}) can create the 
+stacks directory and associated files, 
+storing the data and building the index file. (\COMB will build the search 
+file from the data, see documentation for {\tt up}, [update search file]).
+And, of course, a stacks directory from another institution can be
+copied from tape.  More details of the stack format are given in \S \ref{sec-hvar}.
+
+\section{Commands} 
+\label{sec-com}
+\subsection{Argument types}
+A \COMB command consists of 2 basic parts: a command name followed by a delimited 
+list of arguments. The delimiters may be commas or spaces (it's okay to mix 
+the two).
+The command name is a one- or two-character mnemonic for the function, \eg {\tt cm}
+is contour map. The arguments can take a variety of forms: numerical, 
+character string, numerical range, list, flag, toggle, and expression. 
+The command {\tt lk} (look), which displays the location of spectra on the
+sky, is a good example of most of these types.
+\smallskip
+\dispz{lk ??}
+\combmsg{Look at where stacks are ``lk''}
+\combmsg{\ \ Horizontal limits ``xl''}
+\combmsg{\ \ \ Left x ``lx''- REAL, OLD(0)}
+\combmsg{\ \ \ Right x ``rx'' - REAL, OLD(0)}
+\combmsg{\ \ Vertical limits ``yl''}
+\combmsg{\ \ \ Bottom y ``by'' - REAL, OLD(0)}
+\combmsg{\ \ \ Top y ``ty'' - REAL, OLD(0)}
+\combmsg{\ \ Stack number limits ``sn''}
+\combmsg{\ \ \ Low ``l'' - INTEGER, OLD(10)}
+\combmsg{\ \ \ High ``h'' - INTEGER, OLD(262143)}
+\combmsg{\ \ Center Frequency (MHz) ``fr'' - REAL RANGE, OLD(0\_300000)}
+\combmsg{\ \ Plot stack numbers ``psn'' - FLAG(no)}
+\combmsg{\ \ Horizontal label ``hlb'' - STRING, AUTOMATIC}
+\combmsg{\ \ Vertical label ``vlb'' - STRING, AUTOMATIC}
+\combmsg{\ \ Main label ``mlb'' - STRING, AUTOMATIC}
+\combmsg{\ \ Check search vs stack ``chk'' - FLAG(no)}
+\smallskip
+\dispz{lk,20,--10,--10,15,10,98,110000\_111000  psn:yes mlb:`My Stacks'}
+\smallskip\noindent
+
+The first four arguments are examples of {\it numerical\/} 
+(in this case, REAL) input.
+These four specify that {\tt lk} plot only those stacks
+between the relative coordinate offsets $-10 \le x \le 20$, $-10 \le y \le 15$.
+The next two arguments are also numerical (INTEGER). They tell {\tt lk} to 
+use only stacks between stack numbers 10 and 98. If real numbers had 
+been used here, the \COMB parser would round them to the nearest integers. 
+The next argument is an example of a {\it range}. Ranges' limits are separated 
+by the underscore (\_) character. This argument specifies the range of 
+frequencies (MHz) that spectra must satisfy for {\tt lk} to plot their location. 
+The next argument, {\tt psn:}, is a {\it flag\/} which makes {\tt lk} mark a  
+location with the stack number(s) at that location rather than the default
+crosses ($+$). A flag simply tells the parser to turn on or off a particular 
+feature of a command. Note that {\tt psn:} is the same as {\tt psn:yes} and 
+leaving {\tt psn:} out of the argument list is the same as {\tt psn:no}. The
+final argument in the list is a {\it string}, indicating the main label
+on the plot should be `My Stacks'. Figure 1 is the result (a ``look map'') 
+of the above command. A {\it toggle\/} is similar to a flag, except that it 
+will turn a feature off if it is on and vice versa, \eg
+\smallskip
+\disptt{op ap:}{Turn on automatic plot option (so you don't have to keep typing {\tt pl} after {\tt rt}).}
+\dispt{op ap:}{Turn off automatic plot option.}
+\smallskip
+\noindent Note flags and toggles delineated by a colon do not also need to be
+separated by commas or spaces.
+\smallskip
+\dispz{op ap:ortho:yw:}
+\smallskip\noindent
+is syntactically legal.
+The type {\it list\/} is a delimiter-separated list of
+variables all describing the same argument, \eg {\us cp sc:[0,20,2,39,3,49]}.
+We will meet the last argument type, {\it expression}, when we cover {\tt do} 
+loops (\S \ref{sec-do}).
+
+Notice that some of arguments in the syntax tree above are described by the
+words OLD, AUTOMATIC, or SET.
+An OLD variable starts out at a default value, shown in parentheses, 
+that will stay changed once it is changed  by the user.
+It's previous value is remembered and accessible via the {\tt \&} operator 
+(see \S \ref{sec-amp}).
+An AUTOMATIC argument is a number (or string) calculated by \COMB  
+which can have a variable default value, \eg axes lengths or labels on a 
+spectral plot.
+A SET argument has a set (as opposed to a variable) default value. 
+For an AUTOMATIC or SET arguments, the previous value is not 
+remembered and therefore not accessible via the {\tt \&} operator. 
+
+\subsection{Command Syntax}
+Command arguments are
+arranged in a {\it syntax tree}, with a unique {\it label\/} to 
+specify each node of the tree.  This syntax tree is what is printed out 
+when you type {\us\ ??} after a command name.  Labels, such as 
+{\tt psn:, mlb:, ap:} in the above 
+examples, {\it must\/} be delineated by a colon. If the arguments are entered 
+in the order in which they appear in the syntax tree, then the labels are
+not needed. Use of labels, however, allows arguments to be entered in any 
+order or arguments to be skipped altogether, if desired, and is also handy 
+for remembering arguments in the list. Arguments following labels may
+take optional square brackets, \eg {\tt lk fr:[110200\_110300]}. Square
+brackets are {\em required\/} when the arguments type is a list, 
+\eg {\tt cp sc:[0,20,2,39,3,49]}.
+
+\subsection{Hand-hold Mode}
+The easiest way to learn the input list of a command is to use
+\C's hand-hold mode. Typing {\us\ ?} after a command name will cause
+\COMB to prompt you for each argument using the same syntax tree
+that is printed out when you use {\us\ ??}. For arguments with
+default values (OLD, AUTOMATIC, or SET), entering a carriage return at
+the argument prompt will input the default value.
+After you input all the arguments, \COMB will
+tell you the most general syntactically correct form everything
+you just typed, \eg
+\dispz{lk ?}
+\vdots
+%\noindent user inputs at prompts here
+\combmsg{You could have typed:}
+\combmsg{lk xl:[10,-10] yl:[-5,5] sn:[10,20000] fr:0\_300000}
+\smallskip
+\noindent The command as you could have typed it is added to your history file 
+(see below).
+
+\subsection{COMB's History Mechanism: Recalling and Editting Commands} 
+
+The \COMB history mechanism, a way of editting and/or re-executing previous 
+command
+lines, is based on that of the UNIX Korn shell, {\tt ksh.}
+It is essentially a one-line version of the screen-editor program, defined
+by the environment variable VISUAL in the {\sl .profile\/} (or {\sl .login\/})
+file in your home directory, which operates on a command string.
+{\tt ksh} currently supports the editors {\tt vi} and {\tt emacs}.
+{\it You do not have to be running\/ {\tt ksh} as your normal UNIX shell
+to make use of the \COMB history mechanism.}
+Anything typed at the {\tt ->} prompt is stored in the file {\sl .combhistory\/} in
+your home directory. Therefore, commands issued during previous \COMB sessions  
+are accessible to the history mechanism.
+ 
+The history mechanism is enabled by the escape ([ESC]) key for 
+{\tt vi} mode, or the control ([CNTL]) key for {\tt emacs} mode.
+In {\tt vi} mode, [ESC]\thinspace{k} or [ESC]\thinspace{--} will scroll 
+back through the stored command 
+lines ([ESC]\thinspace{j} or [ESC]\thinspace{+} for forward scrolling), 
+which you can edit using normal {\tt vi} commands. 
+In {\tt emacs} mode, [CNTL]\thinspace{P} scrolls backwards and 
+[CNTL]\thinspace{N} scrolls forward.
+In either mode, a carriage return will cause the currently displayed command
+line to be executed. For more information on the editor features, consult 
+the {\tt vi} or {\tt emacs} manuals, or read the ``editting mode'' sections 
+under {\tt man ksh}.
+
+In addition to the {\tt ksh}-like history mechanism, \COMB also has
+an ``command archive'' mechanism (left over from the days before {\tt ksh}), 
+allowing archiving, re-execution, or editting of the immediately previous 
+command line. It is completely distinct from the {\tt ksh}-like history.
+\COMB keeps the previous command line and allows the user to access it with 
+the following commands:
+\dispa{. or .e}{Execute the previous (old) command as it is.}
+\dispa{.p}{Print the old command.}
+\dispa{.an}{Store the old command in archive n, n = 0 through 9}
+\dispa{.n}{Retrieve the command in archive n.}
+\dispa{.s/xxx/yy}{Edit the old command substituting the string {\tt yy} 
+                    for the first occurance of {\tt xxx}. The delimiter may be 
+                    any character, not just `/'.}
+\noindent For example,
+\dispz{gt 88a6789}
+\dispt{li 1}{Remove a first-order baseline}
+\dispt{.a0}{Store ``li 1'' in archive 0}
+\dispt{gt dt:}{Get next data scan}
+\dispt{.a1}{Store ``gt dt:'' in in archive 1}
+\dispt{.0}{Retrieve command line in archive 0}
+\dispt{.p}{print it}
+\combmsg{li 1}
+\dispt{.}{and execute it}
+\dispt{.1}{Retrieve command line in archive 1 ({\tt gt dt:})}
+\dispt{.}{and execute it}
+
+\section{Getting Data Into COMB}
+\label{sec-gdic}
+
+There are 3 simple ways to get data into \C.  
+\begin{enumerate}
+\item Move a stacks directory created by another \COMB program
+     from tape to disk using the UNIX utilities {\tt tar} or {\tt dd}. 
+\item Use {\tt af} (attach FITS) to read in FITS data (spectra or images) 
+      from tape or disk. 
+\item Use a stand-alone program to convert data from another observatory into
+     spectra in \COMB format and write the spectra into a stacks directory.
+\end{enumerate}
+
+\subsection{{\twelvett tar} or {\twelvett dd} Tapes}
+
+Stacks files written to tape using the UNIX tape archive
+facility {\tt tar} can be extracted by 
+{\tt tar xf {\it tape\_drive stacks\_directory}}.
+For {\tt dd}, use {\tt dd if={\it tape\_drive} of={\it stacks\_file}}. 
+{\tt tar} is preferable since it copies directories recursively. {\tt dd}
+does not.  See documentation under {\tt man tar} and {\tt man dd}.
+
+\subsection{Stand-alone Programs}
+\label{sec-stand}
+
+A few C programs have been written to convert spectra
+from other observatories into \COMB stacks.
+They are:
+\smallskip
+\dispxx{arec2comb}{Convert spectra from the Boston University-Arecibo HI 
+		  Survey into\ \COMB stacks. Written by Marc Pound.} 
+\dispxx{FITS\_TO\_STACKS}{Convert spectra in IRAM FITS format into \COMB stacks. 
+		  Written by John Bally.}
+\dispxx{cube}{Convert a FITS datacube to \COMB stacks. It assumes the datacube is
+	     has spatial coordinates in a `relative coordinate' system (see 
+	     {\us cm ?!} and {\us rc ?!}) and does not deal with 
+             sky projections at all. Written by Marc Pound.}
+\smallskip\noindent
+After creating a stacks directory with one of these programs, you 
+must run {\tt up} on them to make a search file. These programs are
+available on request by their authors. If you wish to write your own program 
+for converting data from other formats, these can be used as templates.
+
+\subsection{Spectra in FITS Format}
+
+Imagine you have just received a data tape from the SEST in Chile
+containing spectra written in IRAM's FITS format.  
+You can use the function {\tt af} (attach FITS file) to read a spectrum into 
+stack 1, {\tt ns} to make 
+the stacks directory and {\tt st} to store the spectra in it.
+[Note: {\tt af} will not work unfolded frequency-switched spectra, as there
+is no single-dish FITS standard for such data. If a standard is ever
+agreed upon, {\tt af} will be re-written accordingly.]
+
+\displl{af 'dev/rmt12' st:}{Attach the tape drive {\sl /dev/rmt12\/} and 
+                            read the first spectrum from the 
+                            FITS tape into in stack 1.}
+\displl{ns 'SESTdata'}{Name the stacks directory ``SESTdata'' as the present 
+                       working directory for the spectra. Since this is a
+                       new directory, {\tt ns} will create it.}
+\combmsg{In command ns  Creating stacks Directory SESTdata}
+\combmsg{Do you want to continue? {\us y}}
+\combmsg{* * CREATING SESTdata/macros * *}
+\displl{st a:}{Store the spectrum ({\tt st}) in the 1st available stack 
+	       ({\tt a:}) in the stacks directory. In
+	       this case, there are no spectra in the directory,so
+	       the data will go into stack 10. (Recall \COMB leaves stacks
+               4 through 9 empty for special use.}
+\combmsg{Stored in stack 10}
+\displl{af '/dev/rmt12' st:}{Read an other spectrum into stack 1.}
+\displl{st a:}{Store it in the next available stack, in this case, stack 11.}
+\combmsg{Stored in stack 11}
+\displl{do 10 \{af '/dev/rmt12' st:; st a:\}}
+                  {Repeat the FITS file-reading operation 10 more times.
+		  This fills stacks 12 through 21 with data.
+		  Note the use of ``;'' to concatenate \COMB commands.  Also
+		  note the {\tt do} loop, whose argument is in the curly
+		  brackets.}
+\combmsg{Stored in stack 12}
+\vdots
+\combmsg{Stored in stack 21}
+\displl{rt 10}{Retrieve stack 10 and place it in stack 1. Note {\tt rt} is used 
+              to place stacks in stack 1 and {\tt gt} is used to place scans
+	      in stack 1.} 
+\displ{pl}{Plot spectrum. See Figure 2a.}
+
+\section{Manipulating and Plotting Spectra}
+\label{sec-man}
+\subsection{Baseline Removal}
+Before removing a baseline from a spectrum, you have to retrieve
+the spectrum and set the range of velocities to be excluded from the
+baseline fit because they contain a line.  To do this, set the so-called
+``use array'' with {\tt us}.
+\smallskip
+\disptt{us $-$30\_30}{Set use array to exclude the range --30 to 30
+		  in the current plot units. The default
+		  is velocity in \kms. ({\us pl ?!} for details on
+                  plot units.)}
+\disptt{li 1; pl}  {Take out a 1\ust\ order baseline and plot the result. 
+                   (Figure 2b) Note that the horizontal line just above the axis
+		  label has a segment missing just in the range
+		  --30 to 30 \kms. This line always shows the current state of 
+                  the use array.}
+\disptt{us st:}   {Save the baseline parameters for future use.  They can
+		  be reset with {\us us s:} to their initial state.}
+\disptt{st 10}	 {Store the spectrum in stack 10 (which is where it
+		  came from).  Note that the original data will be 
+		  overwritten. \COMB catches this and asks your permission
+		  to overwrite the data and will do so only if you respond
+		  with a ``y''.}  
+\combmsg{In command st  stack 10 contains data.}
+\combmsg{Do you want to continue? {\us y}}
+\smallskip\noindent Baselines up to order 15 can be removed from spectra.
+The usual caveats apply to high-order baseline fits.
+For frequency-switched data, channels within a specified width of the signal
+and reference channels are automatically excluded from the fit in addition
+to the use array. \COMB sets this width automatically, but it can also be 
+specified as an argument to {\tt li} (see {\tt li ?!}).
+You can set the use array with the cursor using the macro {\us uscr} defined
+in the global macros file (see \S \ref{sec-mac} and {\us cr ?!}).
+
+The flag {\tt xt:} will cause {\tt li} to remove the same baseline from
+stack 2 as it does from stack 1. This is useful for removing baselines
+from spectra where the emission line takes up too much of the band, leaving
+too few channels from which to compute a baseline fit, and where you have
+a broader band spectrum taken simultaneously.
+% FIGURES HERE
+\smallskip
+\disptt{gt n6r2655 exp:; st 2}{Get scan from spectral expander backend, in this case
+                              12.5 kHz channel width. The line takes up too much
+                              of the band to remove a reliable baseline.}
+\disptt{pl hst:tk:}{Plot the spectrum histrogram style with no tick grid. Figure 
+                    3a.}
+\dispt{op ap:}{Turn on auto-plot option}
+\disptt{gt nbe:}             {Get the narrow backend of the same scan (250 kHz 
+                              channel width). Figure 3b.}
+\disptt{us $-$9\_0 st:; li 1 xt:}{Compute baseline parameters from stack 1 and 
+				  remove the baseline from stacks 1 and 2. 
+				  Figure 3c.}
+\disptt{pl h:$-$10,0; rt 2; pl ovl:}{Compare the baseline fits by overlaying the 
+				  two spectra and displaying a limited horizontal 
+				  range. Figure 3d.}
+
+The flags {\tt exp:} and {\tt nbe:} are peculiar to Bell Labs since 
+spectra taken simultaneously with different backends are given the same
+scan number. You will most likely use {\tt rt} to retrieve two separate stacks,
+instead of {\tt gt} for two separate backends. 
+\COMB will give a warning if the stacks have different
+scan numbers, but you can still remove the baseline.
+
+\subsection{Sorting and Storing Spectra}
+\label{sec-amp}
+
+Suppose you want to take data from one stacks directory, do something 
+with it, and store the result in a second directory.  You can attach 
+two stacks directories, called the foreground and background directories, 
+to \COMB simultaneously.  
+Let's assume that you want to reduce the SEST data from the previous
+example without overwriting the original unreduced data.  You need to 
+open a second stacks directory (directory two).  This can be done by
+
+\displl{ns 'SESTreduced' dt:}{The flag {\tt dt:} stands for ``directory two''}
+\combmsg{In command ns  Creating stacks Directory SESTreduced.}
+\combmsg{Do you want to continue? {\us y}}
+\combmsg{* * CREATING SESTreduced/macros * *}
+
+\noindent At this point two directories are open:  The foreground directory
+is {\sl SESTdata\/} and the background directory is {\sl SESTreduced\/}.  Data
+can be easily transferred between the two directories.  
+
+\displl{ns p:}{To see the names of the working directories.}
+\combmsg{Foreground - SESTdata, last stk = 3, next = 22}
+\combmsg{Background - SESTreduced, last stk = 3, next = 10}
+\displl{rt 10; li 3; st a:dt:}{Retrieve stack 10, remove a 3\urd\ order baseline,
+		               and store the result in directory two.}
+\combmsg{Stored in stack 10}
+\displl{do 11 \{rt \&+1; li 3; st a:dt:\}}
+		  {Remove a 3\urd\ order baseline for the next 11 spectra
+		  in the foreground directory, storing the results in
+		  the next available stack locations in the background
+		  directory. See \S \ref{sec-do} for more on {\tt do} loops.}
+\combmsg{Stored in stack 11}
+\vdots
+\combmsg{Stored in stack 22}
+\displ{.}{Re-execute the last command (the {\tt do} loop.)}
+\combmsg{Stored in stack 13}
+\vdots
+\combmsg{Stored in stack 34}
+
+In this example, a feature of \COMB is illustrated: the idea of
+incrementing the values of OLD variables.  \COMB stores the values of
+command arguments of type OLD each time they are changed by a new issuance of 
+the command.  In the call {\tt rt 10} the value of the stack argument, 10, 
+has been explicitly stated. 
+When \COMB encounters {\tt \&} in an argument, it substitutes the previous value
+of this argument for the {\tt \&}.
+Thus {\tt \&+1}  increments the previous value by 1, 
+{\tt \&+2} increments by 2, etc., storing the new value after the operation 
+is completed.  Similarly, {\tt \&-1} decrements the value by 1.
+Thus, each time {\tt rt \&+1} is issued in the {\tt do} loop, the value of 
+the stack argument is incremented by 1, and the next stack is retrieved.
+Any syntactically legal expression can follow the {\tt \&}, 
+\smallskip
+\disptt{rt \&$*$8\^{}(1/3)}{Retrieve the the stack whose number is twice 
+	 		   the current stack number}
+\disptt{li \&$*$\&}{Remove the square of the previous baseline order.}
+\smallskip\noindent
+This mechanism can be used to change any numerical 
+argument (of type OLD) of a command by any amount. 
+
+To empty stack of its contents, use {\tt em}. 
+\smallskip
+\dispt{em 22}{Empty stack 22}
+\dispt{em 23\_34}{Empty stacks 22 through 34 inclusive.}
+\smallskip\noindent
+Since {\tt em} simply marks the stacks as overwrite-able, you
+can get back emptied stacks, but {\em only if they have not
+been overwritten and you have not quit the session of \COMB 
+in which they were emptied.} If you quit \C, the emptied
+stacks are {\em not\/} retrievable.
+\smallskip
+\dispt{em 22\_34 rev:}{Un-empty stacks 22 through 34 inclusive}
+
+\subsection{Bad Channel Removal}
+ 
+Bad channels in spectra can be removed with {\tt el}
+(eliminate).  This command accepts a range of either channel number(s),
+the velocity, or the frequency of the bad channel(s); the choice is set
+by the current plot units. The eliminated channels are set to the
+average of the two adjacent channels. Since {\tt el} only works on
+stack 1, you must retrieve the desired stack first.
+ 
+To identify the bad channel, you can use {\tt fl} (flag) which displays
+a vertical line at the specified value.  For example,
+\disptt{rt 10; pl ch:}{Plot a spectrum using channels for horizontal plot units.}
+\dispt{fl 67}{Flag channel 67.}
+\disptt{el 67; st 10 dc:}{Eliminate the channel, store the spectrum back in
+                         stack 10 and don't check ({\tt dc:}) for the 
+                         existence of data already there.}
+\disptt{rt 11; el 67\_69; st 11 dc:}{Eliminate channels 67 through 69 inclusive from
+                                  stack 11.}
+\smallskip
+The command {\tt bc} is similar to {\tt el} except that is saves the eliminated
+channel numbers and eliminates them from any scan subsequently
+``gotten'' with {\tt gt}. These can be cleared with {\us bc cl:}.
+
+\subsection{Folding Frequency-Switched Spectra}
+
+For frequency switched data, if the reference frequency falls within the
+band of the backend, you can fold the spectrum to double the effective
+integration time using {\tt fo}.
+\smallskip
+\disptt{gt dt:; li 1; rm}{Get data, remove baseline, print rms noise level}
+\combmsg{rms =   0.5407         system noise = 566.43} %cb stack 10
+\dispz{fo; li; rm}
+\combmsg{rms =   0.3636         system noise = 380.90} %cb stack 11
+ 
+\subsection{Do Loops}
+\label{sec-do}
+ 
+Most likely, you'll need to perform the same operation on many spectra.  {\tt do}
+loops make this easy. The simplest form of such a loop consists of 
+{\tt do} followed by an argument which specifies the number 
+of repetitions of the loop, 
+and a string of commands delimited by either curly brackets 
+or by quotation marks (single or double).  
+Curly brackets can be nested to any reasonable depth, quotes cannot be nested.  
+\smallskip
+\dispf{rt 10; do 100 \{do 10 \{el 67; fo; li 2; st a:dt:; rt \&+1\}; pl\} }
+				{Eliminate bad channel, fold spectrum, and 
+                                remove baseline. Do this to 1000 spectra, plotting 
+                                every 10\uth one.  
+				Store the reduced spectra in directory two.}
+\smallskip\noindent
+The conditional loops, do-while and do-if-else, are also available. 
+In these cases, {\tt do} evaluates an {\it expression\/} at the beginning 
+of the loop and only executes the loop if the expression evaluates to non-zero.
+\smallskip
+\dispz{rt \&+1 t:; do i:\{.test\}\ \{el 67; fo; li 2; st a:dt:\}\ el:\{p "No Stack"\}}
+\smallskip\noindent
+Normally, {\tt rt} will return an error if you try to retrieve 
+a stack which is empty or doesn't exist. 
+The {\tt t:} flag following {\tt rt} sets the variable {\tt .test} to 1 if the
+stack exists and is full and 0 otherwise, and prevents {\tt rt} from 
+returning an error. That is, an empty stack is simply skipped. 
+Thus, the {\tt do} loop command 
+string  is executed only if the stack exists and is full, 
+else the string ``No Stack'' is printed.
+Null else statements are made by eliminating the {\tt el:} flag.
+Similarly, a do-while loop will execute the command string only if the
+expression is true.
+\smallskip
+\dispf{rt 10 t:; do w:\{.numst $<$ 1000\}\ \{el 67; fo; li 2; st a:dt:; rt \&+1 t:\}}
+{Execute the loop until stack number 1000 is retrieved.}
+\smallskip\noindent
+The string {\tt .numst} is an example of a stack header variable. These
+will be explained in \S\ref{sec-hvar}.
+Do-while loops may also take an else clause.
+{\tt do} loops with local variables as part of the control expression should
+use parentheses to delimit the local variable, 
+\ie {\tt do i:\{(\#1)==0)\}\{\dots\}}.
+For more on expressions, type {\tt docp} at the {\tt ->} prompt.
+
+\subsection{Co-adding Spectra}
+
+To co-add (or simply add) spectra, use {\tt co} (combine). {\tt co}
+averages the data in two stacks using the weight of each channel.
+The result is always stored in stack 2.
+The default is to use stacks 1 and 2. So to co-add stacks 10 and 11:
+\smallskip
+\dispz{rt 10;st 2}
+\dispz{rt 11;co} 
+\smallskip
+\noindent Alternatively, 
+\smallskip
+\dispz{co 10 11}
+\noindent will accomplish the same thing, storing the result in stack 2.
+Using the {\tt add:} flag will cause {\tt co} to sum the stacks instead
+of averaging them. To subtract two spectra 
+\smallskip
+\disptt{rt 10;rs $-$1;st 2}{Rescale stack 10 by $-1$ and store in stack 2}
+\disptt{co 11 add:}{Add stack 11 to stack 2. Note this is the same as
+                    {\us rt 11;co add:}}
+\smallskip
+\noindent {\tt co} automatically checks for compatability (\eg position, LSR velocity, process type) of the two stacks. If any differences are found, you will
+be asked if you want to continue. To suppress this checking, use the {\tt dc:}
+(don't check) flag.
+ 
+Frequently, you will want to go through a stacks directory and co-add
+all spectra at the same position. {\tt xf} (transfer stacks) will do this
+automatically. {\tt xf} transfers stacks from the foreground directory to the 
+background directory, combining all matching spectra into a single one before
+storing it in directory two. It will not combine spectra with the same
+scan number. You can set the ``match parameters'' such
+as positional tolerance, stack limits and center frequency.
+\smallskip
+\dispt{ns 'SESTReduced'}{Move {\sl SESTReduced\/} to the foreground directory.} 
+\dispt{ns 'SEST.xf, dt:}{Open up a new background directory.}
+\disptt{xf ptol:.5 v:1}{Transfer all stacks from {\sl SESTReduced\/} to
+                        {\sl SEST.xf\/}, combining
+                        stacks within 0.5\arcm\ of each other, and giving
+                        a brief report about the process. The flag {\tt v: }
+                        stands for ``verbosity'' and is an integer between
+                        0 and 3, 0 giving no information about the transfer.}
+ 
+\subsection{Redirecting Output}
+
+You can redirect anything that \COMB writes to the standard output using
+{\tt ro}. It is useful for generating files suitable for plotting with 
+{\twlsc mongo}.  The general form of this command is {\us ro {\it options}; 
+{\it command-string}}, where the standard output of the {\it command-string\/} 
+will be redirected according to {\it options.} 
+The default option is to write the output to the file {\sl comb.out\/}
+in your home directory. (You can change the file name with {\us ro fn:'filename'}). 
+The standard output can be piped through any UNIX system call with {\us ro p:}, 
+\eg {\us ro p:``grep hlb''; cm ??}. 
+Most of \C's diagnostics and prompts are written to the standard error 
+and won't be redirected. 
+ 
+For efficiency, the file is not closed between successive calls
+to {\tt ro}. This can cause confusion if you remove a file (which \COMB still has
+open) with some other UNIX process, and then try to write to it again with \C, 
+since the file will still exist but not have a directory entry. (That is,
+{\tt ls} will not list the file). 
+To force \COMB to close the file, you can either quit \C, or use the {\tt fn:}
+flag to redirect output to some other file. {\us ro t:} will close
+an opened file, truncate it to zero length, and open it again.
+
+Normally, the carriage return at the end of a command line containing 
+{\tt ro} tells \COMB to revert to the normal standard output (\ie the terminal).
+The flag {\tt q:} is used to force \COMB to do this.
+It is used if you wish to turn {\tt ro} on and off
+several times on a single command line (or in a macro), 
+\eg {\us ro; \dots; ro q:; \dots; ro; \dots}. Use of {\tt ro q:} 
+does {\it not} close the output file.
+
+You can also redirect the standard input with {\tt ri}.
+ 
+If you are new to UNIX, you should familiarize your self with standard input,
+standard output, and pipes before using {\tt ro}.
+
+\subsection{Obtaining Hard Copies of Plots}
+
+\COMB supports the following types of hardcopy output devices: 
+PostScript\footnote{PostScript is a registered trademark of Adobe Systems, Inc.} 
+language laser printers, Impress language laser printers and HP7580 pen plotters  
+using {\tt hpgl}. Appendix A gives details on how to let \COMB know 
+the name of your printer. A plot is generated by issuing the 
+command {\tt hc} (hardcopy) followed by a flag indicating the first letter 
+in the name of your printer. For instance, at Bell Labs, our PostScript printer
+is named ``apost'':
+\dispt{hc a:}{Print plot on the ``apost'' printer.}
+\dispt{hc pf:}{Send plot to a PostScript file ({\tt pf:}) in {\sl /tmp}.}
+
+\section{Making Maps} 
+\label{sec-map}
+
+Two types of maps are supported in \C: spatial-spatial maps made using
+{\tt cm} (contour map), in which both axes are angular co-ordinates on the sky,
+and spatial-velocity maps ({\tt vc}, velocity contour) in which one axis 
+is velocity.  A map made by either of these two commands is displayed and 
+automatically stored in an image location which is analogous to a stack.
+Up to 5 images can be retained in memory at the same time.  These can be
+recontoured or overlaid with {\tt cp} (contour plot). 
+In addition to maps made with {\tt cm} or {\tt vc},
+any FITS image can be brought into \COMB and stored in an image location
+using {\tt af} (attach FITS).
+
+\subsection{Relative Coordinates}
+
+The first thing that is needed to make a contour map is a relative coordinate 
+system to make it on. This is done with {\tt rc}. Usually the coordinate
+system is centered on the object of interest and is parallel to
+Equatorial $(\alpha,\delta)$ or Galactic coordinates $(\ell,b)$.
+There is full support of Equatorial, Galactic, and user-definable coordinates. 
+
+The easiest way to make a relative coordinate system is to take
+it from stack 1:
+\smallskip
+\dispz{ns 'SESTreduced'; rt 10}
+\disptt{rc 'SEST' fs:}{Make a relative coordinate system named 'SEST'
+                       with the same center and offset type as that now 
+                       in stack 1. {\tt fs:} stands for ``from stack.''}
+\disptt{rc sl:; rc nd:}{Store these coordinates locally ({\tt sl:}) 
+                   and name this coordinate system as the default ({\tt nd:}) 
+	           for this stacks directory.}
+\smallskip\noindent
+The name of the relative coordinate system and the coordinates themselves are
+now entered in the file {\sl .LCOORDS\/} (``local coordinates'') in your 
+home directory, and the file {\sl SESTReduced/default\/} 
+now contains the name of the relative coordinate system.
+Coordinates in {\sl .LCOORDS\/} are accessible only to you.
+Subsequent calls to {\tt ns} will automatically use these two files to 
+define the relative coordinate system. You can store changes to the coordinates 
+of the named coordinate system using the flag {\tt rl:} (replace locally). The
+flags {\tt sg:} (store globally) and {\tt rg:} (replace globally) will write 
+to the file {\sl /usr/comb/.GCOORDS} (``global coordinates''). 
+Coordinates stored in this file are accessible to all users. 
+
+\subsection{Spatial-Spatial Maps}
+
+Normally, contour maps are made in the current relative
+coordinate system.  {\em This is not a true projection.}  You may specify a
+projection with {\tt op} (options). Possible projections are orthographic,
+mercator, gnomonic, and polar.
+
+\smallskip
+\dispz{ns '/usr/you/OrionA/12co'}
+\combmsg{Current relative coordinate system:}
+\combmsg{\ \ \ SYSTEM NAME\ \ \ |\ \ \ \ \ \ \ CENTER COORDINATES\ \ \ \ \ \ \ \ |\ \ \  OFFSET TYPE}
+\frenchspacing
+\combmsg{OriA\ \ \ \ \ \ \ \ \ \ \ \ \ |\ rd(1950.0)  5:32:47.0, - 5:24:30\ |\ odra(') oddec(')}
+\nonfrenchspacing
+\smallskip
+\dispz{cm,30,$-$30,$-$40,40,61,81 vl:2,16 ci: ir:1.2 st:10 mlb:'OrionA\ \ T$*$dV\ \ V = 2 to 16 km/s'} 
+\combmsg{Computing array for map}
+\combmsg{Getting stack values}
+\combmsg{Constructing map}
+\combmsg{Displaying map}
+\smallskip\noindent
+The above command string asks \COMB to compute a 60\arcm\ by 80\arcm\ integrated 
+intensity map centered on the above relative coordinates.  The first 
+four arguments are the boundaries {\em in units of the current map offset type}, in 
+this case arcminutes.
+The next two arguments are the number of spatial points on each axis at
+which to compute a value. In general, one or two times the beam sampling is 
+appropriate. In this case, the map will consist of 4941 points. 
+The next argument,
+marked by the label {\tt vl:}, indicates the velocity limits of the integration.
+Interpolation type is given by {\tt ci:} (cone interpolate) with an 
+interpolation radius ({\tt ir:}) of 1.2 arcminutes. The map is to be contoured
+at a step size ({\tt st:}) of 10 K \kms\ and a main label (other than the default) 
+for the plot is specified. The resulting map is shown in Figure 4.
+\smallskip
+\disptt{im mv:1,2}{Copy image 1 to image 2 so the subsequent calls to {\tt cm} 
+                   don't overwrite it. {\tt mv:} stands for ``move.''}
+\disptt{cm vl:2,3}{Recompute map, integrating between 2 and 3 \kms. All other
+                   map parameters are kept the same, except the main label which
+                   reverts to its default string.}
+\disptt{do 13 \{cm vl:\&+1,\&+1\}}{Step through the data cube, computing maps
+at 1 \kms\ intervals.}
+\smallskip
+ 
+You may want to compute a map of some quantity other than integrated
+intensity. This is done with the label {\tt m:} (macro). The macro label  
+tells {\tt cm} to use the value returned by the specified macro.
+You must already have defined the macro in either the stacks, local, or
+global macro files (See \S \ref{sec-mac}).
+For instance, suppose you want to compute a map of maximum temperatures.
+\smallskip
+\disptt{cm m:'Tmax'}{Compute a contour map of values returned by the macro
+                   ``Tmax''}
+\smallskip\noindent
+The macro ``Tmax'' may look something like this:
+\begin{description}
+\item Tmax - in,2,16 dp:; v\ .tmax
+\end{description}
+\noindent
+The macro ``Tmax'' does two things. First, it integrates the current stack
+between 2 and 16 \kms\ ({\tt cm} takes care of retrieving all the stacks).
+This assigns the value of the maximum temperature to .tmax, as well as assigning
+values to other variables associated with the integration. 
+The {\tt dp:} flag means don't print the results.
+Secondly, it takes the value of the maximum temperature returned by {\tt in}
+and ``puts it where {\tt cm} can find it'' with {\tt v} (value).
+%%T*DV is jst  a macro. Will do this at every point
+
+\subsection{Spatial-Velocity Maps}
+
+{\tt vc} makes a spatial-velocity image (\eg an $\ell$-$v$ diagram) 
+along a line between two given points in the current relative coordinate system.  
+\smallskip
+\dispz{vc 0,$-$20,0,20 sp:1 ir:1 ci: vl:2,16 st:20 mlb:'OrionA 12co'}
+\smallskip\noindent
+The above example makes a spatial-velocity contour map along the line
+between (0,20) and (0,$-20$). Note that the input order of the spatial limits 
+is different than for {\tt cm}.  The data is interpolated
+onto points spaced by {\tt sp:} in arcminutes. If the line is
+along a line of observations, {\tt sp:} should be picked so that the plotting
+points are commensurate with the data points. The map is shown in Figure 5.  
+{\tt vc} needs an example stack in stack 1 to determine the number of
+channels on the vertical (velocity) axis of the map (just retrieve any stack
+if {\tt vc} complains about this).  It remembers the
+filter width in that stack and only uses stacks with that filter
+width.
+
+\subsection{Recontouring Maps with {\twelvett cp}}
+
+You can recontour a map with {\tt cp} without recomputing it. By default, it
+works on image 1. 
+\smallskip
+\disptt{cp sc:[5,50,10,54,15,59]}{Recontour image 1 using the specified contours.}
+\smallskip\noindent
+The flag {\tt sc:}, which also can be used in {\tt cm} and {\tt vc}, allows
+you to specify the contour levels and line types explicitly. The general
+form is {\tt sc:[{\it level, line type, level, line type, \dots\ }]}. The
+square brackets are required. A line type is given by a value 
+between 0 and 99 and is coded by the two digits.  The ten's digit controls the
+thickness with 0 thin and 9 thick.  The units digit controls
+the dottedness with 0 most dotted and 9 solid, \eg 50 is a dotted line of 
+medium thickness, 54 is dot-dash line of medium thickness, and 
+59 is a solid line of medium thickness. This coding allows 99 different line 
+types. See Figure 6.
+ 
+The flag {\tt ovl:} and label {\tt cl:} allow you to overlay two (or more) images
+and specify cutoff limits for contour levels, respectively.
+\smallskip
+\displl{cp cl:10,20 st:2}{Contour only values between 10 and 20 with a step
+size of 2 K \kms.}
+\displl{cp im:1 st:2; cp im:2 ovl:}{Overlay image 2 on image 1}
+\dispf{lk 30,$-$30,$-$40,40 mlb:' ' hlb:' ' vlb:' '; cp im:2 st:10 ovl:}{Display the 
+                                                    look map and then
+                                                    overlay the OrionA map stored 
+                                                    in image 2 on it. Look maps 
+                                                    cannot not stored in an image
+                                                    location, so you must invoke 
+                                                    {\tt lk} each time. 
+						    See Figure 7.}
+
+\subsection{Reading/Writing FITS images}
+
+Any two-axis FITS image can be read from disk or tape into 
+any of the image locations 1 through 5 using {\tt af}.
+\smallskip
+\displl{af ff:'mbm12.13co' im:1}{Read a $^{13}$CO map of MBM12 from 
+                                 disk into image 1.}
+\displl{af ff:'mbm12.100um' im:2}{Read an 100$\mu$m map of MBM12 
+                                  from disk into image 2.}
+
+\displl{cp im:1 st:2 mlb:' ' hlb:' ' vlb:' '}{Contour image 1, leaving 
+                                              the labels blank so 
+                                              they are not drawn over
+					      each other in the subsequent
+					      overlay.}
+\dispf{cp im:2 sc:[4E6,15,8E6,35,1.2E7,55,1.6E6,75,2E7,95] 
+       mlb:'MBM12 13CO/100 micron' ovl:}{Overlay the $^{13}$CO and 100$\mu$m maps, 
+                                         using dashed contours for image 2. 
+                                         See Figure 8.}
+\displl{sp fn:'MBM12.13co-100.sp'}{Make a scatter plot file of image 1 vs. image 2, 
+                                   suitable for reading into {\twlsc mongo}}
+\smallskip
+Similarly any image can be written to tape or disk with {\tt wf} (write FITS),
+\eg {\us wf ff:'/dev/rmt12' im:3}.
+
+\section{Advanced Processing: Macros}
+\label{sec-mac}
+
+\C's true power and flexibility lie in the ability to allow you, the user, to 
+construct your own macros. 
+A macro is a small program which allows you to perform arbitrarily complicated 
+operations without having to do much typing.
+Macros are kept in separate ASCII files which can be editted with the 
+default editor. There are three types of macro files:
+\begin{enumerate}
+\item The global macros file (editted with the {\tt dm g:}).  This file
+     resides in {\sl /usr/comb/.GMACROS\/} and contains macros 
+     accessible to all users. 
+\item A local macros file which resides in your home directory in {\sl .LMACROS\/}
+      and is accessible to only you. It is editted with {\tt dm l:}.
+\item A stacks macros file associated with each stacks directory, \eg
+      {\sl SESTreduced/macros}.
+      This file is used for macros specific to the data in that
+      directory and is editted with {\tt dm st:}.
+\end{enumerate}
+
+When a macro is referred to, either on the command line or by a another
+macro, \COMB will search in these macros files until it finds a match.
+The order of the search is directory 1 stacks macros (if directory 1 is open), 
+directory 2 stacks macros (if directory 2 is open), local macros, and global
+macros. \COMB will stop searching at the first match and execute the macro.
+
+A macro definition is simply a four-character macro name followed by
+the string of \COMB command(s) which the name is to replace. For instance,
+\begin{description}
+\item cmap - cm,30,--30,--30,30 ir:1 st:1 vl:0,10 
+             ci: mlb:'This space for rent.'; wf ff:'map.fits'
+\end{description}
+\noindent 
+is a rather simple example. There {\it must} be at least 3 characters between
+the end of the macro name and the beginning of its definition. (By convention, we
+use [space][minus][space]). Macros, like commands, can have input arguments. 
+Before we discuss these, we must first digress briefly on variables in \C.
+
+\subsection{Variables}
+
+\COMB has four types of user-settable variables: {\it global variables,
+global strings, macro arguments,} and {\it header variables.} 
+In general, you will only want to set the first three types. Usually, 
+the user is only interested in {\em reading\/} header variables, but occasionally   
+may want to write to them.
+
+\subsubsection{Global Variables}
+The symbols \#0 through \#9 can be used
+to hold user-defined numeric constants.  These are set these with 
+either the {\tt p} (print) or {\tt c} (calculate) commands. They
+can be used wherever you would normally use a number.
+\smallskip
+\disptt{c \#1=25}{This is the same as {\us p \#1=25}, except that it
+                   doesn't print the value.}
+\dispz{p \#1}
+\combmsg{25}
+\dispt{c \#=30}{Note \# is the same as \#0}
+\dispt{cm vl:\#,\#1}{Make a map integrated between 25 and 30 \kms.}
+\smallskip\noindent
+Expressions may be used on either side of the $=$ sign.
+\smallskip
+\dispz{c \#(8-1)=3$*$4\^{}5}
+\dispz{p \#7}
+\combmsg{3072}
+\subsubsection{Global Strings}
+User-definable character strings are stored
+in symbols \$0 through \$9 (\$ is the same as \$0).
+\smallskip
+\dispz{p \$1='some string'}
+\combmsg{some string}
+\dispt{cm vl:\#,\#1 mlb:\$1}{Same map with new main label}
+\smallskip\noindent
+The command {\tt pr} is a link to the C standard library routine {\tt printf}
+and has a very similar form, \ie, {\tt pr} {\it conversion format, variable}.
+It can use the {\tt printf} format conversion characters \%s, \%e, \%f, and \%g.
+There is a similar link to {\tt scanf} via the command {\tt sc}.
+\dispz{c \#1=300} 
+\dispt{pr 'I have \%g toes.',\#1}{Print the string followed by the 
+                                         value of \#1}
+\combmsg{I have 300 toes.}
+\smallskip\noindent
+With the flag {\tt gs:} (global string), the output of {\tt pr} can be
+stored in any of the 10 global string locations, which can then be
+passed on as an argument to other commands.
+\dispt{pr 'I have \%g toes.',\#1 gs:3}{Redirect the output of {\tt pr} to 
+                                       global string 3}
+\dispz{p \$3}
+\combmsg{I have 300 toes.}
+\dispt{rt 10;pl mlb:\$3}{Plot stack 10 with a silly main label}
+
+\subsubsection{Stack Header Variables}
+\label{sec-hvar}
+
+Each stack is divided into blocks of 256 16-bit  words;  the
+first of these contains header information such as scan number, coordinates, 
+and center frequency.
+The first 128 words of the header block contain 128 short integers.
+The second half of the header block contains real numbers and other constants. 
+Each of these numbers has an associated variable name to which the user
+may refer when a particular header value is needed.  You can access
+the header values of any of the core-resident stacks (\ie stacks 1, 2 or 3).
+For instance, .ibsln is the baseline order of the spectrum in stack 1, .ibsln2
+is that in stack 2, .ibsln3 is that in stack 3. 
+\smallskip
+\dispt{rt 10; p .ra}{Print the right ascension of stack 10}
+\combmsg{2.89194}
+\dispt{ph .ra}{Print the RA of stack 10 in HMS format}
+\combmsg{ 2:53:31.0}
+\disptt{in,2,16}{Integrate the stack between 2 and 16 \kms. 
+                 This will assign values to .tmax, .area, and 
+                 other variables associated with the integration.}
+\combmsg{\ Stack\ \ From(Km/s) To (Km/s) Tmax\ \ \ \ \ Area(K$*$Km/s)\ \ \ \ \ Centroid(Km/s)\ \ Peak}
+\combmsg{\ 1743\ \ \ \ 2.000\ \ \ \ \ 16.000\ \ \ 65.791\ \ 357.921+/-\ 1.062\ \ \ \ \ \ 8.886\ \ \ \ \ \ \ \ 9.520}
+\dispf{pr 'Tmax = \%g  T$*$dV = \%g', .tmax, .area gs:1; pl mlb:\$1}
+{Plot stack 10 with a main label indicating it's maximum temperature and
+ integrated area.}
+\dispf{do 100 \{rt \&+1; do i:\{.ra$<$3:00\} \{in dp:;p .tmax nl:;p .area\}; \}}
+					{Go through the first 
+                                        100 stacks and, if
+					the right ascension is less than 
+					$3^{\rm h}$, integrate the spectrum,
+					and print out its .tmax and .area 
+					on the same line ({\tt nl:}).}
+\smallskip\noindent
+Note some variables, like .tmax and .area, will have zero value until
+the command which calculates them is called. 
+You can assign new values the header variables with {\tt c} or {\tt p}. 
+To save the new values, you must rewrite the stack with {\tt st}.
+\smallskip
+\dispt{rt 10; c .vlsr=20; st 10 dc:}{Change the LSR Velocity of stack 10.}
+\smallskip\noindent
+The actual values of each channel of the stack are kept in the array {\tt .stak}
+\smallskip
+\dispt{p .stak(128)}{Print the value of channel 128}
+\smallskip\noindent
+For a list of the names and descriptions of the stack header variables type 
+{\tt doch} at the {\tt ->} prompt. 
+
+\subsubsection{Labelling Inside Plots}
+ 
+Now that we have introduced {\tt pr}, {\tt ph} and header variables, we can
+digress yet again on plot labelling.  
+You can place labels inside spectra or maps using {\tt gm} (graphics manipulation).
+(This is in addition to normal labelling outside plots using 
+{\tt mlb:, hlb:,} and {\tt vlb:}).  {\tt gm} uses the label {\tt ti:} (title)
+followed by the text you wish to place and the coordinates in current plot
+units of where you wish to place it. 
+\disptt{rt 220;pl d:}{The {\tt d:} toggle in {\tt pl} is used to plot the
+                      spectrum with or without the header information. In this
+                      case, without.}
+\disptt{gm ti:`DR21 CO(1-0)' 25,20 }{The label starts at $V=25$, and is
+                            centered on $T_A=20$.}
+\smallskip\noindent
+You can also use {\tt pr} or {\tt ph} to pass values to {\tt gm}.
+\displl{ph .ra+.dra gs:1}{Store the RA plus any offset in global string 1, using
+                          HMS format.}
+\displl{ph .dec+.ddec gs:2}{Store the DEC plus any offset in global string 2.}
+\displl{pr 'RA  = \%s' \$1 gs:3; pr 'DEC = \%s' \$2 gs:4}{Put the RA and DEC in labels
+                                              to be used for the plot. The labels
+                                              are stored in global strings 3 and 4.}
+\displl{gm ti:\$3 25,18; gm ti:\$4 25,16}{Place the labels on the plot. See Figure 9.}
+
+We could have used {\tt cr} (cursor read) to tell {\tt gm} where we wanted
+the labels. {\tt cr} will read the position from the cursor and place the
+coordinates in the arrays {\it x()\/} and {\it y()\/}. The array indices start
+from zero. 
+\displl{cr 2}{Read two positions from the cursor. The results are placed
+              in {\it x(0), y(0), x(1)\/} and {\it y(1)}. }
+\displl{gm ti:\$3 x(0), y(0); gm ti:\$4 x(1), y(1)}{Place the labels at the
+                                                  read positions.}
+\smallskip\noindent
+{\tt cr} is also useful for getting positions from contour maps.
+\displl{cr;rt rc:x(0),y(0)}{Make one cursor read (from a contour map) and
+                            then retrieve the spectrum at that position.}
+\smallskip\noindent 
+Both {\tt gm} and {\tt cr} are useful for other operations. See the
+examples under {\us gm ?!}, {\us cr ?!} and {\us da ?!} (define area).
+
+\subsection{Macro Arguments}
+
+The symbols !0 through !9 represent macro arguments, where !0 refers
+to the first argument, !1 refers to the second, etc. Macro arguments
+do not have to be numbers; they can also be strings, expressions, global or
+string variables, lists, or ranges.
+Consider the macro definition
+\begin{description}
+\item{gfit - c \#1=!0; do !1 \{rt \#1;pl vl:;gf !2,!3 see:;c \#1=\#1+1\} }{\ }
+\end{description}
+\noindent
+and the call 
+\dispz{gfit,10,30,-4,4}
+\smallskip \noindent
+The call to the macro {\tt gfit} fits a gaussian profile to each of the spectra in
+stacks 10 through 30. First the global variable \#1 is given the value of
+first argument !0, \ie the first stack number to retrieve. 
+This is necessary because, unlike global variables 
+\#0 through \#9, macro argument values cannot be set in 
+arithmetic expressions, \eg {\tt c !0=!0+1} is illegal.
+The {\tt do} loop is executed 30 times (!1). Inside the loop, a gaussian is fit
+between $-$4 and 4 (!2 and !3) \kms. The flag {\tt see:} causes {\tt gf} to
+overlay the fitted profile on the emission profile.
+Finally, \#1 is incremented in order to fetch the next
+stack on the next iteration of the loop.
+
+\subsection{Some Useful Macros}
+\label{sec-usmac}
+The following is a typical stacks macros file, containing some macros
+used frequently at Bell Labs.  As purely convention, we mark comment lines 
+with a \%. \COMB does not distinguish between these lines and lines which 
+actually contain a macro definition. The macros are individually explained
+at the end of the listing.
+%global or local:
+%cr 2;us x(0)_x(1) zero the use array between cursor positions.
+%uscm - cr 1;do w:{crsr(0)} {p #3=x(0) dp:;cr 1;us #3_x(0);do i:{crsr(0)} {cr 1}};pl
+%zoom - cr 2;pl h:f:x(0),x(1),v:f:y(0),y(1)
+%Vpek - in !0, !1 dp:;v .vpeak
+%Tmax - in !0, !1 dp:;v .tmax
+%shel - e 'sh -i'
+%mtrw - e 'mt rew'
+
+\begin{verbatim}
+look - lk,.75,.5,-.15,.15 mlb:'SgrB2 CS Stacks'
+base - us !0 st:;c #1=!1; do !2 {rt #1;li !3;st #1 dc:;c #1=#1+1}
+
+% Movie plotting package
+% #1 - File extension number.
+% #2 - Begining velocity.
+% #3 - End velocity.
+% #4 - Velocity step size.
+
+init - p #1=0;p #2=-50;p #3=160;p #4=5;p #5=(#3-#2)/#4
+sour - pr 'SgrB2' gs:1 
+file - pr '/usr/you/images/%s.%g', $1, #1 gs:2
+labl - pr '%s CS(2-1) V= %g to %g km/s' $1,#2,#3 gs:3
+step - c #2=#2+#4; c #3=#3+#4 ;c #1=#1+1 
+
+map0 - init;sour;labl;file;cm,.75,-.5,-.15,.15,153,37 ir:1 ci: vl:#2,#3 st:5 \
+  mlb:$3 o:$1 ;wf ff:$2 im:1;c #3=#2+#4 ;c #1=#1+1 
+map1 - sour;do #5 {labl;file;cm vl:#2,#3 st:1 mlb:$3 o:$1 ;\
+  step;wf ff:$2 im:1}
+movi - map0;map1
+
+map2 - init;sour;labl;cm,.75,.44,-.15,.06,108,72 ir:1 ci: vl:#2,#3 st:5 \
+  mlb:$3 o:$1 ;hc a:;c #3=#2+#4 ;c #1=#1+1
+map3 - sour;do #5 {labl;cm vl:#2,#3 st:1 mlb:$3 o:$1 ;\
+  step;hc a:}
+mapr - map2;map3
+
+\end{verbatim}
+\smallskip
+\dispa{look}{We usually define a macro called ``look'' for each stacks
+             directory to make a look map specific to those stacks. 
+             This is so we don't have to 
+             remember exactly what the spatial limits for the stacks are. 
+             In this case, the offsets are in degrees.}
+\dispa{base}{Baseline or re-baseline many stacks. 
+             The use-array is set to the range specified in !0.
+    	     This removes a (!3)-order baseline from !2 spectra starting
+    	     at the (!1)\uth\ stack.  The stack is stored in its original 
+             location without asking if it is OK to overwrite the original 
+             spectrum. \Eg {\tt base, 40\_140,10,2,1000} will remove a
+             2\und\-order baseline from the first 1000 stacks.}
+\smallskip\noindent
+The next group of macros are used to make slices of the datacube and
+output to FITS files with names of the form required by the program {\tt movie}, \ie
+{\sl filename.0, filename.1, filename.2\/}\dots (see appendix B).
+The comment lines describe the use
+of global variables \#1 through \#4. You will want to edit some 
+of these to tailor them to your own requirements.
+\smallskip
+\dispa{init}{Initializes the global variables.  Edit this line to change the
+             beginning and end velocities, and the velocity resolution of the 
+             maps/images.}
+\dispa{sour}{Source label for FITS header.  This is stored in global string 1.}
+\dispa{file}{Global string 2 is used to store the name of the FITS file, gotten 
+             from global string 1, and 
+             its extension number, which is gotten from \#1.}
+\dispa{labl}{Controls plot labels, which are stored in global string 3.}
+\dispa{step}{Increments variables \#1, which is the file extension number, and 
+             \#2 and \#3 which are the limits of the velocity integration used in 
+            {\tt cm}.}
+\dispa{map0}{Initializes the contour map parameters and produces a contour
+    map on screen and a FITS image on disk in the directory specified
+    by {\tt file} macro. The $\backslash$ is a continuation character that 
+    tells \C's parser there is more of the command on the next line. 
+    The $\backslash$ must be the last character on the line, \ie no spaces after
+    it.  The $\backslash$ can also
+    be used on the command line (at the {\tt ->}).}
+\dispa{map1}{Repeat the map and image making for \#5 iterations, \ie compute
+     \#5 separate slices through the data cube. \#5 is set by the {\tt init} macro.
+     Note that only the parameters to {\tt cm} which change from map to map are 
+     specified. All others are kept the same as in {\tt map0}.}
+\dispa{movi}{Runs {\tt map0} followed by {\tt map1}.}
+\dispa{map2}{Same as {\tt map0} except it sends the contour plots to the 
+             laser printer ({\tt hc a:}) and does not write a FITS file.}
+\dispa{map3}{Same as {\tt map1} except it sends the contour plots to the 
+             laser printer ({\tt hc a:}) and does not write a FITS file.}
+\dispa{mapr}{Runs {\tt map2} followed by {\tt map3}.}
+\smallskip
+
+Thus, after defining these macros in a macros file, all you need to do to
+compute the images for a `movie' is 
+\dispz{movi}
+\smallskip\noindent
+The macros are sufficiently flexible that you need only modify them
+slightly for different sources (data sets).
+% FIGURE CAPTIONS. Note can't use LaTeX's \figure environent because it
+% decides where to put the figures.
+\newpage
+\section{Figures}
+\label{sec-fig}
+% fig 1
+\vspace*{\fill}
+\fig Figure 1 --- A `look map' made with {\tt lk}. The location
+                 on the sky of a spectrum is marked with it's `stack number'. 
+                 Axis units are arcminute offsets from the central coordinate.
+\newpage
+% fig 2 (ab)
+\vspace*{\fill}
+\fig Figure 2 --- {\it a)\/} A spectrum plotted with {\tt pl}. The `tick grid'
+         and line type are changeable (see \eg Figure 3a). {\it b)\/} The spectrum
+         with a first-order baseline removed. The horizontal line segments
+         just above the velocity axis label indicates the portion(s) of the 
+         spectrum included in the baseline fit, known as the `use array.'
+\newpage
+% fig 3ab
+\vspace*{\fill}
+\fig Figure 3 --- {\it a)\/} A spectrum from the 12.5 kHz/channel backend. The line
+                 takes up too much of the band to remove a good baseline. It is
+		 plotted in histogram style with no tick grid ({\tt pl hst:tk:}).
+                 {\it b)\/} The spectrum at the same position taken simultaneously 
+                 with the 250 kHz/channel backend. It can be used to compute a 
+                 baseline for removal from the 12.5 kHZ/channel spectrum 
+                 ({\tt li 1 xt:}). 
+\newpage
+\vspace*{\fill}
+\fig Figure 3 ({\it cont.\/}) --- {\it c)\/} Baseline removed from 250 kHz/channel 
+                 spectrum. Same baseline is automatically removed from 
+                 12.5 kHz/channel spectrum.
+		 {\it d)\/} Overlay plot of the two spectra to compare the 
+                 baseline fits.
+\newpage
+% fig 4
+\vspace*{\fill}
+\fig Figure 4 --- Contour map of $^{12}$CO in Orion A made with {\tt cm}. The 
+        string in the lower left hand corner gives information about how the
+        map was made. The contour step size is 10 K \kms\ between 10 and 380 K \kms.
+        The data are smoothed over 1.2 arcminutes ({\tt ir:1.2}) with a cone 
+        interpolation ({\tt ci:}). Axis units are arcminute offsets from 
+        central relative coordinate ({\tt rc:}).
+\newpage
+% fig 5
+\vspace*{\fill}
+\fig Figure 5 --- An spatial-velocity ($\delta$-$v$) diagram of Orion A made 
+                  with {\tt vc}.
+\newpage
+% fig 6
+\vspace*{\fill}
+\fig Figure 6 --- Same as Figure 5 but recontoured using {\tt cp sc:}
+	(contour plot with specified contours) to show a few of the 90 different
+        line types.
+\newpage
+% fig 7
+\vspace*{\fill}
+\fig Figure 7 --- An OrionA `look map' indicating the position on the sky of 
+                 spectra with a integrated intensity map
+                 overlaid on it, made using {\tt lk} (look) and ({\tt cp ovl:})
+		 (contour plot with overlay flag).
+\newpage
+% fig 8
+\vspace*{\fill}
+\fig Figure 8 --- Overlay of $^{13}$CO and IRAS 100$\mu$m maps of the dark
+		 cloud MBM12, made using {\tt af} (attach FITS) and {\tt cp ovl:} 
+                 (contour plot with overlay flag).
+\newpage
+% fig 9
+\vspace*{\fill}
+\fig Figure 9 --- An example of labelling inside plots using {\tt gm} (graphics
+		 manipulation).
+\newpage
+
+\section*{Appendix A: How to Install COMB}
+\label{app-inst}
+\addcontentsline{toc}{section}{\protect\numberline{A}How to Install COMB}
+\markboth{A \ \ HOW TO INSTALL COMB}{A \ \ HOW TO INSTALL COMB}
+
+\COMB can be be installed by porting the contents of {\sl /usr/comb\/} 
+on a {\tt tar} tape from Bell Labs to the new machine.  
+The source code is recompiled by using the shellscripts {\tt cleancomb} and 
+{\tt makecomb} in {\sl /usr/comb/bin.}  
+You can only install \COMB on a UNIX system. {\it Read this entire appendix
+before attempting installation.}
+ 
+Here are the steps necessary to install \C.
+\begin{enumerate}
+ \item Create a directory in which to install \C. Here we will
+ assume it is in {\sl /usr}, although it doesn't need to be.
+ \begin{description}
+  \item {\dol \ \us mkdir /usr/comb}
+ \end{description}
+ \item Change to {\sl comb\/} directory and extract {\tt tar} file.
+ \begin{description}
+  \item {\dol \ \us cd /usr/comb}
+  \item {\dol \ \us tar -xv /dev/rmt12}
+ \end{description}
+ \item If you are using {\tt ksh}, edit your {\sl .profile\/} 
+ file so that it contains the strings:
+ \begin{description}
+  \item {\us PATH={\$}PATH:/usr/comb/bin}
+  \item {\us COMB=/usr/comb}
+  \item {\us export COMB PATH}
+ \end{description}
+\noindent
+For {\tt csh} or {\tt tcsh}, edit the {\sl .login\/} file:
+ \begin{description}
+  \item {\us PATH={\$}PATH:/usr/comb/bin}
+  \item {\us setenv COMB /usr/comb}
+ \end{description}
+ \item \COMB uses an editor for editting macro files and command lines stored
+ in {\tt ksh}-like history file ({\sl {\$}HOME/.combhistory}).  At Bell Labs, 
+ we use the {\tt vi} editor, but {\tt emacs} is also available to \COMB if 
+ you prefer.  To specify the editor of choice, edit your {\sl .profile\/} 
+ (or {\sl .login\/}) to contain the string
+ \begin{description}
+  \item {\us VISUAL=/usr/ucb/vi \ \ \ \ \ (or {\tt emacs} if you prefer)}
+  \item {\us export VISUAL}
+ \end{description}
+\noindent
+Again, for {\tt csh} or {\tt tcsh},
+ \begin{description}
+   \item {\us setenv VISUAL /usr/ucb/vi \ \ \ \ \ (or {\tt emacs})}
+ \end{description}
+ \item Next, compile \COMB using the utilities located in {\sl /usr/comb/bin}. 
+\noindent
+First, the old object code must be removed from the {\sl obj\/} subdirectory.
+ \begin{description}
+  \item {\dol \ \us cleancomb} 
+ \end{description}
+\noindent
+Then the compilation is done using the {\sl makefile\/} in {\sl /usr/comb/bin}.
+ \begin{description}
+  \item {\dol \ \us makecomb install} 
+ \end{description}
+
+Compilation should take about 30 minutes on a SUN-4.
+  
+\item To attach a printer for hardcopy graphics output, you need to modify 
+the file {\sl /usr/comb/lib/hc.lpr\/} to contain the name of your printer. 
+\COMB supports three types of hardcopy output devices: PostScript language
+laser printers (laser, aaser, \dots), Impress language laser printers (imagen, 
+jmagen, \dots), and an HP7580 pen plotter using {\tt hpgl}. The shell script
+{\sl hc.lpr\/} queues the plot file for plotting using the {\tt lpr}
+spooler for the laser printers.  Edit the shell script and 
+after PRINTER=, put in the name by which the device is recognized in UNIX.
+The first character of the UNIX name is used in the hard copy command 
+\eg, {\tt hc a:}.  You can remove all the other unused names.
+If you have an HP pen plotter, its device name should be put into the 
+character array {\tt devname[]} in {\sl /usr/comb/src/graphics/hpplot\_.c\/} before
+compilation.
+
+Note that since {\sl hc.lpr\/} is a shell script and not a compiled routine, you
+can change it without recompiling \C. In fact, it is useful to
+run \COMB in one window while changing the shell script in another until
+you get what you want.
+
+\item The history mechanism may not easily work on operating systems
+other than SunOS or BSD 4.X. On such systems, it would be safest to
+first compile \COMB without the {\tt ksh} history mechanism. To do this
+you need to make two changes:
+\begin{itemize}
+	\item In {\sl /usr/comb/src/man/C.h\/}, change the line 
+	\begin{description}
+              \item {\tt \#define HISTORY 1} 
+ 	\end{description}
+	      to
+	\begin{description}
+              \item {\tt \#define HISTORY 0} 
+ 	\end{description}
+        \item In {\sl /usr/comb/bin/makecomb\/}, comment out the lines
+	\begin{description}
+\item {\tt for i in coordsys error graphics image main misc misc/libut misc/libedit$\backslash$}
+\item {\tt\ \ \ \ \ \ \ parse parse/entree scan stacks}
+ 	\end{description}
+	and remove the {\tt \#\/} from the two lines below it, 
+        \ie ``uncomment'' the lines 
+	\begin{description}
+\item {\tt \# for i in coordsys error graphics image main misc misc/libut$\backslash$}
+\item {\tt \#\ \ \ \ \ \ \ parse parse/entree scan stacks}
+ 	\end{description}
+\end{itemize}
+\noindent
+If you have already run {\tt makecomb} before making these changes, you
+must run {\tt cleancomb} again, \ie repeat step 5 above.
+\end{enumerate}
+\newpage
+\section*{Appendix B: FITS Software} 
+\addcontentsline{toc}{section}{\protect\numberline{B}FITS Software}
+\markboth{B \ \ FITS SOFTWARE}{B \ \ FITS SOFTWARE}
+
+Facilities for viewing FITS images on a Sun workstation running SunView are 
+located in the file {\sl /usr/comb/src/util/FITSView}.
+(You don't need \COMB to run these.)
+A nice feature of these programs (written by Bob Wilson and Marc Pound) is 
+that they can provide ``full color'' on an
+8-bit color monitor by using a dithering algorithm (with 3 bits of red,
+3 bits of green, and 2 bits of blue).
+The programs are called 
+\begin{description}
+\item [ql]    quick look, display a single monochrome or pseudo-color FITS image
+\item [rgb]   rgb display of 3 FITS images simultaneously on an 8-bit monitor
+\item [movie] Run a time lapse monochrome, pseudo-color, or 3-color movie
+	      from a stack of FITS images on disk.
+\item [rgb24] rgb display of 3 FITS images simultaneously on a 24-bit monitor
+\end{description}
+\noindent
+These programs need to be compiled separately from \COMB.
+Full documentation is provided in 
+{\sl README\/} and {\sl FITSView.doc\/} in the {\sl FITSView\/} subdirectory. 
+They are also available in a shell archive package ({\tt shar}) via e-mail. 
+\newpage
+\section*{Appendix C: List of COMB Commands}
+\label{app-lc}
+\addcontentsline{toc}{section}{\protect\numberline{C}List of COMB Commands}
+\markboth{C \ \ LIST OF COMB COMMANDS}{C \ \ LIST OF COMB COMMANDS}
+
+\begin{tabular}{ll}
+{\bf ad} & Add scans to stack 2 \\
+{\bf af} & Attach a FITS file to an image \\
+{\bf bc} & Designate bad channels \\
+{\bf c}  & Calculate something \\
+{\bf ca} & Calculate values from stacks \\
+{\bf cc} & Change center channel \\
+{\bf cm} & Space-space Contour Map \\
+{\bf co} & Combine two stacks, result in 1 \& 2\\
+{\bf cp} & Contour Plot an image\\
+{\bf cr} & Cursor read\\
+{\bf da} & Define an area of an image\\
+{\bf dm} & Define macro\\
+{\bf do} & Loop through a command string\\
+{\bf e}  & Execute a shell command\\
+{\bf el} & Eliminate bad chans in stack 1.\\
+{\bf em} & Empty a stack\\
+{\bf fl} & Flag location on graph\\
+{\bf fo} & Fold freq switched data in stack 1\\
+{\bf ft} & Fourier transform data in stack1\\
+{\bf gf} & Fit a gaussian function to part of a spectrum\\
+{\bf gm} & Graphics Manipulation\\
+{\bf gt} & Put scan in st 1\\
+{\bf hc} & Make a hard copy of the current screen\\
+{\bf im} & Image Manipulate \\
+{\bf in} & Integrate part of a spectrum \\
+{\bf is} & Interpolate a spectrun for a given position\\
+{\bf jb} & Calculate line widths from stack 1 (J. Bally's custom command)\\
+{\bf lc} & List commands li - Fit and remove a polynomial baseline \\
+{\bf lk} & Look at where stacks are\\
+{\bf me} & M ap data Extraction\\
+{\bf nf} & Switch data files\\
+{\bf ns} & Name stacks directory\\
+{\bf op} & Set options\\
+{\bf p}  & Print something\\
+{\bf pa} & Pause in execution\\
+{\bf pd} & Print data\\
+{\bf pf} & Fit a parabola to part of a spectrum\\
+{\bf ph} & Print in hms format\\
+{\bf pl} & Plot stack 1\\
+{\bf pr} & Printf to standard output or a global string\\
+{\bf q}  & Exit comb\\
+{\bf rc} & Define relative coordinate system\\
+{\bf ri} & Redirect command input\\
+{\bf rm} & Calculate rms and ssb noise figure for stack 1\\
+{\bf ro} & Redirect output to a file\\
+{\bf rs} & Rescale and add constant to stack 1\\
+{\bf rt} & Retrieve stack\\
+{\bf sc} & Scanf from a file or global string\\
+\end{tabular}
+\newpage
+\begin{tabular}{ll}
+{\bf sl} & Make a slice through an image\\
+{\bf sp} & Make a scatter plot comparing two images\\
+{\bf sq} & Squish - increase or decrease chan width\\
+{\bf st} & Store stack\\
+{\bf tp} & Total power - average chans in stack 1 weighted by cal in stack 3\\
+{\bf up} & Update a stacks directory\\
+{\bf us} & Change use array\\
+{\bf v}  & Compute value for map\\
+{\bf vc} & Velocity Space Contour Plot\\
+{\bf vm} & Calculate Virial Mass\\
+{\bf wf} & Write an image to a FITS file\\
+{\bf wr} & Write scan back onto file\\
+{\bf xf} & Transfer stacks to directory 2 after making them unique (1 per position)\\
+\end{tabular}
+\newpage
+\section*{Appendix D: For More Info} 
+\addcontentsline{toc}{section}{\protect\numberline{D}For More Info}
+
+The authors of this document will be happy to answer any questions 
+you have about \C.  
+It is possible, but discouraged, to write your own routines for \C, \ie
+make a new command. You should be able to do any reasonable operation using
+macros. However, if you think you really need a new \COMB command, consult
+Bob Wilson.
+If you think you've found a bug in \C, report it to Bob Wilson.
+If you think you've found a bug in this cookbook, report it to Marc Pound.
+ 
+\smallskip \noindent
+Marc W. Pound\hfill\break
+Astronomy Program\hfill\break
+University of Maryland\hfill\break
+College Park, MD 20742\hfill\break
+Tel: (301) 454-3001\hfill\break
+
+\noindent 
+John Bally\hfill\break
+AT\&T Bell Laboratories\hfill\break 
+P.O. Box 400\hfill\break 
+HOH L245\hfill\break 
+Holmdel, NJ 07733-1988\hfill\break
+Tel: (908) 888-7124\hfill\break
+
+\noindent 
+Robert W. Wilson\hfill\break
+AT\&T Bell Laboratories\hfill\break
+P.O. Box 400\hfill\break
+HOH L239\hfill\break
+Holmdel, NJ 07733-1988\hfill\break
+Tel: (908) 888-7120\hfill\break
+\end{document}

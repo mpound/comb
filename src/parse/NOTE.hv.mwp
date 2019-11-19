@@ -1,0 +1,4 @@
+NOTE: in P.headvars.h everythign must be in alphabetical
+	order or the search initiated with "p .headvar" 
+	doesn't work.
+Do the names have to be <= 6 chars?? No

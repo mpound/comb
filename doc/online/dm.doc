@@ -1,0 +1,25 @@
+dm - edit the list of macros				Matthew Miller
+
+EXAMPLES:
+
+dm 				Run the editor specified by the EDITOR
+				variable in your environment on your local
+				macro file ($HOME/.LMACROS).
+
+dm st:				Edit the foreground stacks macros file.
+
+dm g:				Edit the global macros file.
+
+ro p:;dm p:			list your local macros, piping the output
+				through "more"
+
+dm dt:p:"look"			list the macro "look" in the 
+				background stacks macros
+
+DESCRIPTION:
+
+dm (define macro) provides a mechanism for editting the local, 
+global,or stacks macro files.  By default, dm deals with the local 
+macro file, but the 'g' flag may be used to access the global macro 
+file. The 'st' and 'dt' flags may be used to access the macro files 
+in the foreground and background stacks directories. 

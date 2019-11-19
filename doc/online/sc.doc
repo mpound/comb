@@ -1,0 +1,91 @@
+sc - A scanf-like command for formatted input 
+
+EXAMPLES:
+
+sc "%lf%s" "#2 $"			Read a number from the current file
+					and put it into numeric global 2,
+					read the following string into global
+					string 0.
+
+sc "%lf%s" ".bbb $" str:.aaa		Same as above, but read from the user
+					string variable .aaa and store the
+					number into the user variable .bbb.
+
+ro t:;rt rc:2,5 ptol:3;ro q:;em 2	Get the numbers and relative coordinates
+					of all of the stacks
+					within 3' of 2,5 and write them in
+					~/comb.out; empty stack 2.  Then
+
+sc "%*s%le (%lf,%lf)" "# #1 #2";do w:".test>0" {rt #;co;sc}
+					Read the stack numbers and rc's into
+					globals #0-#2 one at a time
+					(skipping over the first field on
+					each line), retrieve each stack and
+					combine them in stack2
+
+sc "%lf" stch:1_128;p .numpt1=.test	Read values for 128 chans of stack1
+					(unless EOF or non-numeric input is
+					encountered) and set the number of chans
+					in stack1.
+
+sc "%*%lf" stch:1_128;p .numpt1=.test	Variation on above if input has two
+					columns and the channel values are in
+					in the 2nd column.
+
+sc "%lf" stch:1_10 stdin:		Read values for 10 chans of stack 1
+					from the standard input. 
+
+sc "%lf" ".ra"				Read the value of right ascension of
+					stack1 from the current input file.
+
+sc "%s %lf" "$1 #1" stdin:		Read a string and a number (separated by
+					a space) from the standard input.
+
+sc sc "%lf%s" "#2 $" w:no		Do not issue a warning message if the 
+					end of file marker is reached before 
+					the first token was read in. The default 
+					is to warn.
+
+
+DESCRIPTION:
+
+Sc is a command that interfaces directly to the C library function
+scanf (see "man -s 3S scanf").  The input may come from a file
+(defaults to $HOME/comb.out), a global string, the standard input, or a
+string (which may contain string variable(s) of any kind).  The results
+may be assigned to any of the header or user variables, global strings,
+global variables, or a sequence of channels in stack1.  Up to 10
+variables or 16384 channels may be converted in a single command.
+
+Alternately, if the rw: flag is given the only action will be to reopen
+the file at its beginning (rewind it).  When reading from the standard
+input, the read is terminated when the last token is encountered.
+
+The only conversion characters which will work are:
+	s, le, lf, and lg
+Header variables are double and require that you use 'l' (e.g., %lf.)
+But use 'l' for floats as well as doubles. 
+
+The list of variables to which the results are to be assigned is given
+in a string of the form "#4 .rms1 $2 # $8".  It is up to the user to
+match the format string to the assignment string.
+
+The header variable .test is set to what scanf returns, i.e. the number
+of successful conversions that were made or -1 if EOF was encountered
+before the first conversion was made.  A result of less than the
+requested number may indicate that there were characters in the file
+which didn't match the requested conversion (alphas in a numeric field)
+or that EOF was reached after the first conversion.  In the case of
+reading into stack1 channels, it will be set to the number of channels
+successfully read.  When assigning to stack 1 channels with the stch:
+option, the format string is still used, so it should be set to "%le"
+(the default) or "%lf" unless you need to skip some of the input.  The
+value of .test can be used to set .numpt1 if all of the chans are read
+at once.  
+
+If the w: flag is set to "yes" (the default), sc will warn you if EOF
+was encountered before the first conversion was made. If EOF was
+encountered AFTER the first conversion was made, you will not be warned
+until the next read (next use of sc). A bit confusing, but this is
+the behavior of scanf.
+

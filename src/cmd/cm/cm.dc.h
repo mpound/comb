@@ -1,0 +1,106 @@
+extern Node cmt_[];
+union {
+	char c[1503];
+	short int s[1];
+	int l[1];
+	double d[1];
+} cmb;
+#define llx (cmb.d + 0)
+#define urx (cmb.d + 1)
+#define lly (cmb.d + 2)
+#define ury (cmb.d + 3)
+#define ir (cmb.d + 4)
+#define efd (cmb.d + 5)
+#define gs (cmb.d + 6)
+#define fwhm (cmb.d + 7)
+#define fr1 (cmb.d + 8)
+#define fr2 (cmb.d + 9)
+#define lv (cmb.d + 10)
+#define hv (cmb.d + 11)
+#define st (cmb.d + 12)
+#define clv (cmb.d + 13)
+#define lc (cmb.d + 88)
+#define hc (cmb.d + 89)
+#define mwp (cmb.d + 90)
+#define hcl (cmb.d + 91)
+#define hcs (cmb.d + 92)
+#define rh (cmb.l + 186)
+#define rv (cmb.l + 187)
+#define sll (cmb.l + 188)
+#define slh (cmb.l + 189)
+#define nlv (cmb.l + 190)
+#define clt (cmb.l + 191)
+#define dbg (cmb.l + 266)
+#define llxt (cmb.s + 534)
+#define urxt (cmb.s + 535)
+#define llyt (cmb.s + 536)
+#define uryt (cmb.s + 537)
+#define rht (cmb.s + 538)
+#define rvt (cmb.s + 539)
+#define irt (cmb.s + 540)
+#define it (cmb.s + 541)
+#define itf (cmb.s + 542)
+#define efdt (cmb.s + 543)
+#define gst (cmb.s + 544)
+#define fwhmt (cmb.s + 545)
+#define sllt (cmb.s + 546)
+#define slht (cmb.s + 547)
+#define frt (cmb.s + 548)
+#define zv (cmb.s + 549)
+#define zvfl (cmb.s + 550)
+#define mcrt (cmb.s + 551)
+#define lvt (cmb.s + 552)
+#define hvt (cmb.s + 553)
+#define scl (cmb.s + 554)
+#define sclf (cmb.s + 555)
+#define stt (cmb.s + 556)
+#define nlvt (cmb.s + 557)
+#define clvt (cmb.s + 558)
+#define clve (cmb.s + 559)
+#define cltt (cmb.s + 560)
+#define clte (cmb.s + 561)
+#define lct (cmb.s + 562)
+#define lcf (cmb.s + 563)
+#define hct (cmb.s + 564)
+#define hcf (cmb.s + 565)
+#define mwpt (cmb.s + 566)
+#define hclt (cmb.s + 567)
+#define hcst (cmb.s + 568)
+#define dbgt (cmb.s + 569)
+#define objt (cmb.s + 570)
+#define zunt (cmb.s + 571)
+#define hlbt (cmb.s + 572)
+#define hlbf (cmb.s + 573)
+#define vlbt (cmb.s + 574)
+#define vlbf (cmb.s + 575)
+#define mlbt (cmb.s + 576)
+#define mlbf (cmb.s + 577)
+#define blbt (cmb.s + 578)
+#define blbf (cmb.s + 579)
+#define mcr (cmb.c + 1160)
+#define obj (cmb.c + 1201)
+#define zun (cmb.c + 1270)
+#define hlb (cmb.c + 1339)
+#define vlb (cmb.c + 1380)
+#define mlb (cmb.c + 1421)
+#define blb (cmb.c + 1462)
+static short clve_o = 1,clte_o = 1;
+static double llx_o = 0;
+static double urx_o = 0;
+static double lly_o = 0;
+static double ury_o = 0;
+static int rh_o = 10;
+static int rv_o = 10;
+static double ir_o = 0.8;
+static double efd_o = 7.;
+static double gs_o = 1.;
+static double fwhm_o = 1.66667;
+static int sll_o = 10;
+static int slh_o = MAXSTKNUM;
+static double fr1_o = 0,fr2_o = 990000;
+static char mcr_o[41] = "DFLT";
+static double lv_o = 0;
+static double hv_o = 0;
+static double mwp_o = 0;
+static double hcl_o = 0;
+static double hcs_o = 0;

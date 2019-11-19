@@ -1,0 +1,42 @@
+
+These are "peculiarities" known to be in comb 1996.0 and previous
+versions.  
+
+1) "The negative RA problem"
+
+This shows up if you make 'cm' or 'lk' maps in absolute coordinates
+(i.e. with map center (RA,DEC) = (0H, 0D) and offset type in hours)  
+with RA extending past RA=12h. For instance, suppose you have
+stacks located between 15h and 16h and between 45d and 50d. The
+commands:
+
+-> rc rd:0,0 r:
+Current relative coordinate system:
+    SYSTEM NAME     |        CENTER COORDINATES        |     OFFSET TYPE
+MyStacks            | rd(1950.0)  0:00:00.0,   0:00:00 |  dra(h) ddec(d)
+
+-> lk,16:00,15:00,45,50
+
+will not display your stack locations properly.  In most cases, it
+will not display your stack locations at all.  However, the command 
+
+-> lk,-8,-9,45,50  
+
+will display them correctly but with negative RA labels along the
+bottom axis (i.e., -8:00 to -9:00).    
+
+2) "The CDELTn problem"
+
+This problem is related to the fact that CDELTn is not a
+well-defined quantity in FITS for longitude-like coordinates, i.e.
+if it is a true angular spacing or a coordinate spacing.  RA-DEC
+FITS files written from comb adhere to the FITS standard, but 
+files in galactic coordinates may not. Comb currently produces 
+FITS files in the same way that IPAC routines do.  
+
+
+If you find anything else you think is a bug, please report it to 
+Bob Wilson (rwilson@cfawilson.harvard.edu) or Marc Pound 
+(mpound@astro.umd.edu)
+
+

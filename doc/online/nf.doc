@@ -1,0 +1,20 @@
+nf - Switch data files					Adam Buchsbaum
+
+
+EXAMPLES:
+nf "/usr/anon/cs3b"			Assigns /usr/anon/cs3b as
+					the new data file.
+
+nf p:					print the current data file
+
+DESCRIPTION:
+
+nf allows you to specify any file that contains data useful to comb to
+be used in commands such as gt, ad, etc.  nf requires a full path
+name.  The last three chars of the file name can then be changed when
+giving a scan number.  They will also be automatically advanced when
+crossing file boundaries in gt or ad (not true for NRAO 12-m pdfl files,
+see 'gt ?!').
+
+See gt ?! for a discussion of scan numbers in comb and the environment
+variable SCANFILE which can remove the need to use nf.

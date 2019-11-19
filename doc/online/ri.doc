@@ -1,0 +1,19 @@
+ri - Redirect comb's command input to a file or string
+
+EXAMPLES:
+
+...;ri "t";...		At the 'ri' command the file t will be read for
+			commands.  Redirection will end at the EOF
+c $={p "Hello World"};ri str:$	Yet another way to print Hello World.  This
+			will work with any header or user defined variable.
+
+DESCRIPTION:
+
+If a file name is given, 'ri' opens the file and reads commands from it
+until reaching the EOF.  "ri' can be nested in command files until COMB
+runs out of open file descriptors.  There must be carriage return after
+the string of commands.
+
+If a string is given, comb executes the string as though it had been
+typed at the terminal.  The main use of the string option is to execute
+strings in variables.

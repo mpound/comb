@@ -1,0 +1,619 @@
+
+			SPECTRAL SCAN DESCRIPTION
+
+There are two types of spectral scan formats which originated at Bell Labs. 
+The first, now known as the "old Bell Labs" (or simply "old") format, 
+was replaced at the end of 1991 by the "Bell Labs Spectral Data File" (BLSDF)
+or "scan2" format.  Scan2 is more flexible than the old format because it 
+allows variable length data records, a variable number of spectra per record, 
+and arbitrary keywords in addition to "standard ones".  In the old format, 
+scan header variables were accessed by their location in the array .ndat() 
+(e.g., "p .ndat(1)" would print the scan number). In scan2 format, the
+header variables are accessed by name (e.g., "p .ScanNum").
+
+If you want to know what header variables are present in your scans, you can 
+type "pd sc:" to display the variable names and values.  The value of any 
+variable can be accessed by putting a "." in front of the name. For instance,
+".ScanNum" is the value of the variable ScanNum.  Which header variables are 
+present depends on where your data originated.  (i.e., Bell Labs, DSN, 
+AST/RO, NRAO).  For a list of common scan2 keywords, type "keyw".
+
+Comb also understands the NRAO scan formats known as PDFL and SDD (Singledish 
+Data). However, to the user these formats appear identical to scan2, although 
+the keyword names and/or meanings may differ.  Where possible, we have 
+converted the names used by NRAO to those used by Bell Labs. PDFL is no 
+longer supported by NRAO, having been replaced by SDD in 1993. The PDFL format 
+went through a number of backwards incompatible changes before being replaced 
+by SDD; comb will recognize only the final version used by NRAO in 1992-1993. 
+For a list of common NRAO keywords, type "nrao". 
+
+This rest of this document details the scan2 format and gives a description of 
+the .ndat() array contents.  
+
+
+		The Bell Laboratories Spectral Data File
+
+This file type allows variable length data records (scans) with the
+possibility of a variable number of spectra per record.  Scan numbers
+will be sequential and it is expected that scans will be accessed by
+number.  In the interest of rapid access for data reduction and economy
+of space, numbers in the header and data are currently required to be in
+binary, i.e. two's complement integers or IEEE floating point values.
+There are also two somewhat arbitrary limits imposed on the data:  
+1) The byte order in the file will be Big Endian (IBM, Motorola, Sun).  
+2) Binary numbers (int, double, etc.) will be located at even locations
+modulo their length.  It would be relatively easy to make a reader
+which removed all three of these restrictions.
+
+The file begins with a preamble which has an ASCII description of the
+data in the file through a set of keywords giving their location, type,
+and number of array elements (usually 1).  Immediately following this
+is a main header which applies to the whole file.  Following this are
+the scans.  Scans will have header variables and may have either one
+data vector or one or more 'arrays', each with optional header values
+and a data vector.  Except for a few housekeeping header values, the
+reading program will be able to accept header values in any of the
+three locations as given by the preamble.
+
+The preamble contains a description of the file based on keywords which
+are given one per line.  There are three white-space-separated fields
+in each line with an optional comment following the last:
+
+Keyword  Which_Hdr  Format  /Comments
+
+An example line is:
+HMIFreq  M 1E		/ 864 Lock loop Harmonic mixer intermediate frequency
+
+Keyword:  The keyword should have 8 or fewer printable chars.  I suggest
+using upper case at the beginning of each concatenated word.
+
+Which_Hdr:  There are three places for header values:
+
+M: The main header.  These values will be constant for the whole file.
+S: The Scan header.  Most header values will be here in two's complement
+   integer, IEEE floating point, or fixed length string format.
+A: The Array header.  Scans may contain more than one spectrum when the
+   telescope has more than one spectrometer, an array of receivers,
+   etc.  The header values which change from spectrum to spectrum will
+   immediately precede the corresponding array of data.  The offset
+   is from the given start of the array (bytes).
+
+Format:  The formats descriptions are taken from FITS 3-D Binary tables
+format and were adopted from FORTRAN format specifications.  They have
+the form 'rX' where 'r' is a repeat count (array length) and X gives
+the data type.  The Formats are:
+
+rC: 8 Bit signed two's complement integers.
+
+rI: 16 Bit signed two's complement integers.
+
+rJ: 32 Bit signed two's complement integers.
+
+rE: 32 Bit IEEE format floating point numbers.
+
+rA: A character string of length r (8 Bit chars.).
+
+Comment:  By convention, this field should start with a '/', although
+the reader now ignores any remainder of the line.  A line which begins
+with a '/' is treated as a comment by the reader, but the software which
+sets up the reader in Comb treats such lines as valid header variables,
+so that that keyword could be recognized.
+
+As the main header is read,  each item is assigned the next location in
+its header.  The order in the binary headers is determined from the
+order in the preamble.  Each value will be located on an 'even'
+boundary for its size.  Thus doubles are on even 8 byte addresses but
+chars can be anywhere.  There may be holes in a header, just as in a
+struct in C.
+
+The preamble will be followed on the next 8 byte boundary by the Main
+header, followed by the scans (also on 8 byte boundaries).
+At the end of a scan, the arrays will probably be located on an
+8 byte boundary, but a writer is free to locate them in any way
+as long as each element of each array is on the appropriate boundary.
+
+A few keywords will be needed for managing the format of the file.
+Many others will be needed to describe the spectral line data.  The
+first keyword should be:
+
+SIMPLE M 5A 'blsdf' /This should convince any FITS reader to stop.
+
+If an index area is to be used with variable length scans, the
+following should be in the Main header:
+
+MaxScans M 1J n /This sets the size of the index (which need not be full).
+RecLoc I 1J  /This is the variable in the index which gives the scan location.
+
+If no index is given we need:
+
+ScanSize M 1J n /The size of each scan in bytes (a multiple of 8)
+
+In a scan the first header value should be:
+
+ScanNum S 1J /The scan number as known by the observer
+
+The last header value in a scan gives the locations of the data arrays.
+The number of arrays must have been given earlier.  These could be in
+any appropriate integer format.  A repeat of 0 for ArrayLoc indicates
+that its length is determined in the scan header, not the main header.
+
+NumArray S 1C
+....
+ArrayLoc S 0J /The array offsets start in this location.
+
+These could be in the Main header if they never change:
+
+NumArray M 1C 3
+....
+ArrayLoc M 3J n1 n2 n3
+
+Another required value is the number of channels in each array.  Normally
+this would be in the array header, but it could be in the scan or main 
+header if it applies to all arrays in the scan or all arrays in the file.
+
+NumChans A 1I n
+
+=======================================================================
+
+Here is an example Bell Laboratories Spectral Data File Header:
+
+blsdf			/ This should convince any FITS reader to stop.
+/ScanSize M 1J		/ Size of all scans if location not given in ScanLoc
+FrstScan M 1J		/ 1
+LastScan M 1J		/ 0 ; Updated as data are put in the file.
+HMIFreq  M 1E		/ 864 Lock loop Harmonic mixer intermediate frequency
+IFCenter M 1E		/ 1366 Reference IF frequency.  Spect cntr rel to this
+Longitud M 1E		/ 4.94583 = 4:56:45 at Crawford Hill
+Latitude M 1E		/ 40.392
+Height	 M 1E		/ 100 meters above reference spheroid ~Mean sea level
+Telescop M 8A		/ BTL-7MTR  
+ObsPrg	 M 8A		/ OBS
+SpecType M 8A		/ FILTBANK
+/ProjID   M 8A 		/+Project ID. NOTE: "+" indicates NRAO keyword 
+/Observer M 16A         /+Observer name or initials
+ScanLoc  M 10000J	/ This variable gives the scan offset from beg of file
+ScanNum	 S 1I		/ The scan number as known by the observer
+/SubScan  S 1E		/+Subscan number 
+ObsType  S 2A		/ Observation type
+J2Second S 1J		/ Sec +- from J2000
+IntTime  S 1E		/ Integration time S + R
+/Object   S 30A         / source name. sm->obs.sourceName --mh
+PosType  S 4A		/ Coordinate system: "AzEl", "Equ", "Gal", "EqAp"
+CentRa	 S 1E		/ Epoch RA (hrs), map center
+CentDec  S 1E		/ Epoch Declination (deg), map center
+CentL	 S 1E		/ Galactic longitude (deg), map center.
+CentB	 S 1E		/ Galactic latitude (deg), map center.
+RaMap    S 1E           / True 'Arc on the sky in Ra direction for "on" position
+DecMap   S 1E           / 'Arc in Dec. for "on" position
+LMap     S 1E           / (Deg) L offset from center pos for "on"
+BMap     S 1E           / (Deg) B offset from center pos for "on"
+RaRef    S 2E           / Off positions with units as above. Can have 2 "offs"
+DecRef	 S 2E		 
+LRef	 S 2E
+BRef	 S 2E
+Epoch	 S 1E		
+Azimuth  S 1E
+Elevatio S 1E
+/RefAzOff S 1E		/+Ref. azimuth offset for position-switch (arcsec)
+/RefElOff S 1E		/+Ref. elevation offset for position-switch (arcsec)
+AzDelta	 S 1E		/ Azimuth Pointing correction
+ElDelta	 S 1E		/ Elevation Pointing correction
+VRefSys  S 4A		/ Has values: "LSR", "Sun", "Eart", "Ant"
+LineFreq S 1D		/ Rest Frame Frequency
+SigIF	 S 1E		/ Expected IF freq of line wrt IFCenter at signal time
+RefIF	 S 1E		/ Same for ref phase of a freq switch
+/RefIF2   S 1E		/+Possible second ref phase for freq switch
+VSource	 S 1E		/ Vel of Source in VRefSys (Redshift is positive)
+VAnt	 S 1E		/ Tot Doppler shift is VSource + VAnt
+/BZero	 S 1E
+BScale	 S 1E		/ If data is integer, value = data * BScale [+ BZero]
+RecTemp  S 1E		/ True Receiver temperature (At antenna feed)
+/CalTemp  S 1E          /+Noise diode calibration temperature (K)
+/TypeCal  S 8A		/+Type of calibration, e.g. VANE 
+/SysTemp  S 1E		/+System temperature (Above the atmosphere)
+HotSpill S 1E		/ Fraction of Hot terrestrial absorption beyond ant feed
+SbRatio	 S 1E		/ Signal sideband Gain / Image sideband gain
+TAmbient S 1E		/ Temperature of warm calibration load
+TSky	 S 1E		/ Most recent measurement of sky temp
+TSkyElev S 1E		/ Elevation angle of sky temp measurement
+NRef	 S 1C		/ Number of reference positions
+Bad      S 1C		/ Larger # -> worse data
+MMHN	 S 1C		/ Harm. numb of main mixer + LO chain after locked osc
+MMSB     S 1A		/ Main Mixer Side Band ('u' or 'l')
+HMHN	 S 1C		/ Harm numb of harmonic mixer
+HMSB     S 1A		/ Harmonic Mixer Side Band
+/Sideband S 1E          /+Sideband number 
+/BeamFWHM S 1E          /+Beam full-width at half-maximum (arcsec)
+/EtaFSS   S 1E          /+Forward spillover and scattering eff. (Ta*->Tr* conversion)
+/AppEff   S 1E          /+antenna aperture efficiency at this frequency
+/EtaL    S 1E           /+Rear spillover and scattering efficiency
+/BeamEff S 1E           /+main beam efficiency
+/Pressure S 1E		/+Air pressure cm-Hg 
+/Humidity S 1E		/+percent
+/Refrac   S 1E		/+Refraction correction  (arcseconds)
+/DewPt    S 1E		/+Dew point (C)
+/MmH2O    S 1E		/+mm precipitable water vapor 
+/Polariz  S 8A		/+Polarization
+/RxInfo   S 8A		/+Receiver information 
+/History S 80A		/+user history (NRAO calls it openpar)
+DTAbs	 S 1E		/ temperature diff of ambient and the absorber
+NumArray S 1C		/ Number of arrays in this scan
+ArrayLoc S 0I		/ The array offsets (Bytes) start in this location.
+NAxis1	 A 1I		/ Number of elements in array
+CType1	 A 2A		/ ie. Fr, Az, Dc, or L (Implies units for CRVal & CDelt)
+DataType A 4A		/ ie. TA, TR*, ON, HOT, HotA
+CRVal1	 A 1E		/ (Offset) Coordinate of center array element
+CDelt1	 A 1E		/ Channel to channel spacing
+/CRPix1   A 1E          /+Reference pixel (stk->expch)
+/Bandwid  A 1E          /+Backend bandwidth (MHz)
+Data	 A 0I		/ This is what it is all about
+END			/ 
+
+=======================================================================
+
+             "OLD" BELL LABS SCAN HEADER INFORMATION
+
+These are listed in the order in which they appear in the array .ndat().
+(e.g., .ndat(1) is Scan number).
+
+    1      Scan number
+
+    2      The high-order part of the signal frequency (+ or -)
+                from the first IF (NDAT 88) (MHz x 100)  See NDAT(11).
+
+    3      The number of filter banks used (As at Kitt Peak)
+
+    4      The high-order part of the LSR Velocity (km/sec x
+            10---As at Kitt Peak)  This is the peculiar
+            velocity of the source with respect to the LSR.
+            (VSORCE) See NDAT(106)
+
+    5      The modified Julian Day number--from January 1,
+            1950 (As at Kitt Peak)
+            Noon of January 1, 1950 has JD = 0.
+            January 1, 1974 = 8766 all day.
+
+            MJD = 9861 + Day + (Year-1977) * 365 + INT((Year-1977)/4)
+
+    6-10   The low-order part of the filter widths (Hz),
+            i.e., the filter width for the ith filter bank
+            equals:  10**4 x NDAT(43+i) + NDAT(5+i)
+
+    11     The low-order part of the signal frequency (+ or -)
+             from the first IF In Hz, the signal offset is:
+            10**4 x NDAT(2) + NDAT(11)
+
+    12     The high-order part of the Doppler velocity
+            (km/sec x 10)
+            This is the velocity of the antenna with
+            reference to the LSR projected on the source
+            direction.  This velocity adds algebraically to
+            NDAT(4) to give  the total velocity.  See NDAT
+            (95)
+
+    13     Observing mode (As at Kitt Peak):
+            Mode equals 1 for frequency switching
+            Mode equals 2 for position switching
+            Mode equals 3 for frequency switching plus
+                 position switching
+            Mode equals 4 for beam switching
+            Mode equals 6 for load switching
+            Mode equals 10 for a CAL
+            Mode equals 11 for GAINS
+            Mode equals 12 for SKY
+            Mode equals 20-29 reserved for continuum
+                measurements (they are not corrected in COMB for
+            image sideband rejection):
+            Mode equals 20 for scan azimuth
+            Mode equals 21 for scan elevation
+
+    14     The exponent associated with integer data
+            Temperature = Data/10**NDAT(14)  (As at Kitt Peak)
+
+    15     Ground temperature minus sky temperature (Kelvin)
+
+    16     Universal time at start of scan -- 0.14 fraction
+            of a day.  (16384 x UT/24)  (As at Kitt Peak)
+
+    17     The low-order part of the lock loop if frequency during the
+           reference phase of frequency switching.  See NDAT(64).
+           In Hz, the reference if is: 10**5 x NDAT(64) + NDAT(17)*10
+
+    18     Integration time (seconds x 10)
+              Equals total scan time for position switching
+              or frequency switching but equals (total
+              time)/4 for frequency switching plus position
+              switching.
+           NOTE: This is different from Kitt Peak!
+
+    18*    Integration time per box (As at Kitt Peak)
+
+    19-22  Difference of system temperatures for backends 2
+            to 5 and the system temperature for backend
+            number 1.
+            TS(backend i) = NDAT(66) + NDAT(17+i) except for
+            backend number 1 for which TS = NDAT(66).
+
+    23     SIN(ELEV) x 2**14   (As at Kitt Peak)
+
+    24     The low-order part of the lock loop IF frequency during the
+           signal part of the frequency switch cycle.
+           The lock loop signal IF frequency = NDAT(63) x 10**5 +
+           NDAT(24)/10 in Hz.
+
+    25     Scale fudge factor--Includes any known calibration
+            error affecting both signal and noise in like
+            manner (%).
+
+    26     Signal sideband spillover factor:  % of beam
+            directed skywards.
+
+    27     Beam efficiency:  % of total beam directed at the
+            sky which also falls within a one-half degree
+            disc.
+
+    28     If > 0, temperature of chopper (Kelvin).
+            If <0, sum of delta T in signal and image using noise
+            tube calibration.
+            If < 0, (-10 x Kelvin).
+
+    29     Temperature of ground (Kelvin)
+
+    30     Sideband gain ratio
+              NDAT(30) = 1000 x Log [Gain(Signal)/Gain(Image)]
+              i.e. if single sideband filter is -15dB at
+              image, -0.5dB at signal, then value is 1450.
+
+    31     Zenith atmospheric attenuation in the image
+            sideband minus Zenith atmospheric attenuation in
+            the signal sideband (% x 10)
+
+    32     Image spillover factor minus signal spillover
+            factor (As for NDAT(26) above)
+
+    33     Year of given coordinates (year x 10)
+
+    34     Special observing conditions, ABCDE (denoted by a
+            five-digit decimal number where A to E represent
+            the digits).  The values for A-E are as follows:
+            (The A digit remains unused at present.)
+              E -- Clouds;
+                0 = very thin clouds. (< 5K on continuum
+                chart)
+                1 = medium clouds.  Can barely see sun or moon
+                (< 20K).
+                2 = heavy clouds.  Cannot see sun or moon (<
+                40K).
+                3 = very heavy clouds.  Easily seen on
+                continuum chart (> 40K).
+             D -- Baseline;
+               0 = all ok
+               1 = fishy baseline
+               2 = bad baseline
+               3 = junk
+            C -- Dome door;
+              0 = open
+              1 = closed
+           B -- Pointing;
+             0 = ok
+             1 = questionable but probably ok
+             2 = certainly off but by < 0.5 beamwidth
+             3 = possibly off a lot
+             4 = certainly off a lot
+
+    35*    Number of rows if mapping (number of samples/scan if
+          spectral)  (As at Kitt Peak)
+
+    36*    Number of samples per row if mapping (As at Kitt
+          Peak)
+
+    37     GHz of standard oscillator, i.e. the standard which
+          is signal, NDAT(63), or reference, NDAT(64), away from
+          the klystron.
+
+    38     MHz of standard oscillator
+
+    39     kHz of standard oscillator
+
+    40     GHz of the line
+
+    41     MHz of the line
+
+    42     kHz of the line
+
+    43    
+           Sideband Number   Harmonic Mixer   Main Mixer
+          
+
+           Sideband 1 = ++       Lower          Lower
+           Sideband 2 = +-       Upper          Lower
+           Sideband 3 = -+       Lower          Upper
+           Sideband 4 = --       Upper          Upper
+
+
+          NOTE:  This is different from Kitt Peak where the same
+          table would be assigned the numbers 1,3,0 and 2.
+
+    44-48  High-order parts of filter widths (See description of
+          NDAT(6-10)
+
+    49     Number subtracted from the data  (As at Kitt Peak)
+
+    50-54  The number of channels in each filter bank for filter
+          banks 1-5
+
+    55-60  These values do not include the offsets in NDAT(61-
+          62)
+
+    55     Hours of right ascention
+
+    56     Minutes of right ascention
+
+    57     Seconds of right ascention
+
+    58     Degrees of declination
+
+    59     Minutes of declination
+
+    60     Seconds of declination
+
+    61     Right ascention offset (Minutes of Arc x 10)  This is
+          a coordinate angle, not a true arc length.  In OBS,
+          RAMAP is a true arc length; thus, NDAT(61) =
+          RAMAP/COS(DEC). See NDAT(107).
+
+    62     Declination offset (Minutes of Arc x 10) See NDAT(108)
+
+    63     Signal (MHz x 10).  This is the lock loop IF
+          frequency.  If frequency switching, it is the value
+          during the signal interval.
+
+    64     Reference (MHz x 10)
+          This equals 0 if not frequency switching.  At Texas
+          and Kitt Peak, this is the IF frequency of the lock
+          loop during the reference interval of a frequency
+          switch.  At Crawford Hill, the synthesizer frequency
+          is shifted for frequency switching instead of the IF
+          frequency.  Since there is only one place for
+          synthesizer frequencies, (NDAT(37-39)), a fake
+          frequency is put here so COMB will get the correct
+          reference frequency.
+
+    65     Calibration temperature (TC) (As at Kitt Peak)  (10 x
+          Kelvin).
+          This was the user-supplied number chosen at the time
+          of the observation as the strength of the calibration
+          signal.
+
+    66     Receiver temperature (Kelvin)  (As at Kitt Peak)
+
+    67     Zenith atmospheric attenuation in the signal sideband
+          (% x 10)  (As at Kitt Peak)
+
+    69*    Counts in recent calibration (As at Kitt Peak)
+
+    70*    Receiver gain (Volts x 1000)  (As at Kitt Peak,
+          NDAT(51))
+
+    71*    Size of the sample box (Arc Sec x 10)
+          (As at Kitt Peak, NDAT(63))
+
+    72*    Mapping Angle (degrees x 10)
+
+    73     The right ascention offset of the reference position
+          (for position switching) from the center of the source
+          (in minutes of arc x 10) This is a true arc length
+          equal to RAREF ( x 10) from OBS. See NDAT(109).
+
+    74     Declination offset of the reference position. See NDAT(110).
+
+    75-76  Same as 73 and 74 but for the second reference
+          position.  Set to zero if only one reference position
+          is used.
+
+    77-81  Frequency offset of filter banks 1-5 from the super-
+          header value of the first IF frequency (in MHz x 100)
+
+    82     Azimuth Delta with collimation correction (degrees x
+          1000)
+
+    83     Elevation Delta with collimation correction
+
+    84     Azimuth Delta without collimation correction
+
+    85     Elevation Delta without collimation correction
+
+    86     Left-hand Beam Azimuth offset (minutes of arc x 10)
+
+    87     Left-hand Beam Elevation offset (minutes of arc x 10)
+
+    88     The frequency of the first IF (MHz)
+
+    89-93  The low-order part of the frequency offsets of filter
+          banks 1 to 5 from the Superheader value of the IF
+          frequency.  The offset =
+          NDAT(77-81) x 10**4 + NDAT(89-93) in Hz.
+
+    94     LPOS
+               100B  = RA and DEC
+               200B  = AL and EL
+               400B  = L and B
+               1000B = SO and IP
+
+    95     Low-order part of VANT
+          VANT = NDAT(12)/10 + NDAT(95)/10**5
+
+
+    96     The low-order part of l
+          l equals NDAT(96) + NDAT(97)/1000 in degrees.
+
+    97     The high-order part of l
+
+    98     The low-order part of b
+          b equals NDAT(98) + NDAT(99)/1000 in degrees.
+
+    99     The high-order part of b
+
+    100    Map offset in l (10**-3 degrees)
+
+    101    Map offset in b (10**-3 degrees)
+
+    102    First reference position offset in l
+
+    103    First reference position offset in b
+
+    104    Second reference position offset in l
+
+    105    Second reference position offset in b
+
+    106    Low-order part of VSORC
+          VSORC  = NDAT(4)/10 + NDAT(106)/10**5
+
+    107    The low-order part of RAMAP
+          RAMAP  = NDAT(61)/10 + NDAT(107)/10**5
+
+    108    The low-order part of DECMAP
+          DECMAP  = NDAT(62)/10 + NDAT(108)/10**5
+
+    109    The low-order part of RAREF1
+          RAREF1  = NDAT(73)/10 + NDAT(109)/10**5
+
+    110    The low-order part of DECREF1
+          DECREF1  = NDAT(74)/10 + NDAT(110)/10**5
+
+    111    The low-order part of RAREF2
+          RAREF2  = NDAT(75)/10 + NDAT(111)/10**5
+
+    112    The low-order part of DECREF2
+          DECREF2  = NDAT(76)/10 + NDAT(112)/10**5
+
+    113    Observes initial - alphanumeric
+
+    114    Observes code
+
+A scan file starts off with a scan length superheader.  Only the first
+28 bytes of this "scan" contain any information and only the first few
+shorts are useful.
+
+struct SH {
+        short nszsc     Number of sectors (256 bytes) per scan
+        short nfsc      Scan number of first scan in file minus one
+        short numpts    Max number of spectral channels
+        short nstrt     Location in a scan (words) where the data starts
+        short invrt     True if spectra are inverted
+        short longtd    Some encoding of the longitude of the observatory
+        short laTTD     Latitude (Turns * 16384)
+        short fif       Frequency of the first IF (MHz)
+        short map       True for continuum scan data (Never used)
+        short endscan   Last scan in this file
+/* Remainder used only by OBS and obscom  */
+        char    datfn[6];       /* Unix File name.  Not used in comb */
+        short   maxscan,        /* Not Used in comb */
+        short   dmy1,
+        short   dmy2;
+
+}
+	/* Maxscan is in the same location that OBS keeps the last scan
+	 * not transfered. Maxscan is the max scan number which has been
+	 * transfered. It is used in saving scans to be overwritten. */
+

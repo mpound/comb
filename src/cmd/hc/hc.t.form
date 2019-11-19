@@ -1,0 +1,24 @@
+/* This is what you should change to tailor for your setup.         */
+/* There is room for 4 PostScript printers and 4 imagen             */
+/* printers, as well as a PostScript file and HP pen plotter.       */
+/*  -- mwp  11/91					            */
+/* Remove everything above this line--entree doesn't allow comments */
+parse ("cmnd_.gstr")
+
+"Make a Hard copy of the current screen" "hc";
+{
+	"Type of device":ex("typ");
+	{
+		"Post1" "a":;
+		"Post2" "b":;
+		"Post3"	"c":;
+		"Post4" "d":;
+		"Imagen" "i":;
+		"Jmagen" "j":;
+		"Kmagen" "k":;
+		"Lmagen" "l":;
+		"PostScript file" "pf":;
+		"Pen Plotter" "pp":;
+	}
+}
+

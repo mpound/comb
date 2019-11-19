@@ -1,0 +1,15 @@
+# An awk program used by comb to print possibly multi-line macros which match
+# a regular expression
+awk '
+BEGIN {pr = 0;n = 0}
+	{line[n++] = $0}
+	/'"$1"'/ {pr = 1}
+	$NF !~ /.*\\/ {
+		if(pr > 0) {
+			for(j=0; j<n; j++)
+				print line[j]
+			pr = 0
+		}
+		n = 0
+	}
+' $2

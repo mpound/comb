@@ -1,0 +1,26 @@
+
+th - make a temperature histogram			  MWP
+
+EXAMPLES:
+
+th tbin:0.5			make a histogram using all channels
+				and a dT of 0.5 K.
+
+th vl:[-5,5] sn:[50,500] 	make a histogram using only channels
+				between -5 and 5 km/s and stacks
+				between 50 and 500. 
+
+th logy: minx:.1		make a histogram with y in the log
+				and suppressing x (temperature) values
+				less than 0.1 (unscaled).
+
+DESCRIPTION:
+
+th makes a temperature histogram of number of channels between T and dT
+versus T, using the foreground stacks directory. User can specify
+stack limits, velocity limits, and dT. The output is a graph to the screen 
+and columns of numbers to a file (default:$HOME/th.out). th also prints
+some information to stdout.  Plotting y in the log does not affect
+the numbers printed to the file.
+
+Note: the stacks should be "uniqued" (using xf) before running th.

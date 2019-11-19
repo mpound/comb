@@ -1,0 +1,18 @@
+el - eliminate a bad channel or range of bad channels in stack 1   RWW
+ 
+
+EXAMPLES:
+
+el 41		replace chan 41, if plotting chans, or the chan at 41 Km/s
+		if plotting vel with the average of the two adjacent chans.
+
+cr,2;el x(0)_x(1)	replace a range of chans defined by reading the cursor
+		twice.
+
+DESCRIPTION:
+
+Eliminate works just as bc does, except just on the current stack 1 data.
+
+'crel' and 'elcr' are macros to eliminate channels using the cursor.  
+They reside in .GMACROS (dm g:).
+

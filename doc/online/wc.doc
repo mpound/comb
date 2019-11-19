@@ -1,0 +1,39 @@
+wc - write out a FITS cube from stacks data                       RWW
+
+Examples:
+
+wc 10,-10,-10,10 np:[21,21] ir:1 ci: vl:-8,4 ff:"mydata.fits"
+					write a FITS cube called "mydata.fits"
+					from the current foreground stacks
+					with given x and y limits and 21 spatial
+					points on each spatial axis (naxis1, 
+             				naxis2).  Velocity limits are given 
+					as -8 to 4 km/s.
+
+wc (write cube) is sort of like a combination of cm and vc in its 
+input options.  The data are written out on a regular grid after
+interpolation (if any) of spectra at each point. wc doesn't plot anything, 
+but after writing the cube in the file, you may do contour plots with cp.
+To that end, cp has a pl: option (plane) which allows you to plot
+any space-space plane from the cube.
+
+This version of wc uses the same basic routine as vc.  It picks the end
+velocities so that the velocities of the planes correspond to channels
+in the example spectrum.  In case of spectra which are shifted, the
+closest channel is used.
+
+The macros 'vlct' and 'chan' in .GMACROS is useful for finding out 
+the velocity of any channel or vice versa, e.g.
+ 
+-> vlct,1           ! print the velocity of channel 1
+-73.899149
+ 
+-> chan,-73.9       ! print the channel number of the given velocity
+0.998691
+ 
+You don't have to get the velocity exactly right, since wc uses
+the channel nearest the specified velocity.
+
+As with cm, the best way to learn this command, is to use handhold
+mode by typing 'wc ?' . See also 'cm ?!' and 'vc ?!' 
+

@@ -1,0 +1,17 @@
+lc - list commands					Matthew Miller
+
+
+EXAMPLES:
+lc					list commands
+
+DESCRIPTION:
+Lc gives a list of all the commands available in comb with a single line
+description of each.  If there is no on-line documentation for the command,
+an asterisk is printed at the end of the description.
+
+NOTE: 
+An asterisk after the listing means there is no on-line documentation 
+for that command, so '?!' won't help you. However, ' ??' is always of use.
+Documentation exists for all commands in the standard release version 
+of comb.  So if there is no documentation for a command, it means it is a 
+non-standard command.

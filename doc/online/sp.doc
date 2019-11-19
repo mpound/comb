@@ -1,0 +1,69 @@
+sp - Make a scatter plot comparing two images			RWW & MWP
+
+EXAMPLES:
+
+sp 1,2,1		Make a scatter plot of image 2 vs image 1 within
+			area 1.  The results will be in the file "scatter" 
+			in your home directory.
+
+sp an:3 fn:"scatter3" yfact:1E-4 minx:.5
+			Make a scatter plot with file named scatter3 in the 
+			current directory using area 3 multiplying the 
+			y values by 3 and suppressing data with x < .5 
+		        (unscaled).
+
+sp logx: logy: miny:0 minx:0   
+			Make a log-log plot of the images suppressing negative
+			values.
+
+sp ps:2 fill: ovl:	Plot with filled triangles instead of dots and overlay 
+			on the current scatter plot. See 'gm ?!' for a list of 
+			plot symbols and their figure numbers. See also note on
+			plot symbols below.
+
+DESCRIPTION:
+
+Sp will produce a plot comparing two images using comb graphics. 
+The default is a linear-linear plot with dots as symbols. Log-linear and 
+log-log plots are also possible (this does not affect the printed output 
+described below.) Other symbols as described in "gm ?!" are also available.
+
+Sp produces a four column file suitable for plotting with mongo or
+other package.  The four columns are x and y offsets from the image
+center, the x image value, and the y image value.  The points will all
+be from within the specified area.  The beginning of such a file
+follows:
+
+    -11      -21     0.3192    2.6e-07
+    -10      -21     0.3849  2.571e-07
+     -9      -21     0.3784  2.483e-07
+     -8      -21     0.4007  2.424e-07
+     -7      -21     0.4447  2.306e-07
+     -6      -21     0.3818  2.189e-07
+
+After making the graph, the integral of both images over the area is
+shown on the standard output.  The value shown is the sum of the points 
+times the area (in steradians) represented by each point in the map, e.g.:
+
+Integral in x image is 0.000106336  [K-KM/S]*[SR] over 3.59618e-05 SR
+Integral in y image is 7.77671e-12 [W/M2/SR]*[SR] over 3.59618e-05 SR
+
+The integral is multiplied by the scale factor for that image.
+
+Note for an integral with units [JY/BEAM]*[SR], you must divide
+by the beam area in SR to get total JY. (Hint: use that number for
+the scale factor.)
+
+RELATED MACROS: 
+bmsr in .GMACROS will print out the beam area in steradians given
+a FWHM in arcsec.
+
+A NOTE ON PLOT SYMBOLS:
+
+A list of figures and corresponding numbers is listed at the end
+of "gm ?!".  If the given figure width and height (fw:, fh:) are 
+zero (which is the initial value the first time you use "sp"),
+then comb will scale them to the plot. Otherwise, the previous
+value is used so that overlay plots (ovl:) come out looking nice. 
+So if you want comb to re-compute the plot symbol sizes, just
+give "fh:0" and "fw:0".

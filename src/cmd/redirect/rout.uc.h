@@ -1,0 +1,12 @@
+#undef qf
+#undef trf
+#undef act
+#undef actf
+#undef fnamet
+#undef pcmdt
+#undef StrNamt
+#undef qft
+#undef trft
+#undef fname
+#undef pcmd
+#undef StrNam

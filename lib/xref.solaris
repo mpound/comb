@@ -1,0 +1,5 @@
+cd $COMB/obj; nm -p *.o |\
+awk '
+NF == 1 {obj = $0}
+NF == 3 && $2 !~ /[nf]/ {print $3,$2,obj}' |\
+sort > $COMB/lib/xref.out

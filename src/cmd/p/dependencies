@@ -1,0 +1,8 @@
+p.o: p.c ../../main/C.h ../../main/History.h ../../parse/P.tree.h \
+ ../../parse/../main/machinedep.h ../../parse/P.struct.h \
+ ../../parse/C.h ../../error/C.h prnn.dc.h prnn.ec.h prnn.uc.h \
+ crn.dc.h crn.ec.h crn.uc.h ph.dc.h ph.ec.h
+prnnt_.o: prnnt_.c ../../parse/P.tree.h \
+ ../../parse/../main/machinedep.h
+crnt_.o: crnt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h
+pht_.o: pht_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

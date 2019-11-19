@@ -1,0 +1,336 @@
+This file contains the instructions to manually install comb. 
+*****************************************************************************
+** The preferred way to install comb now is to run the InstallCombXXXX     **
+** script (where XXXX represents the comb version, e.g. InstallComb2000.0) **
+*****************************************************************************
+
+Comb has been installed successfully on the following architectures:
+
+   type			 O/S
+Sparc 1 thru Ultra 10   SunOS 4.x, Solaris 2.x, Solaris 7
+Sun 4 			SunOS 4.x, Solaris 2.x
+Sun 3 			SunOS 4.x 
+HP 300			HP-UX
+HP 700 			HP-UX 9.0 (System V)
+DECstation 5000		Risc Ultrix
+IBM RS6000		AIX       (System V)
+VAX 11/780		BSD
+PC 386/87 or better	Linux RedHat 5.x , RedHat 6.0, Slackware 3.5,
+		        Windows NT (with difficulty, see note below)
+SGI			IRIX 5.2  (with comb HISTORY turned off)
+
+
+==============================================================================
+
+*************************************************************************
+** TO INSTALL COMB, YOU MUST HAVE AN ANSI C COMPILER (gcc will work).  **
+*************************************************************************
+
+The installation steps are as follows:
+
+	0) If you are root, you may want to use the -o option to 
+	   tar ( --same-owner for GNU tar) when de-archiving the comb tar
+           file. This prevents owner conflicts in some O/S's.
+
+	1) Set the environment variable COMB to the the full name of 
+           the directory that contains "bin" "doc" and "obj"
+	   (i.e., the one where you find this note).  Your path must include
+	   $COMB/bin.
+
+        2) Run the setup script appropriate to your OS and compiler. These
+	   scripts set the correct values in $COMB/src/machinedep.h and 
+	   set flags for various compilers.
+
+            For SunOS 4.x.y (= Solaris 1.x.y) with acc:
+	       cd $COMB/lib; setup.sunos
+
+            For SunOS 4.x.y (= Solaris 1.x.y) with gcc:
+	       cd $COMB/lib; setup.sunos.gcc
+
+	    For Solaris 2.x.y with the SUNWspro C compiler:
+	       cd $COMB/lib; setup.sol
+
+	    For Solaris 2.x.y with the GNU C compiler (gcc):
+	       cd $COMB/lib; setup.sol.gcc
+
+	    For HP computers:
+	       cd $COMB/lib; setup.hp
+
+	    For LINUX operating systems:
+	       cd $COMB/lib; setup.linux
+
+	    For all other computers:
+	       cd $COMB/lib; setup.other
+
+        3) [Non-Sun Microsystem computers only, excluding HP 700. ] 
+           Make any additional changes in $COMB/src/main/machinedep.h (see 
+	   comments in that file) to tailor it to your machine.  For instance, 
+	   if you are compiling on a DEC, PC, or other "LittleEndian" byte order
+	   machine, change the line in machinedep.h 
+		#define BYTEREVERSED 0
+	   to
+		#define BYTEREVERSED 1
+	   
+	   For HP 300 and 400 computers, machinedep.h should have the HP_700 
+	   bit turned off: 
+		#define HP_700   0 
+
+	4) This step describes how to set up printers for comb in the "standard"
+	   way. If you are adept enough to have your own special customizations
+           to the comb printer files, read (and execute if necessary) this 
+           step and then consult PRINTER CUSTOMIZATIONS below. 
+
+	   Comb supports the following printer types: PostScript, Imagen, 
+           HP LaserJet III, HP-GL, and Tektronix.  If you wish to use a printer
+           that is not one of these types, see the UNSUPPORTED PRINTERS below.
+
+           To get hardcopies from comb, you must set up the associated printer
+           files, $COMB/src/cmd/hc/hc.t and $COMB/lib/hc.lpr. 
+	   Not to worry, though, as these files will be automatically 
+           set up for you when you do the following:
+
+	         cd $COMB/lib
+		 make
+                 hcsetup
+	   
+	   hcsetup will prompt you for printer names, etc.  For System V
+           Unix operating systems, the default print command (generated
+           by hcsetup) is 
+
+              lp -o nobanner -d ${PRINTER} -c ${FILE}; rm ${FILE}
+
+	   For HP systems, the default print command is
+
+              lp -o nb -oraw -d ${PRINTER} -c ${FILE}; rm ${FILE}
+
+	   For non-System V operating systems it is
+
+	      lpr -P${PRINTER} -h -r -s ${FILE}
+	
+	   If you wish to change the default print command ("lp ..."), 
+           you can simply edit this line in hc.lpr. If you change the 
+           default print command after running "makecomb" (step 5), 
+           you do NOT have to recompile comb, since hc.lpr is a shell script. 
+
+           However, if, after running "makecomb install" (Step 5), you wish to 
+           add or delete a printer (or otherwise change the "PRINTER=" line in 
+           hc.lpr), it is easiest to do this with hcsetup so that hc.lpr and 
+           the "hc ??" command will match up. Then the hardcopy command
+   	   must be recompiled and via:
+	   
+		cd $COMB/bin
+		remake_printers
+		
+	5) To compile the whole thing, run "makecomb install" (in $COMB/bin).
+	   This visits each directory and runs 'make' there.  If no sources 
+           have been changed and the .o files are still there, nothing 
+	   will be recompiled.  To force a complete recompilation, run 
+ 	   "cleancomb" first.
+	
+	6) In order to take advantage of comb's history mechanism 
+	   (and to usefully edit macros), you must have the environment 
+	   variable EDITOR set. E.g., for csh,
+
+		setenv EDITOR /usr/ucb/vi
+	   or
+		setenv EDITOR /usr/local/bin/emacs
+
+ 	   Each user should put her editor preference in her .login, .profile,
+           or .cshrc file.
+
+	7) [Little Endian (BYTEREVERSED=1) machines only]
+           To swap the bytes on the sample stacks directory in $COMB/lib, 
+           which was written on a Sun, start up comb and type 
+
+		up ".../lib/sampleSTACKS" swap: 
+
+	   (substitute the definition of $COMB for ...). 
+
+	   YOU MUST ALSO DO THIS FOR ANY OTHER STACKS DATA YOU MAY HAVE THAT 
+	   CAME FROM A BIG ENDIAN MACHINE.  It only needs to be done once.
+           
+	   If you have any "old-style" Bell Labs raw data files (pre-1991),
+	   they should be byte-swapped with 'dd conv=swab.' BLSDF ("new" Bell
+	   Labs). Currently, NRAO SDD and PDFL raw data files cannot be read on
+	   a Little Endian machine.
+
+        8) [optional] 
+	   In comb, type 'diag' to run a diagnostics macro. 
+	   This attempts to run some of the more commonly used comb 
+           commands. Unsuccessful completion of 'diag' means 
+	   something is wrong. The converse is not necessarily true.
+
+	9) [optional]
+           If your site has several users, it is useful to set up a script 
+           called 'comb' on /local/bin or other public place, which contains 
+           something like:
+
+		#! /bin/csh
+		if( `/usr/bin/arch` == "sun3" ) then
+			setenv COMB /local/pkg/comb.sun3
+		else
+			setenv COMB /local/pkg/comb
+		endif
+		set path = ( $COMB/bin $path)
+		exec comb
+
+	   This way, each user does not have to have COMB defined. Note this
+	   particular example allows for both sun4 and and sun3 users.
+
+       10) On some systems, there may be an SCCS command called "comb", which 
+           can cause confusion. You can either rename $COMB/bin/comb or just 
+           make sure that $COMB/bin is before the SCCS directory in the path. 
+           Note that the example above does this.  On HP machines, the binary 
+           is automatically renamed to Comb in both "makecomb install" and 
+	   "remake_printers".
+
+       11) Upon successful installation of comb, please register as a comb 
+	   site using the Comb Page on the World Wide Web:
+
+           http://www.astro.umd.edu/~mpound/comb.html
+
+	   For those without a connection to the World Wide Web, contact 
+           Bob Wilson or Marc Pound and tell him you have successfully
+	   installed comb (include the version number).
+
+		Bob:  (617) 496-7744 
+		      Center For Astrophysics
+		      rwilson@cfawilson.harvard.edu
+
+		Marc: (301) 405-1520
+		      Univ. of Maryland
+                      Astronomy Dept.
+		      mpound@astro.umd.edu
+
+	  We are also happy to help if you have installation trouble.
+	  This last step is important: if we don't know you have comb,
+	  you won't get updates. 
+
+======================================================================
+OTHER UTILITIES INCLUDED IN THIS DISTRIBUTION:
+
+Three routines for manipulating FITS headers are automatically installed
+when you run "makecomb install." In combination, these programs
+can be used to edit headers of FITS images.
+
+1) $COMB/bin/listhd: list contents of FITS header at 80 chars per line
+       		     until the END card is encountered.
+
+        Usage: listhd FITSFILE or [command that outputs FITSFILE] | listhd
+ 
+2) $COMB/bin/gethd: extract a FITS header into an ASCII file 80 chars per line.
+ 
+        Usage: gethd FITSFILE or [command that outputs FITSFILE] | gethd
+ 
+        writes file FITSFILE.hdr
+ 
+3) $COMB/bin/puthd: given an ASCII FITS header and FITS image, replace with
+                    header on the image with the given header.
+ 
+        Usage: puthd FITSFILE
+ 
+        expects file FITSFILE.hdr to exist; writes new file FITSFILE.new
+
+======================================================================
+PRINTER CUSTOMIZATIONS:
+
+If you want to change printer files (e.g., add or delete a printer)
+but don't want your customizations to hc.lpr overwritten by hcsetup, you can
+edit $COMB/src/cmd/hc/hc.t by hand. Hc.t is the file that you see
+when you type 'hc ??'  and is essentially a list of printer names followed
+by the letter you chose to have comb recognize each printer by or "unused"
+if it is an unused slot.  For instance:
+
+		"Sun" "s":;		
+                "PostScript 2" "unused":;
+
+and "hc s:" would cause comb to print the current picture using "lp -dsun ...".
+The 2nd PostScript slot is unused.  To add a printer you must change
+appropriate the name and letter in hc.t, e.g.  
+
+		"Sun" "s":;		
+                "NewPrinter" "n":;
+
+You also need to change the corresponding "PRINTER=" line in hc.lpr, e.g.
+from
+        	post2)
+                	PRINTER=unused
+
+to
+        	post2)
+                	PRINTER=newprinter
+
+The value of PRINTER *must* correspond *exactly* to the printer name to be 
+sent to the lp command.
+
+To delete a printer, simply reverse the above (i.e., change from newprinter
+to unused, etc.)
+
+After this, hc.t and hc.c must be recompiled. You can do this with
+$COMB/bin/remake_printers.  **This script will also rename the resulting
+binary from cmbt to [cC]omb.**
+
+======================================================================
+UNSUPPORTED PRINTERS:
+ 
+If you have `xwd' (X window dump) and 'xpr' (print an X window dump)
+available on your system, you can use the following trick (thanks
+to Tom Kuiper). Edit hc.lpr so that one of the unused printer slots has
+the following (this example uses the second LaserJet slot 'lj2' and
+a printer named 'reber'):
+ 
+            lj2)
+                echo You have 3 seconds to make sure the Tek window is on top
+                sleep 3
+                xwd -name "tektronix(Tek)" | \
+                xpr -device ljet -cutoff 100 -portrait | \
+                lp -oraw -dreber
+                exit 0
+                ;;
+	
+The printer slot "LaserJet 2" in hc.t must be set to an appropriate
+identifying name/letter (see PRINTER CUSTOMIZATIONS above), followed by
+"remake_printers."
+
+======================================================================
+Special instructions for installation at NRAO 12-m, Kitt Peak:
+
+    There is one routine, wu (what's up) that defaults to
+    the latitude of the Bell Labs telescope.  I have another
+    version that defaults to the 12-m telescope latitude.
+
+	cd $COMB/src/cmd/wu
+	mv wu.t.kp wu.t
+	
+    Do this before you run 'makecomb.' Then continue with step 5 in 
+    the main installation procedure above.
+
+    Any questions, contact Marc Pound.
+
+======================================================================
+Modifying existing comb code (NOT GENERALLY RECOMMENDED):
+
+In order to change any part of comb, you modify the appropriate code in
+$COMB/src, then run "make" on it while still in its directory.  This
+will move the object code into $COMB/obj, using the shell script
+LN_TO_OBJ (in $COMB/bin).  The object code should be loaded using
+"ldcmb", which is found in $COMB/bin.  This produces an executable file
+named "cmbt", which is your new version of "comb".  When you are
+satisfied with the new version, 'cd $COMB/bin' and 'mvcmb'
+
+Note that many ".h" files are included elsewhere in the comb source.
+It is usually safest to run "makecomb" (with no arguments) 
+after changing a ".h" file, then "ldcmb".
+======================================================================
+
+Running comb under Windows NT
+
+RWW 07/1999:
+
+I have run comb on NT, but it it not ready for distribution.  In fact I
+have lost much of my original enthusiasm for NT.  I could make a binary
+distribution of comb, but I don't have a workable replacement for xterm
+on NT.  I succeded in having comb with graphics by running the telnet
+server which comes with UWIN, running TeraTerm (which does behave like
+xterm) and telnetting back in to the same computer to run comb.
+

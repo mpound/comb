@@ -1,0 +1,30 @@
+P.default.o: P.default.c P.tree.h ../main/machinedep.h ../main/C.h \
+ ../main/History.h ../scan/C.h P.struct.h P.macro.h P.constant.h \
+ P.extern.h
+P.error.o: P.error.c P.tree.h ../main/machinedep.h ../main/C.h \
+ ../main/History.h ../scan/C.h P.struct.h P.macro.h P.constant.h \
+ P.extern.h
+P.lex.o: P.lex.c ../main/C.h ../main/History.h P.tree.h \
+ ../main/machinedep.h P.struct.h P.macro.h P.constant.h ../scan/C.h \
+ P.extern.h ../error/C.h
+P.pointer.o: P.pointer.c P.tree.h ../main/machinedep.h ../main/C.h \
+ ../main/History.h ../scan/C.h P.struct.h P.macro.h P.constant.h \
+ P.extern.h
+P.yacc.o: P.yacc.c P.tree.h ../main/machinedep.h ../main/C.h \
+ ../main/History.h ../scan/C.h P.struct.h P.macro.h P.constant.h \
+ P.extern.h ../error/C.h
+P.doc.o: P.doc.c P.tree.h ../main/machinedep.h ../main/C.h \
+ ../main/History.h ../scan/C.h P.struct.h P.macro.h P.constant.h \
+ P.extern.h
+P.headvars.o: P.headvars.c P.tree.h ../main/machinedep.h ../main/C.h \
+ ../main/History.h ../scan/C.h ../stacks/C.h P.struct.h P.macro.h \
+ P.constant.h P.extern.h P.uservars.h
+P.parse.o: P.parse.c P.tree.h ../main/machinedep.h ../main/C.h \
+ ../main/History.h ../main/dragon.h ../scan/C.h P.struct.h P.macro.h \
+ P.constant.h P.global.h ../stacks/C.h P.headvars.h
+P.uservars.o: P.uservars.c P.tree.h ../main/machinedep.h P.constant.h \
+ P.struct.h P.uservars.h P.cleanuservars.h ../error/C.h ../main/C.h \
+ ../main/History.h
+P.value.o: P.value.c P.tree.h ../main/machinedep.h ../main/C.h \
+ ../main/History.h ../scan/C.h P.struct.h P.macro.h P.constant.h \
+ P.extern.h

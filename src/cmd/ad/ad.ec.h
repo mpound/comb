@@ -1,0 +1,13 @@
+	*snt = 4;
+	*istep = 1;
+	*istept = 8;
+	*lbetyp = 0;
+	*lbknd = scan_.mbknd;
+	*lbkndt = 8;
+	*ssn = ssn_o;
+	*ssnt = 8;
+	*ncare = 2;
+	*ncaret = 8;
+	*mhflgt = 8;
+	parse_(&cmnd_.gstr,adt_,adb.c);
+	ssn_o = *ssn;

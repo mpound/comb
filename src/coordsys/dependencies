@@ -1,0 +1,2 @@
+coord.o: coord.c C.h ../error/C.h
+coord.global.o: coord.global.c C.h

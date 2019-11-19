@@ -1,0 +1,55 @@
+vc - make a velocity-space contour map
+
+EXAMPLES:
+As with cm, the best plan is probably to start using vc ?! and answer the
+questions.  Then start typing changes to the last vc map directly:
+
+vc st:.5		changes the step size to 0.5
+vc vl:-3,5.5		change the limits of velocity which are plotted to
+			-3 to 5.5 Km/s.
+vc mlb:"XXXX"		to change the title to XXXX.
+
+Eventually you should type in new vc maps directly:
+
+vc 0,-12,2,10,1 ir:1.1 ci: vl:8,12 st:1	This will make a space-vel.
+			map along the line from (0,-12) to (2,10) with
+			1 'arc point spacing, cone interpolate with a
+			radius of 1.1', a velocity scale covering 8 to
+			12 Km/s and contours every 1K.
+
+DESCRIPTION:
+Vc makes space-velocity image along a line between two given points in
+the current relative coordinate system.  The data will be interpolated
+onto points spaced by 'sp' arcmin before plotting.  If the line is
+along a line of observations sp should be picked so that the plotting
+points are commensurate with the data points.  A contour map of
+the image will be made and other maps and FITS files can be made
+from image 1.
+
+Vc needs an example stack in stack 1 to determine the number of
+channels on the vertical (velocity) axis of the map.  It remembers the
+filter width in that stack and only uses stacks with that filter
+width.
+
+Velocity limits set the set the velocity range of the plot.  Only the
+channels within  that range are plotted.  If a stack does not cover the
+full range of the plot, the missing points are given the value DRAGON
+(IEEE NaN) and not plotted.
+
+Interpolation radius and type have the same meaning as in cm.  If an
+averaging type of interpolation is used, the appropriate stacks are
+averaged before being contoured.
+
+Stack number limits and center frequency limits can be used to exclude
+some stacks from the map.
+
+The contour level selection is the same as in cm.  Old contour values
+and step sizes are stored separately from cm values.
+
+If you supply labels, they override the default labels for the current
+plot only.
+
+
+'vcli' is a macro in .GMACROS which will make a spatial-velocity diagram
+along the line between two cursor points.
+

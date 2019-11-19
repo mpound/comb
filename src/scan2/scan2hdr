@@ -1,0 +1,91 @@
+blsdf			/ This should convince any FITS reader to stop.
+/ScanSize M 1J		/ Size of all scans if location not given in ScanLoc
+FrstScan M 1J		/ 1
+LastScan M 1J		/ 0 ; Updated as data are put in the file.
+HMIFreq  M 1E		/ 864 Lock loop Harmonic mixer intermediate frequency
+IFCenter M 1E		/ 1366 Reference IF frequency.  Spect cntr rel to this
+Longitud M 1E		/ 4.94583 = 4:56:45 at Crawford Hill
+Latitude M 1E		/ 40.392
+Height	 M 1E		/ 100 meters above reference spheroid ~Mean sea level
+Telescop M 8A		/ BTL-7MTR  
+ObsPrg	 M 8A		/ OBS
+SpecType M 8A		/ FILTBANK
+/ProjID   M 8A 		/+Project ID. NOTE: "+" indicates NRAO keyword 
+/Observer M 16A         /+Observer name or initials
+ScanLoc  M 10000J	/ This variable gives the scan offset from beg of file
+ScanNum	 S 1I		/ The scan number as known by the observer
+/SubScan  S 1E		/+Subscan number 
+ObsType  S 2A		/ Observation type
+J2Second S 1J		/ Sec +- from J2000
+IntTime  S 1E		/ Integration time S + R
+/Object   S 30A         / source name. sm->obs.sourceName --mh
+PosType  S 4A		/ Coordinate system: "AzEl", "Equ", "Gal", "EqAp"
+CentRa	 S 1E		/ Epoch RA (hrs), map center
+CentDec  S 1E		/ Epoch Declination (deg), map center
+CentL	 S 1E		/ Galactic longitude (deg), map center.
+CentB	 S 1E		/ Galactic latitude (deg), map center.
+RaMap    S 1E           / True 'Arc on the sky in Ra direction for "on" position
+DecMap   S 1E           / 'Arc in Dec. for "on" position
+LMap     S 1E           / (Deg) L offset from center pos for "on"
+BMap     S 1E           / (Deg) B offset from center pos for "on"
+RaRef    S 2E           / Off positions with units as above. Can have 2 "offs"
+DecRef	 S 2E		 
+LRef	 S 2E
+BRef	 S 2E
+Epoch	 S 1E		
+Azimuth  S 1E
+Elevatio S 1E
+/RefAzOff S 1E		/+Ref. azimuth offset for position-switch (arcsec)
+/RefElOff S 1E		/+Ref. elevation offset for position-switch (arcsec)
+AzDelta	 S 1E		/ Azimuth Pointing correction
+ElDelta	 S 1E		/ Elevation Pointing correction
+VRefSys  S 4A		/ Has values: "LSR", "Sun", "Eart", "Ant"
+LineFreq S 1D		/ Rest Frame Frequency
+SigIF	 S 1E		/ Expected IF freq of line wrt IFCenter at signal time
+RefIF	 S 1E		/ Same for ref phase of a freq switch
+/RefIF2   S 1E		/+Possible second ref phase for freq switch
+VSource	 S 1E		/ Vel of Source in VRefSys (Redshift is positive)
+VAnt	 S 1E		/ Tot Doppler shift is VSource + VAnt
+/BZero	 S 1E
+BScale	 S 1E		/ If data is integer, value = data * BScale [+ BZero]
+RecTemp  S 1E		/ True Receiver temperature (At antenna feed)
+/CalTemp  S 1E          /+Noise diode calibration temperature (K)
+/TypeCal  S 8A		/+Type of calibration, e.g. VANE 
+/SysTemp  S 1E		/+System temperature (Above the atmosphere)
+HotSpill S 1E		/ Fraction of Hot terrestrial absorption beyond ant feed
+SbRatio	 S 1E		/ Signal sideband Gain / Image sideband gain
+TAmbient S 1E		/ Temperature of warm calibration load
+TSky	 S 1E		/ Most recent measurement of sky temp
+TSkyElev S 1E		/ Elevation angle of sky temp measurement
+NRef	 S 1C		/ Number of reference positions
+Bad      S 1C		/ Larger # -> worse data
+MMHN	 S 1C		/ Harm. numb of main mixer + LO chain after locked osc
+MMSB     S 1A		/ Main Mixer Side Band ('u' or 'l')
+HMHN	 S 1C		/ Harm numb of harmonic mixer
+HMSB     S 1A		/ Harmonic Mixer Side Band
+/Sideband S 1E          /+Sideband number 
+/BeamFWHM S 1E          /+Beam full-width at half-maximum (arcsec)
+/EtaFSS   S 1E          /+Forward spillover and scattering eff. (Ta*->Tr* conversion)
+/AppEff   S 1E          /+antenna aperture efficiency at this frequency
+/EtaL    S 1E           /+Rear spillover and scattering efficiency
+/BeamEff S 1E           /+main beam efficiency
+/Pressure S 1E		/+Air pressure cm-Hg 
+/Humidity S 1E		/+percent
+/Refrac   S 1E		/+Refraction correction  (arcseconds)
+/DewPt    S 1E		/+Dew point (C)
+/MmH2O    S 1E		/+mm precipitable water vapor 
+/Polariz  S 8A		/+Polarization
+/RxInfo   S 8A		/+Receiver information 
+/History S 80A		/+user history (NRAO calls it openpar)
+DTAbs	 S 1E		/ temperature diff of ambient and the absorber
+NumArray S 1C		/ Number of arrays in this scan
+ArrayLoc S 0I		/ The array offsets (Bytes) start in this location.
+NAxis1	 A 1I		/ Number of elements in array
+CType1	 A 2A		/ ie. Fr, Az, Dc, or L (Implies units for CRVal & CDelt)
+DataType A 4A		/ ie. TA, TR*, ON, HOT, HotA
+CRVal1	 A 1E		/ (Offset) Coordinate of center array element
+CDelt1	 A 1E		/ Channel to channel spacing
+/CRPix1   A 1E          /+Reference pixel (stk->expch)
+/Bandwid  A 1E          /+Backend bandwidth (MHz)
+Data	 A 0I		/ This is what it is all about
+END			/ 

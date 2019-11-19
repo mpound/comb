@@ -1,0 +1,66 @@
+in - integrate a part of stack 1
+
+
+EXAMPLES:
+in 40,60		Integrate from 40 to 60 Km/s (if horiz plot units are
+			Km/s). Print the results and put in area1.
+
+cr 2;in,x(0),x(1)	Read the cursor twice and integrate between those limits.
+			This is the macro "crin"
+
+in !0 !1 dp:;v ?(.area<!2*.arerr|.DR|.vcent1)	
+			This is a macro which integrates from arg1 to arg2  
+			and reports the centroid if the integral is 
+			> arg3 * the error in the area and
+			otherwise gives DRAGON (aka IEEE NaN, aka BLANK).
+
+in clip:1,1		Use only channels with ABS(temperature) greater
+			than the stack rms value (.rms) in calculating
+			all moments.
+
+in clip:disp:2		Use only channels with ABS(temperature) greater 
+			than twice the stack rms value (.rms) in calculating 
+			the second moment (velocity dispersion).
+
+DESCRIPTION:
+
+Integrate the spectrum in stack 1 over a given horizontal interval.
+The results in horizontal plot units are printed unless suppressed by
+the 'dp:' flag (a header is also printed).  The result in K*Km/s is put
+in the header variable 'area1' and the expected error in the area based
+on the rms is put in 'arerr1'. The horizontal interval is specified in
+horizontal plot units.
+
+The centroid (first moment) is also calculated (horizontal value at which half
+of the integral is reached).  The value of the centroid is put in the header
+variable 'vcent1'.  This integration may include fractional channels at each
+end.
+
+The dispersion (second moment) is calculated as:
+
+	disp = sqrt[SUM(T_i(v_i-vcent)^2)/SUM(T_i)]
+
+where T_i and v_i are the temperature and velocity of the i-th channel,
+respectively. The result is put in fwhm1. Note for a purely Gaussian line, 
+the true full-width at half-maximum is sqrt(8ln(2)) times the dispersion.
+
+Clipping levels (clip:) are applied to the moment calculations such that
+channels with values between -(clip*.rms) and +(clip*.rms) are not used.
+Thus it is important that the value of .rms is correct.  The default clip 
+levels are 0 for area and centroid (zeroth and first moments) and 1 for
+dispersion (second moment). Since the centroid is calculated directly 
+from the area, it always takes the same clip level as the area.
+
+ERRORS:
+
+If the range of integration extends outside the stack, you will be warned.  
+If you agree to continue, no more of those warnings will be given on the same
+command line.  The computed values will be based on the portion of the range
+inside the limits of the stack.
+
+If the limits of integration are completely outside of the stack, a similar
+set of warnings will be given, but the value returned will be DRAGON (.DR).
+
+If the square of the second moment is negative, .fwhm will be set to DRAGON.
+This usually means the clip level was too low or that the integration
+limits have been poorly chosen.

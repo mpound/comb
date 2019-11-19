@@ -1,0 +1,37 @@
+st - store stack 1					Matthew Miller
+
+
+EXAMPLES:
+st			store stack 1 in the stack it was last
+			retrieved from - if that stack is on disk,
+			store it in the foreground directory
+st 5 "STACKS"		store stack 1 in stack 5 in directory
+			"STACKS" and set the foreground directory
+			to "STACKS"
+st 2			store stack 1 in stack 2 in core
+st a:			store stack 1 in the first free stack in the foreground
+			directory ( >=11 unless another limit has been given).
+st a:250		Set the first free stack limit to 250 and store
+			stack 1 in the first free stack >= 250.
+do w:"(#=#+1)<=55" {rt #;li,1;st dc}
+			retrieve a number of stacks, remove a baseline and
+			store them back where they came from without warning
+			about overwriting the original data.
+
+DESCRIPTION:
+St copies stack 1 into stack 'n'.  If 'n' is less than 4  the destination
+will be a core resident stack.
+
+'n' defaults to the stack number in the stack header for stack 1.
+
+'f' defaults to the current foreground directory if 'dt' is not used.
+It defaults to the current background directory if 'dt' is used.
+
+The src: option allows you to store from stacks 2 or 3 instead of 1.
+
+The a: option instructs comb to use the first empty stack whose number is
+greater than or equal to the first free stack value (starts at 11).
+
+Normally st checks the destination stack and if it has data in it,
+gives you a warning before overwriting that data.  The dc: flag tells
+st "don't check!".

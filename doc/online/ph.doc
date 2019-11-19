@@ -1,0 +1,26 @@
+
+ph - print a value in hh:mm:ss.s format			RWW
+
+
+EXAMPLES:
+ph .ra+.dra			print the ra of stack 1.
+
+p .numst nl:;ph .ra+.dra nl:;ph .dec+.ddec
+				print the number of the stack in stack 1
+				followed by its ra and dec in hms format.
+
+ph .ra+.dra gs:1;ph .dec+.ddec gs:2;pr "stack %.0f %s %s",.numst,$1,$2 gs:3
+				Prepare a title for a plot.
+
+dv s:"junk";ph .ra nv:"junk"    Print the ra to the string "junk"
+
+DESCRIPTION:
+Ph is used to evaluate an expression and print the result in 'hms' format.
+
+The 'nl' flag will make ph print a space instead of a line feed at the end.
+
+The 'gs:' option instructs ph to put its output in a global string.
+The 'nv:' option instructs ph to put its output in a named (user-defined) 
+string.
+
+SEE ALSO: "p ?!" , "pr ?!"

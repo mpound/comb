@@ -1,0 +1,65 @@
+gm - Graphics Manipulation
+
+EXAMPLES:
+
+gm nb:2,2		Divide the screen into an array of 2 columns by 2 
+			rows of boxes with separate plots in each
+
+gm 0,1			Make box 0,1 be the current box for plots.  This is
+			the upper left in the case of 2x2.  Columns start
+			at the left, rows at the bottom.
+
+gm sc:.8,.6		Compress the plots by a factor of .8 in x and .6 in y.
+			Factors > 1 may cause troubles. 
+
+gm df:5,,,.5,.5	fill:	Draw a filled circle (an ellipse with equal axes) at the 
+                        current position. Useful for indicating beam size on 
+                        a contour plot.
+
+cr;gm ti: "Anything" x(0) y(0)
+			Read the cursor, then write 'Anything' starting at the
+			cursor position (in the current box).
+
+cr;pr "(%g,%g)" .odra .oddec gs:1;gm ti:$1 x(0) y(0)
+			Read the cursor, compose a message, put it on the plot
+
+cr;gm df: 1 x(0) y(0) 2 3 Read the cursor; Draw a rectangle centered at that 
+                          position.
+
+NOTE: in the three examples above, the 'X' from the cursor read doesn't appear 
+on a hard copy made from that plot.
+
+In the ti: option, a single character (except for digits) will be
+centered on the position given rather than the usual comb convention of
+having the center of the left boundary at the given position.  This is
+a function of the comb device driver and, as of 5/91, has been
+implemented for Tek terminals and postscript printers.  Some characters
+have an even number of pixels and can't be exactly centered.  A string
+of more than one character or a single digit will be plotted with the
+usual comb convention.
+
+For the df: (Draw Figure) option, the available shapes corresponding figure 
+numbers are:
+
+	X			0
+	Rectangle   		1
+	Triangle pointing up 	2
+	Triangle pointing down 	3
+	Cross			4
+	Ellipse 		5
+	Diamond 		6
+	Bar (like letter "I") 	7
+	Horizontal Bar  ("H")   8
+	Octagon 	        9	
+	Dot                    10 
+
+Note that drawn shapes are scaled according to X and Y scales on your plot! 
+Dot is equivalent of drawing any figure with zero size. The flag fill:
+will make the symbols filled. Filled symbols which are the comparable
+to the size of the picture may have small holes. These can be "patched"
+by drawing the same symbol of a slightly smaller size on top of the
+old symbol.
+of 
+
+'gmli' and 'crli' are (identical) macros in .GMACROS to plot a line between 
+two cursor points.

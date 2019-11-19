@@ -1,0 +1,64 @@
+							6/23/85
+Matt didn't leave a makefile, but I believe that the 'E' files are the source
+for entree and that the others are just test cases.  The following seemed to work:
+
+	cc -O -c E.wrtre.c
+	cc E*.o -ll
+	mv a.out $B/entree
+
+Bob
+
+
+Wed Mar  1 13:04:42 PST 1995
+
+MWP removed the following files from this directory:
+
+-rw-r--r--   1 pound    other       5952 Aug 14  1989 E.yacc.y.sv
+-rw-rw-r--   1 pound    other        433 Apr 17  1989 T.ec.h
+-rw-rw-r--   1 pound    other       1219 Apr 17  1989 T.t.c
+-rw-rw-r--   1 pound    other        800 Apr 17  1989 T.dc.h
+-rw-r--r--   1 pound    other        431 Nov 27  1988 T.ec.h.orig
+-rw-r--r--   1 pound    other        897 Nov 27  1988 T.dc.h.orig
+-rw-r--r--   1 pound    other        326 Nov 27  1988 xk.err
+-rw-r--r--   1 pound    other       3589 Jun 23  1985 E.wrtre.c.orig
+-rw-rw-r--   1 pound    other        471 Oct 22  1984 t.t.c
+-rw-rw-r--   1 pound    other        202 Oct 22  1984 t.t
+-rw-rw-r--   1 pound    other          0 Oct 22  1984 t.if.h
+-rw-rw-r--   1 pound    other        102 Oct 22  1984 t.ef.h
+-rw-rw-r--   1 pound    other        129 Oct 22  1984 t.ec.h
+-rw-rw-r--   1 pound    other        241 Oct 22  1984 t.df.h
+-rw-rw-r--   1 pound    other        218 Oct 22  1984 t.dc.h
+-rw-rw-r--   1 pound    other        217 Oct 22  1984 prn.t.c
+-rw-rw-r--   1 pound    other         73 Oct 22  1984 prn.t
+-rw-rw-r--   1 pound    other          0 Oct 22  1984 prn.if.h
+-rw-rw-r--   1 pound    other         34 Oct 22  1984 prn.ef.h
+-rw-rw-r--   1 pound    other        266 Oct 22  1984 prn.df.h
+-rw-rw-r--   1 pound    other         40 Oct 22  1984 prn.ec.h
+-rw-rw-r--   1 pound    other       3850 Oct 22  1984 pl.t.c
+-rw-rw-r--   1 pound    other        208 Oct 22  1984 prn.dc.h
+-rw-rw-r--   1 pound    other        323 Oct 22  1984 pl.ef.h
+-rw-rw-r--   1 pound    other       1398 Oct 22  1984 pl.df.h
+-rw-rw-r--   1 pound    other        339 Oct 22  1984 pl.ec.h
+-rw-rw-r--   1 pound    other          0 Oct 22  1984 pl.if.h
+-rw-rw-r--   1 pound    other       1383 Oct 22  1984 pl.t
+-rw-rw-r--   1 pound    other       1886 Oct 22  1984 pl.dc.h
+-rw-r--r--   1 pound    other       1387 Oct 22  1984 j.f
+-rwxr-xr-x   1 pound    other      82863 Oct 22  1984 entt*
+-rw-rw-r--   1 pound    other        574 Oct 22  1984 T2.t.c
+-rw-rw-r--   1 pound    other        228 Oct 22  1984 T2.t
+-rw-rw-r--   1 pound    other        225 Oct 22  1984 T2.ec.h
+-rw-rw-r--   1 pound    other        661 Oct 22  1984 T2.dc.h
+-rw-rw-r--   1 pound    other        661 Oct 22  1984 T2.dc.c
+-rw-rw-r--   1 pound    other        571 Oct 22  1984 T1.t.c
+-rw-rw-r--   1 pound    other        261 Oct 22  1984 T1.t
+-rw-rw-r--   1 pound    other         35 Oct 22  1984 T1.if.h
+-rw-rw-r--   1 pound    other        123 Oct 22  1984 T1.ef.h
+-rw-rw-r--   1 pound    other        279 Oct 22  1984 T1.ec.h
+-rw-rw-r--   1 pound    other        454 Oct 22  1984 T1.df.h
+-rw-rw-r--   1 pound    other        544 Oct 22  1984 T1.dc.h
+-rw-rw-r--   1 pound    other        509 Oct 22  1984 T.t
+-rw-rw-r--   1 pound    other        977 Oct 22  1984 T.dc.c
+-rw-rw-r--   1 pound    other        214 Oct 22  1984 T.c
+-rwxr-xr-x   1 pound    other         49 Oct 22  1984 T*
+-rw-rw-r--   1 pound    other       7660 Oct 22  1984 E.owrex.c
+-rw-rw-r--   1 pound    other      10855 Nov 27  1988 E.owrdef.c

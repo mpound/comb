@@ -1,0 +1,49 @@
+rt - Retrieve a stack into stack 1			Matthew Miller
+
+
+EXAMPLES:
+rt 2			retrieve stack 2 from core
+rt 5_10			retrieve stacks 5 through 10 from the current
+			foreground directory and display them one
+			by one
+rt 6 "sName" dt:	Set up sName as the background directory and then
+			retrieve stack 6 from it.
+rt 6 u:			retrieve stack 6 from the current foreground
+			directory and  toggle the stack use flag.  If the stack
+			use flag is set, set the use array to the value
+			it was when stack 6 was stored
+p #=9;do w:"(#=#+1)<=85" {rt # t:;do i:".test" {st a:dt:}}
+			Store all stacks between 10 and 85 with data in them
+			in directory two.
+rt rc:-2,4 dest:2	Retrieve a stack at (-2,4) in the current relative
+			coordinate system and put it in stack 2.
+rt rc:-2,4 sn:20,155	Retrieve a stack at (-2,4) after setting the range of
+			stack numbers to be searched to [20,155].
+
+DESCRIPTION:
+Rt copies stack 'n' into stack 1.  Stacks 1-3 are core resident.
+Higher numbered stacks will be retrieved from a stacks directory.
+
+If the Directory name is not given, the current foreground/background
+directory will be used depending on whether the dt: flag is given (dt: ->
+background).
+
+If the 'u' flag is set, then the use array is set to the value it was
+when the stack was stored.  If it is not set, then the use array is set
+to the last saved value (see us).
+
+The dest: option allows you to retrieve to any core resident stack.
+
+Normally rt gives an error message and stops if the requested stack is
+empty.  If the t: flag is given the 'header' variable .test is set to 1 if
+the stack is full and to 0 otherwise and no error stop is taken.
+
+You can retrieve by position by using the rc: option.  A valid relative
+coordinate system must be defined first.  The positions given should be
+longitude then latitude type coordinates.  The first stack found
+within the current position tolerance (ptol in ' arc) will be
+retrieved, but others found in this range will be listed by number on the
+terminal.  A range of frequencies or stack numbers may be given if you
+wish to exclude some of the stacks in the file.  These ranges will be
+remembered until changed or you quit comb.
+

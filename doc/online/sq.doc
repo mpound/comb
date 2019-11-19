@@ -1,0 +1,29 @@
+sq - increase or decrease the effective channel width in stack 1.	RWW
+ 
+
+EXAMPLES:
+sq 0.5			Double the number of channels in the spectrum in stack 
+			1. If the center channel is at a channel boundary ie.
+			128.5, each old channel will be duplicated in the
+			new spectrum.
+sq .freq1/.freq2	Squish stack 1 so that it will have the same channel
+			width in velocity as stack 2 and they can be processed
+			compatibly.
+
+DESCRIPTION:
+Squish is used to change the channel width of a spectrum so that the spectra
+from two different molecules will have the same channel width in velocity.
+The can then be processed together by divide or ca.
+
+Squish treats the data as though the filters were square topped and of their
+nominal width. Squish lays out a new set of filters on top of the old, aligned
+at the 'center of squish'. Each new channel is filled by a weighted sum from
+the old channels. Partial channels from the old spectrum are considered to have
+the temperature of the old channel and the partial fraction of the weight.
+A new channel may be made up of a combination of partial and full channels
+from the old spectrum. If the resulting spectrum has fewer than 512 channels it
+is left justified. Otherwise the 'center of squish' is put as close to the
+center of the new spectrum as possible without loosing any more channels than
+necessary.
+
+The 'center of squish' will default to the 'center channel' of the old spectrum.

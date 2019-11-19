@@ -1,0 +1,16 @@
+#!/bin/sh
+# fix path for entree in COMB makefiles
+# (hc makefile has $COMB/bin/entree specified)
+#
+cd ${COMB}/src/cmd
+for i in *
+do
+	echo "$i"
+if [ "$i" = "hc" ]
+then
+ echo You gotta do hc yourself
+else
+# (cd $i;grep entree makefile)
+ (cd $i; cat makefile | sed 's#entree#../../../bin/entree#' > junk;mv junk makefile)
+fi
+done

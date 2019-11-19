@@ -1,0 +1,7 @@
+#!/bin/sh
+#This version will only work with the gcc compiler.
+#echo setup:COMB is $COMB
+	cd $COMB/bin; cp ldcmb.gcc ldcmb; cp mvcmb.std mvcmb;chmod 777 mvcmb
+	cd $COMB/src/main; cp include.mk.gcc include.mk
+	cd $COMB/src/main; cp machinedep.h.solaris machinedep.h
+	cd $COMB/lib; cp xref.solaris xref

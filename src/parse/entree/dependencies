@@ -1,0 +1,16 @@
+E.error.o: E.error.c E.constant.h E.struct.h E.extern.h
+E.family.o: E.family.c E.constant.h E.struct.h E.extern.h
+E.flocs.o: E.flocs.c E.constant.h E.struct.h E.extern.h
+E.fprnt.o: E.fprnt.c E.constant.h E.struct.h E.extern.h
+E.lex.o: E.lex.c E.constant.h E.struct.h E.extern.h y.tab.h
+E.main.o: E.main.c E.constant.h E.struct.h ../P.tree.h \
+ ../../main/machinedep.h E.global.h
+E.var.o: E.var.c E.constant.h E.struct.h E.extern.h
+E.wrdef.o: E.wrdef.c E.constant.h E.struct.h E.extern.h ../P.tree.h \
+ ../../main/machinedep.h
+E.wrex.o: E.wrex.c E.constant.h E.struct.h ../P.tree.h \
+ ../../main/machinedep.h E.extern.h
+E.wrtre.o: E.wrtre.c E.constant.h E.struct.h E.extern.h ../P.tree.h \
+ ../../main/machinedep.h
+E.yacc.o: E.yacc.c ../P.tree.h ../../main/machinedep.h E.constant.h \
+ E.struct.h E.extern.h

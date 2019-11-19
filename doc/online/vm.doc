@@ -1,0 +1,50 @@
+vm - Calculate Virial Mass
+
+EXAMPLES:
+
+vm 1,1,1 ci: vl:6,14	Calculate a virial theorem mass within area 1 using
+			cone interpolation and velocity limits of 6 to 14
+			km/s.
+
+ro "/usr/you/vm.out"; do 25 {da cr:;da pl:;vm vl:6,14 dist:470}
+			Define 25 areas of the current plot, outline those
+			areas and do the virial mass calculation.  Put the
+			vm output in "/usr/you/vm.out" for later plotting
+			with mongo or processing with S, etc.
+
+DESCRIPTION:
+
+Vm calculates the virial mass of an isolated cloud.  It does so by
+setting up a grid of spacing sp (arcmin) within the given area and at
+each grid point getting an interpolated spectrum from the current
+stacks file.  These spectra contribute individually to an intensity
+weighted rms velocity and pair wise to the intensity weighted harmonic
+mean radius of the mass distribution.  For more information on the
+method and cautions see appendix II of "Dust and Gas Emission in
+Barnard 5" by Langer, Wilson, Goldsmith, and Beichman (ApJ 337:355-381,
+1989 Feb. 1).
+
+Vm prints a line of six numbers for each invocation (without v:).  It
+prints a header the first time it is invoked in each command line (line
+typed from the terminal).  The columns are:  1) the virial mass if the
+cloud is at 100 pc and the extra energy terms represented by 'F' are
+ignored.  2) The integrated intensity over velocity and area.  3) The
+average line intensity integrated over velocity and averaged over
+area.  4) The area of in steradians of the 'area' over which the
+calculations were done.  5) The Weighted Harmonic mean radius.  6)  The
+rms velocity dispersion.
+
+By setting the cloud distance to a known value, you can have the
+results scaled to that distance (F could be included by dividing that
+distance by F).  By setting scale to the ratio of total mass to
+integrated (over velocity and solid angle) line intensity, the second
+column can be printed as the mass estimated from the total integrated
+line over the area so that a direct comparison can be made.
+
+Stack number limits, center freq limits, and filter width may be given
+to pick the the desired data from a stacks file containing extraneous
+stacks.
+
+The verbose option gives a line by line report of progress and reports
+the number of grid points at which data was available (a possible check
+on interpolation radius).

@@ -1,0 +1,23 @@
+#!/bin/sh
+echo comb path is ${COMB}
+echo "removing files in $COMB/bin:"
+echo "entree puthd hcsetup unblock"
+cd ${COMB}/bin
+/bin/rm entree puthd hcsetup unblock
+cd ${COMB}/src
+echo "removing *.o files in:"
+for i in coordsys error graphics image main misc misc/libut misc/libedit\
+	parse parse/entree scan scan2 stacks user fits/fitshd
+do
+	echo $i
+	(cd $i;rm *.o)
+done
+cd cmd
+for i in *
+do
+	echo $i
+	(cd $i;rm *.o)
+done
+echo ${COMB}/obj
+cd ${COMB}/obj
+rm *.o

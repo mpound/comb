@@ -1,0 +1,14 @@
+pa - pause in execution
+
+EXAMPLES:
+pa w:		Pause until you type a Return
+pa t:3		Pause for three seconds
+pa		Repeat the last pause. If this is the 1st use of pa in this
+		execution of comb it defaults to pa w:.
+pa t:		Pause for the previous amount of time (default is 1 second).
+
+DESCRIPTION:
+Pa suspends execution either for a set amount of time (seconds) or until you
+type a newline.  It initially defaults to waiting for a newline, but once
+you have specified a time, it will default to the last pause specified.
+On non-System V machines, the amount of time can be non-integral.

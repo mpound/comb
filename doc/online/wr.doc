@@ -1,0 +1,17 @@
+wr - write a scan back into the file
+
+
+EXAMPLE:
+wr		write the last scan read back into the file as the scan
+		number given by .ScanNum.  Any changes to header
+	        variables will be written.
+
+gt 5; c .Telescop="AST/RO";wr 
+		change the Telescop header variable in scan 5 and write
+		it back on the data file.
+
+DESCRIPTION:
+wr is used for editing scan data. It is not for general use as it has the
+potential to destroy the data file.  In the distributed source
+code of comb, wr is disabled. If you really think you need wr,
+consult a comb programmer for instructions how to enable it.

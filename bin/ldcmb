@@ -1,0 +1,6 @@
+#!/bin/sh
+echo ldcmb: COMB is ${COMB}
+rm -f ${COMB}/bin/cmbt
+#cd ${COMB}/obj; cc -g * /usr/lib/debug/mallocmap.o -lm -o ${COMB}/bin/cmbt
+cd ${COMB}/obj; cc -g * -lefence -lm -o ${COMB}/bin/cmbt
+echo 

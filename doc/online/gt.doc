@@ -1,0 +1,164 @@
+gt - get a scan or series of scans			RWW & MWP
+
+EXAMPLES:
+gt 80a108,nbe:		Get the narrow backend of the given scan.
+gt 80a108_112,dt:	Sequentially plot the data (not cal and sky) scans
+			in the range 108 to 112.
+p #1=1 dp:;do w:".test" {gt dt: ts:;li,1;st a:}	go forward getting only
+			data scans and storing them till the center position
+			or velocity changes.
+gt st:-1,ca:		Get the previous cal.
+gt ,,-1,ca:		Get the previous cal.
+
+gt ss:2			Get the subscan 2 (a la NRAO 12m. Kitt Peak
+			users--see below!) This flag is ignored
+			for Bell Labs format scans. The be: flag is
+			ignored for SDD (Kitt Peak) scans.
+
+gt fss:			Get the first scan in stack 1.
+
+gt first:		Get the first scan in the file (which may not be scan
+			number 1). For NRAO scans, this will also
+			set scan header variables .FrstScan and 
+			.LastScan (see "pd main:")
+
+gt last:		Get the last scan in the file.  For NRAO scans, 
+			this will also set scan header variables 
+			.FrstScan and .LastScan (see "pd main:")
+
+gt type:"LS"		Get the next scan of type "LS".  This only works
+			with scan2 headers containing the ObsType header
+			variable and is mostly for AST/RO.  It requires
+			a match of the characters in ObsType.
+
+gt 100_150 dt: t:	Gets scans in the range 100 to 150 which are recognized
+	or		as data.  If successful, .test is set to 1, otherwise
+gt 100_150 type:"BC" t: .test is set ot 0.  An error message may be given
+			if the first matching scan doesn't have a matching
+			backend.
+
+DESCRIPTION:
+
+Gt converts scan data into stack data. It is used either as a way of viewing
+data or in preparation for further processing or storing of the data as a
+stack. If a range of scan numbers is given (with a possible step size) the
+scans are sequentially put in stack 1 and plotted. File boundaries may be
+passed either forward or backward if step size is set to the correct sign.
+After each plot but the last, gt waits for a 'return' before making the next
+plot. The process can be interrupted by typing '^C' in the usual way. A single
+scan or the last scan is not plotted directly, but at the end of the command
+line an auto plot will be made if it is enabled. If you cause another plot to
+be made before the end of the command line (eg. with 'pl') the plot flag will be
+cleared.
+
+The backend can be specified either by number or name. The backend starts out
+set to 1 and remembers its current type until changed.
+
+If a limit on type is given (dt. ,ps. ,ca. ,etc.) only scans of the specified
+type will be shown.  Alternately for users of scan2 files, a type may be
+specified with the type:"XXX" option where "XXX" must match the characters in
+.ObsType in the header of the scan.
+
+If the 'ts:' flag is given, the first gt on a command line will save the center
+position and frequency.  Subsequent gets in the same command line will compare
+the new position and freq to the saved values.  'Header' variable
+.test will be set to 1 on the first call and later ones if there is
+no change.  If there is a change, it will be set to 0.
+
+The t: option eliminates most error messages if the requested type of scan is
+not found and instead sets .test to 1 on success and 0 on failure.  The one
+exception is if the current type of backend is not found, an error will still
+be called.  Without the t: option, an error message will be given if the
+requested scan is not found.  In either case on failure, the current scan
+number and file are set back to the previous value.
+
+If no scan number is given the previous scan will be put in stack 1 again
+unless a limit on type is given. In this case step will be repeatedly added to
+the scan number until a scan of the requested type is found. This could take a
+long time if no such scan is nearby. As usual you can stop whatever comb is
+doing by typing '^C'.  File boundaries will be passed if there is an adjacent
+file name.
+
+'Scan number' has a special meaning in comb. It consists of the last three
+characters of the file name (the last of which must be alphabetic) followed by
+the number. Thus '80a11326' refers to scan 11326 in a file whose name ends in
+80a. (The full file name will be '/cdata/c80a' unless you have used 'nf' to
+change it.) The 'scan number' can be abbreviated by leaving off as many of the
+left hand characters of the file name as have not changed.  After the previous
+'scan number' if you type gt 81 you will see 80a81.  All of the commands of
+comb which use 'scan numbers' share the same current scan number. (For details
+of scan numbers and filename conventions in NRAO SDD format, see below).
+
+If the environment variable SCANFILE is set to the full path name of a scan
+file in the directory which holds your favorite scan files, then comb will
+be initialized to get scan 1 of that file.  This will make it easy to access
+other scan files whose full path name differs only in the last three
+characters using 'scan numbers'.  If SCANFILE was not set when comb was
+started, you may use nf to set the full path name of a scan file and then
+continue using only the 'scan number' as described above.
+
+----------------------------------------------------------------------------
+								MWP
+SPECIAL NOTE FOR NRAO 12m USERS:				
+
+Users on the NRAO 12m at Kitt Peak can now use comb directly on their raw "SDD"
+data files.  SDD (SingleDish Data) format is now the NRAO standard and replaces
+PDFL. PDFL is no longer supported by NRAO (as of ~10/93). However, comb still
+understands PDFL format data files.  One uses 'nf' to name the data file then
+gt as described above, e.g.,
+
+-> nf "/home/data/data/sdd.you_001"            
+
+-> gt 10
+
+Hybrid Spectrometer data are written to a separate file:
+
+-> nf "/home/data/data/sdd_hc.you_001"            
+
+The SDD format refers to all data taken simultaneously with the same scan
+number using subscan numbers to identify different backends, etc. The subscan
+numbering convention is as follows:
+
+         Parallel Filterbanks
+subscan
+
+  01  First half First polarization
+  02  Second half First polarization
+
+  03  First half Second Polarization
+  04  Second half Second Polarization
+  
+         Series Filterbanks
+
+  01  First polarization
+  03  Second Polarization
+
+         Hybrid Correlator
+
+  11  First polarization
+  12  Second Polarization
+  1x  x is 1 through 4 in four IF mode
+  1x  x is 1 through 8 for the 8-beam
+
+To retrieve a particular subscan, use the ss: flag,
+
+-> gt 100 ss:1		Get the data from subscan 1 of scan 100
+
+-> gt ss:3		Get subscan 3 of the current scan 
+
+All subscans share the SAME scan number which may complicate use of 'xf'
+later.
+
+Note that the scan list shown in a spectrum plot lists the last three
+characters of the file name (typically "001" for SDD files) as an identifier.
+By renaming your file, you can make this more useful. For instance, if the data
+were taken in February 1993, you might rename the file "sdd_you.f93". The scan
+list would then say, e.g "f93 20 21 22 23" instead of "001 20 21 22 23". This
+renaming cannot occur while you are observing, since the NRAO 12m control
+software wants a file named with "001".
+
+File boundary names are NOT crossed for SDD data files. Once you get to the end
+of the file, you must use 'nf' again to name the next file.
+
+Comb will not deal with 'focalize' or pointing data, so use LINE or CONDAR to
+reduce these. Basically, no guarantees are made for most continuum data.

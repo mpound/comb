@@ -1,0 +1,39 @@
+cmdname=${1%%\.f*}
+rm ${cmdname}.ftn ${cmdname}.df.h
+ed ${cmdname}.f << END
+g/\([ 	,]${cmdname}\)\([(,]\)/s//\1_\2/
+g/\([ 	,]${cmdname}\)$/s//\1_/
+g/implicit/s/^/c/
+g/automatic/s/^/c/
+g/\([^a-z0-9]\)or(/s//\1ior(/g
+g/\([^a-z0-9]\)xor(/s//\1ieor(/g
+g/\([^a-z0-9]\)and(/s//\1iand(/g
+g/\([^a-z0-9]move\)(/s//\1_(/g
+g/\([^a-z0-9]clear\)(/s//\1_(/g
+g/\([^a-z0-9]error\)(/s//\1_(/g
+g/\([^a-z0-9]warn\)(/s//\1_(/g
+g/\([^a-z0-9]opend\)(/s//\1_(/g
+g/\([^a-z0-9]putfn\)(/s//\1_(/g
+g/\([^a-z0-9]combex\)(/s//\1_(/g
+g/\([^a-z0-9]tschng\)(/s//\1_(/g
+g/\([^a-z0-9]scnlmt\)(/s//\1_(/g
+g/\([^a-z0-9]mrkful\)(/s//\1_(/g
+g/\([^a-z0-9]gstak\)(/s//\1_(/g
+g/\([^a-z0-9]pkwts\)(/s//\1_(/g
+g/\([^a-z0-9]pltoch\)(/s//\1_(/g
+g/\([^a-z0-9]pltchr\)(/s//\1_(/g
+g/\([^a-z0-9]elim\)(/s//\1_(/g
+g/\([^a-z0-9]bsln\)(/s//\1_(/g
+g/\([^a-z0-9]filbts\)(/s//\1_(/g
+g/[^a-z0-9]ifdif/s//&_/g
+g/[^a-z0-9]ibit/s//&_/g
+g/[^a-z0-9]islast/s//&_/g
+g/[^a-z0-9]nxtscn/s//&_/g
+g/[^a-z0-9]irondd*/s//&_/g
+g/[^a-z0-9]stfull/s//&_/g
+g/[^a-z0-9]indxsn/s//&_/g
+g/[^a-z0-9]r*tran/s//&_/g
+g/[^a-z0-9]wt/s//&_/g
+w ${cmdname}.ftn
+q
+END

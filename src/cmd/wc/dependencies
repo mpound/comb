@@ -1,0 +1,4 @@
+wc.o: wc.c ../../main/C.h ../../main/History.h ../../main/dragon.h \
+ ../../coordsys/C.h ../../stacks/C.h ../../stacks/include.h \
+ ../../misc/C.h ../../image/C.h wc.dc.h wc.ec.h
+wct_.o: wct_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

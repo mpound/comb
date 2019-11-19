@@ -1,0 +1,4 @@
+image.o: image.c ../main/machinedep.h ../stacks/C.h C.h include.h \
+ ../main/dragon.h ../coordsys/C.h ../error/C.h fitskeywords.h
+area.o: area.c ../main/dragon.h ../stacks/C.h C.h ../main/machinedep.h
+taut.o: taut.c ../stacks/C.h C.h ../graphics/C.h ../main/dragon.h

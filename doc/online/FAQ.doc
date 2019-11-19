@@ -1,0 +1,107 @@
+
+----------------------------------------------------------------------------
+
+        Welcome to COMB Frequently Asked Questions
+
+----------------------------------------------------------------------------
+Q. How do you pronounce comb?
+A. Comb is pronounced like the first syllable of the word "combine." It is
+   most definitely not pronounced like the grooming instrument.
+
+Q. What does comb stand for?
+A. Nothing.
+
+Q. When I type 'comb' I get the error message:
+
+    ERROR: missing file arg (cm3)
+
+   What does that mean?
+A. It means you are really running the UNIX SCCS program which is,
+   unfortunately, called 'comb.'  Change your PATH so that $COMB/bin is
+   first.
+
+Q. How can I get help about comb on my local site?
+A. Try the site page (http://astro.berkeley.edy/pound/sites.html)
+   which has pointers to local help files if they exist.
+
+Q. Is there a macro to do ...?
+A. Maybe. You can check out the global macros file $COMB/lib/.GMACROS with
+   dm g:. Also ask around to other users.
+
+Q. Can comb read spectra in ... format?
+A. Comb can read spectra in the following formats:
+
+  1. Bell Labs Spectral Data Format
+  2. NRAO PDFL and SDD formats
+  3. FITS files written by most other singledish programs (e.g. CLASS, SPA).
+
+  There is a standalone program for converting Arecibo spectra to comb stacks.
+  This program is available from Marc Pound.
+
+Q. What does "Collecting garbage in search file" mean?
+A. If you have made many changes to your current stacks directory, e.g.,
+   stored or emptied many stacks, comb will update and clean out the search
+   file for that directory, and give you this message. It is normal and nothing
+   to worry about.
+
+Q. When I type lk, I don't see anything or see only a portion of my stack
+   locations. What's wrong?
+A. There are several possibilities:
+
+  1. You don't have a relative coordinate system defined (or you've got the
+     wrong one defined). Use rc to define one.
+  2. You have previously restricted the stack number range or the frequency
+     range such that no stacks match the restrictions. You can un-restrict
+     them with the sn: or fr: flags to lk.
+  3. If and only if all the above fail to fix your problem, then it is
+     possible that your search file has been corrupted. This can happen if
+     multiple users have the same stacks directory open and are storing or
+     emptying stacks. It can be repaired with up.
+
+Q. How do I write FITS images or cubes so that the FITS keywords RA---SIN
+   and DEC--SIN are present instead of RA and DEC?
+A. Set op ortho: for orthographic projection before making the map.
+
+Q. Why doesn't the initial value of .rms in a scan match the value that rm
+   gives for that scan?
+A. Because pl uses the value of .rms in autoscaling plots, an initial value
+   of .rms is estimated by gt based on receiver noise, filter width,
+   integration time, and switching mode. (If .rms were left as zero, pl would
+   blow up when trying to plot). As soon as you have the baseline under
+   control, you should run rm on the stack to calculate the true rms.
+
+Q. After I remove a baseline with li, the stack rms value .rms has not
+   changed. What gives?
+A. The stack rms must be recalculated with rm.
+
+Q. Sometimes when I contour an image with cp, I see nothing in the plot and
+   the contour labels with numbers like 1E-308,...,5E-313. What gives?
+A. You have given comb a contour step which is greater than the data range
+   present in the image. Try cp a:, which will automatically contour the image
+   and give you a better idea of the data range.
+
+Q. Why can't comb do greyscale?
+A. The short answer is "We're working on it." If you want the long answer,
+   ask Bob or Marc.
+
+Q. I got this message from comb:
+
+      *** SOFTWARE PROBLEM ***
+      Caught signal: {SIGNAL NUMBER} in command {COMMAND}.
+      Do you want to make a record?
+
+   What does it mean and what should I do?
+A. This means you have either uncovered a bug in comb, or somehow got it
+   into a state where it wants to dump core. You should answer 'y' to the
+   question and then e-mail the file $COMB/lib/cerr to
+   pound@teddi.berkeley.edu. Please indicate what you were doing at the time.
+   If you have a limit on coredump (e.g., in csh), $COMB/lib/cerr may not
+   contain useful information, but send it anyway. In either case, you may wish
+   to quit comb and start it up again.
+
+----------------------------------------------------------------------------
+The FAQ will grow as I think of more questions. Suggestions are welcome!
+----------------------------------------------------------------------------
+
+This document was last updated on Thu Aug 15 10:23:27 EDT 1996
+by Marc W.  Pound.

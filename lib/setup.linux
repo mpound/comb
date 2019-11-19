@@ -1,0 +1,6 @@
+#!/bin/sh
+#This version is for Linux with gcc as the standard (cc) compiler
+	cd $COMB/bin; cp ldcmb.std ldcmb; cp mvcmb.std mvcmb;chmod 777 mvcmb
+	cd $COMB/src/main; cp include.mk.linux include.mk
+	cd $COMB/src/main; cp machinedep.h.linux machinedep.h
+	cd $COMB/lib; cp xref.std xref

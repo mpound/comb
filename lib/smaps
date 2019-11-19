@@ -1,0 +1,7 @@
+ns:"/data1/jb/GC/13co.new" lb:-10,10,-10,10 bbe: freq:110200_110202\
+  wght:50 ps: smacro:"srtu" rmacro:"gtrd" emacro:"fini"
+ns:"/data1/jb/SURVEY/l=30" lb:23,33.9,-10,10 nbe: freq:110200_110202\
+  wght:50 ps: smacro:"srtu" rmacro:"gtrd" emacro:"fini"
+ns:"/data1/jb/SURVEY/Cygnus-X" lb:70,90,-10,10 nbe: freq:110200_110202\
+  wght:50 ps: smacro:"srtu" rmacro:"gtrd" emacro:"fini"
+lsn:s3l05354

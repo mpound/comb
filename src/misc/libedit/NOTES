@@ -1,0 +1,19 @@
+I got libedit to run by making two changes:
+
+In history.c I changed the compiled in value of hist_fname[] from ./history
+to /.history.  It was trying to open $HOME./history.
+
+In io.h I changed the definition of fnobuff from:
+#define fnobuff(fp)	((fp)->flag&IONBF)	/* file is unbuffered */
+to:
+#define fnobuff(fp)	((fp) != 0 && (fp)->flag&IONBF)	/* file is unbuffered */
+The original was causing a segmentation error if the file wasn't open yet.
+
+11/29/90
+I haven't had to make either of the changes above to get libedit.a to work.
+I have made changes marked by 'RWW' in :
+
+	editlib.c:/*RWW*/
+	history.c:    /*RWW mod in response to Shudong Zhou's problem.
+	edit.h:/*RWW*/
+	sh_config.h:/* RWW define for programs like comb that prefer to call a special read

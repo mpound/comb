@@ -1,0 +1,4 @@
+wu.o: wu.c ../../main/C.h ../../main/History.h ../../coordsys/C.h \
+ ../../graphics/C.h ../../error/C.h wuf.dc.h wu.dc.h wu.ec.h wuf.ec.h
+wut_.o: wut_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h
+wuft_.o: wuft_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

@@ -1,0 +1,40 @@
+xf - Transfer stacks to dir 2 after making them unique (1 per position)
+
+
+EXAMPLES:
+
+ns "..."		Make sure that the foreground dir is source of stacks
+ns "...new" dt:		Background dir is to receive the stacks
+xf v:3			Transfer all of the stacks from the foreground dir to
+			the background dir after combining all at the same
+			position, freq, and filter wid. give a running
+			description.
+xf 40_120 fwid:.1 ptol:.5 v:1	Transfer stacks 40 through 120 to dt after
+			combining with any matching stacks from the rest of
+			the file.  Combine stacks whose angular separation
+			is no greater than 0.5' Arc.  Transfer only stacks with
+			a filter width of 100KHz.  Give only a summary report.
+xf 40_120 sn:10,200 mxwt:350	Transfer stacks 40 to 120 to dt, but limit
+			the range of search for matching files to stacks 10 to
+			200.  If the any weight of a combined stack is > 350
+			reduce it to 350 so that one point will not be too
+			heavily weighted in a map.
+
+DESCRIPTION:
+
+Xf is designed to help make a cleaned up directory of stacks from one
+which has had data thrown at it.  It uses the foreground directory as a
+source of data and stores its output in directory two.  It will combine
+all matching stacks into a single one before transferring to dt.  It compares
+the scan number lists of two similar stacks before combining them and doesn't
+do the co if there are scans in common (it also doesn't transfer the second
+stack to dt).  The source stacks can be limited by stack number, center freq,
+and filter width.  The stacks to be combined with them can be limited by
+stack number and position tolerance.
+
+Xf has a maximum weight option for help in limiting the influence of any
+position which may have been observed much more than its neighbors.
+
+The v: option allows you to control how verbose xf will be.  A value of 0
+gives no report and 3 a rather complete report of xf's deliberations.
+Intermediate values give intermediate results.

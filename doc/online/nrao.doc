@@ -1,0 +1,69 @@
+
+This is a list of NRAO SingleDish Data Format Keywords.  Consult the NRAO 
+12-meter User's Manual for more information about the NRAO keywords. Be aware 
+that many non-essential NRAO header variables are ignored by 'gt'. There are 
+nearly 200 NRAO header variables; we can't keep all of them!
+
+M = main header, S = scan header, A = array header
+Lines beginning with / are recognized but currently unused keywords.
++ means unique to NRAO
+
+IFCenter  M / 1500 MHz Reference IF frequency.
+Telescop  M / NRAO 12M
+SpecType  M / eg., 0.1MHZFB
+ProjID    M /+Project ID
+Observer  M /+Observer name or initials
+ScanNum   S / Scan number.Subscan number, e.g. 3.01
+SubScan   S /+Subscan number 
+ObsType   M / Observation type, e.g. LINEPS
+IntTime   S / Integration time S + R
+Object    S / Object name 
+PosType   S / Coordinate system, e.g., 1950RADC
+CentRa    S / Epoch RA (hrs), map center
+CentDec   S / Epoch Declination (deg), map center
+RaMap     S / True 'Arc on the sky in Ra direction for "on" position
+DecMap    S / 'Arc in Dec. for "on" position
+RaRef     S / Off positions with units as above.
+DecRef    S  
+Epoch     S / Epoch, e.g. 1950.0
+Azimuth   S / Degrees
+Elevatio  S / Degrees
+RefAzOff  S /+Reference azimuth offset for relative position-switching (arcsec)
+RefElOff  S /+Reference elevation offset for relative position-switching (arcsec)
+AzDelta   S / Azimuth Pointing correction
+ElDelta   S / Elevation Pointing correction
+VRefSys   S / e.g. "RADILSR"
+LineFreq  S / Rest Frame Frequency
+SigIF     S / Expected IF freq of line wrt IFCenter at signal time
+RefIF     S / Same for ref phase of a freq switch
+RefIF2    S /+Possible second ref phase for freq switch
+VSource   S / Vel of Source in VRefSys (Redshift is positive)
+VAnt      S / Tot Doppler shift is VSource + VAnt
+RecTemp   S / True Receiver temperature (K, At antenna feed)
+CalTemp   S /+Noise diode calibration temperature (K)
+TypeCal   S /+Type of calibration, e.g. VANE 
+SysTemp   S / System temperature (K, Above the atmosphere)
+TAmbient  S /+Air Temp. outside dome (C) NOTE DIFFERENT DEFINITION FROM BELL LABS.
+HMHN      S / Harm number of harmonic mixer
+Sideband  S /+Sideband number 
+BeamFWHM  S /+Beam full-width at half-maximum (arcsec)
+EtaFSS    S /+Forward spillover and scattering eff. (Ta*->Tr* conversion)
+AppEff    S /+antenna aperture efficiency at this frequency
+/EtaL     S /+Rear spillover and scattering efficiency
+/BeamEff  S /+main beam efficiency
+Pressure  S /+Air pressure cm-Hg 
+Humidity  S /+percent
+Refrac    S /+Refraction correction (arcseconds)
+DewPt     S /+Dew point (C)
+MmH2O     S /+mm precipitable water vapor 
+Polariz   S /+Polarization
+RxInfo    S /+Receiver information 
+/History  S /+user history (NRAO calls it openpar)
+NAxis1    A / Number of elements (channels) in array
+CType1    A / Fr, Az, Dc, or L (Implies units for CRVal & CDelt)
+DataType  A / usually Tr*
+CRVal1    A / (Offset) Coordinate of center array element
+CDelt1    A / Channel to channel spacing. Same as stack .fwid
+CRPix1    A /+Reference pixel (stk->expch) 
+Bandwid   A /+Backend bandwidth (MHz)
+END     / 

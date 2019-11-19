@@ -1,0 +1,6 @@
+if test  $# -ne 1 
+then
+	echo usage: rfitstape filename
+	exit 1
+fi
+dd if=/dev/rmt12 bs=2880 of=${1}

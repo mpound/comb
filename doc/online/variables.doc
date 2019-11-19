@@ -1,0 +1,49 @@
+
+			Use of Variables in Comb
+			------------------------
+
+1. Native Variables
+
+There are a number of variables which are native to comb, that is, they
+exist either when you start up comb or comb creates them when needed.
+The native variables are either STRINGs or NUMERICs and usually default
+"" (null string) and 0 (zero), respectively.  Native variables which
+exist when you start up comb are the global string variables ($0 thru
+$9), the global numeric variables (#0 thru #9), the stack header
+variables for stacks 1, 2, and 3 (the core-resident stacks), and the
+Bell Labs and NRAO scan keywords (type "keyw" and "nrao" for the
+lists). All scan header variables are undefined (IEEE NaN) until a scan
+is read in.
+
+The variables which comb creates when needed are extra scan header
+variables which are found in a scan header and are not in the Bell Labs
+or NRAO list.  For instance, if the "gt" command reads a scan with a
+keyword "Bubba" (which is not a standard keyword), space is allocated
+for a new keyword "Bubba" of the appropriate type and ".Bubba" is
+initialized to the value in the scan header.  Such a keyword/header
+variable is called "extra"; you can have up to 32 extra keywords, after
+which they are ignored.
+
+2. User-defined Variables
+
+You can define your own numeric or string variables using the command
+"dv".  Numeric variables can be arrays and strings can be of any
+length. User-defined variables can be local to a macro or global to the
+rest of comb.  Once you have defined a variable, you can use it just
+like you use native variables in comb.  Stack and Scan header variables
+are reserve words---you can't use those variable names for user
+variables.  See "dv ?!" for details.
+
+3. Variable Name versus Variable Value (AKA: What's all this "." business?)
+
+A "." immediately preceding a variable name means "the value of". 
+For instance, ".ScanNum" is the value of the variable ScanNum (scan
+number).  So "p .ScanNum" means "print the value of ScanNum" and 
+"c .ScanNum=3" means "set the value of ScanNum to 3".
+
+4. How to Take Inventory of Currently Active Variables
+
+To see scan header variables, type "pd sc:". 
+To see stack header variables, type "doch" (these never disappear).
+To see globally defined user variables, type "dv pg:".
+To see locally defined user variables, type "dv pl:".

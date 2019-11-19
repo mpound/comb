@@ -1,0 +1,187 @@
+pl - plot stack 1					Matthew Miller
+
+
+EXAMPLES:
+pl				default plot
+
+pl vl: hst:			make histogram plot in velocity 
+
+pl ovl:				overlay new plot on the current one.
+
+pl d:				plot without header data if last plot
+				was made with it, or with header data
+				if last plot was made without it
+
+pl agst:10,20			plot channels 10 to 20 against stack 2
+
+pl v:100,300 h:10,20		plot with horizontal bounds from 10
+				to 20 and vertical bounds from 100 to
+				300
+
+pl frh:				plot the full range of data in stack 1
+
+rt 10;pl; rt 20; pl ovl:voff:3;rt 30; pl ovl:voff:-3
+				plot stacks 20 and 30 over stack 10
+				with a vertical offsets of 3 and -3,
+				respectively, in the current plot units.  
+				The offset can be positive or negative 
+				and reverts to zero if not specified.  
+				This option is useful for comparing
+				overlaid spectra without having them
+				right on top of each other. Use of
+				voff will not change the plot's
+				vertical range.
+
+pl hst: lt:1			make a histogram plot with dotted lines
+
+pl tk:				plot with ticks instead of grid
+
+pl mlb:"MOON"			make a plot with the title "MOON"
+
+gt 84b1000 exp:;pl vl:;gt nbe:;pl ovl:hst:
+				plot the expanded spectrum and then overlay
+				it with a histogram of the narrow backend
+
+DESCRIPTION:
+Pl makes a graph of the data in stack 1.  The graph is made up of five parts,
+four of which may be turned on or off.  The part which may not be turned off
+is the data part.  The other four parts are the grid, labels, header data, and
+use array.  Each of these may be toggled on or off for all following plots by
+typing the label associated with it.  All the parts start on.  The five parts
+are described below.
+
+Data:
+
+This contains the actual graph of the data in stack 1.  It consists of a bor-
+der, the graph itself, and overflow and underflow marks.
+
+The border is just a box surrounding the graph.
+
+By default, the graph is of temperature (vertical axis) against channel
+(horizontal axis), but the graph may be made of the stack 1 temperatures
+against the stack 2 temperatures.  This is described later.
+
+The graph may be made with simple lines connecting the points (default),
+symbols marking the points, or lines going halfway over, all the way up or
+down, and halfway over to form a histogram.  These are selected with the
+flags 'lin', 'ps', and 'hst' respectively.  The lines used for the 'lin'
+and 'hst' modes may be any one of three types.  By default they are type
+9 which is a narrow or black solid line.  See the documentation for fl
+for a discussion of line types. See 'gm ?!' for a discussion of
+symbol types.
+
+The graph is bounded by the horizontal bounds (from 'f' to 't') and the
+vertical bounds (from 'f' to 't').  The horizontal is given in the current
+plot units (see description of labels).  If the channel represented by the
+horizontal from is greater than the channel represented by the horizontal
+to, then the graph is made backwards.  If the horizontal from is not given,
+then it will default to its previous value (compensating for a change in
+plot units) unless the commands gt or rt have been executed since the last
+plot, in which case it defaults to the value representing channel 0.  The
+horizontal to defaults to its previous value (compensating for a change in
+plot units) unless one of the commands gt and rt has been executed since
+the last plot, in which case it defaults to the value representing the last
+channel in stack 1.  The horizontal bounds may be forced to their previous
+values (not compensating for a change in plot units) with the flag 'oh'.
+They may be forced to the values representing channel 0 and the last channel
+in stack 1 with the flag 'fhr'.
+
+The vertical is given in degrees K.  If the vertical from is greater than
+the vertical to, the graph will be made upside down.  If the vertical from
+or the vertical to is missing, it will default to a reasonable value given
+the data in stack 1.  The vertical bounds may be forced to their previous
+values with the flag 'ov'.
+
+
+If a given channel that is plotted is outside of the vertical limits, then
+an overflow or underflow mark is placed at that channel.  These appear as
+short lines just above or below the border at the place where the graph is
+out of bounds.
+
+New data may be overlaid on the current plot with the flag 'ovl'.  If this
+is used then the entire previous plot is kept and just the graph and the
+overflow and underflow markers are plotted for the new one.  Note: you may
+specify a new horizontal range for the overlay, but the data within that
+range will only be plotted if it fits on the previous plot (matching
+horizontal plot units).
+
+Grid:
+
+The grid part of the plot is the grid of lines or ticks marking the locations
+of a number of equally spaced values on the horizontal and vertical axis.
+The grid may be turned on and off with the flag 'g'.
+
+By default the grid is a grid of line type 0 (line type 2 for lines that
+mark the location of 0), but the label 'tk' may be used to change that to
+ticks.
+
+The spacing of the lines or ticks is defined by the horizontal and vertical
+steps ('s').  The horizontal step is given in the current plot units, and
+the vertical step is given in degrees K.  The default values for the
+horizontal and vertical steps are chosen to make around 8 divisions.  If
+'oh' is used then the horizontal step has its previous value.  Likewise,
+if 'ov' is used then the vertical step has its previous value.  The lines
+and ticks will be located in such a way that they represent even multiples
+of the step size.
+
+Label:
+
+The label part of the plot consists of the horizontal label, the vertical
+label, and the numbering on the grid.  It can be turned on and off with
+the flag 'l'.
+
+The horizontal, vertical, and main labels can be entered in 'hlb', 'vlb',
+and 'mlb', respectively.  The actual location of these labels on the plot
+is terminal dependent, but, in general, the horizontal label is just below
+the graph, the vertical label is on the left hand side, and the main label
+is on top in large letters.
+
+If the horizontal label is not given, it will default to one of the following
+values:
+	"Channels"
+	"Velocity(K)"
+	"Frequency(Mhz)"
+	"Antenna Temp.(K)"
+depending on the current plot units.
+
+If the vertical label is not given, it will default to "Antenna temp.(K)".
+
+The main label does not yet have any default values.
+
+The numbering on the grid gives the value each line or tick on the grid
+represents.  The horizontal numbering is in the current plot units, and
+the vertical numbering is in degrees K.
+
+The current horizontal plot unit may be changed to channel, frequency,
+or velocity for all subsequent plots with the flags 'ch', 'fr', and
+'vl', respectively.
+
+Header data:
+
+Some of the stack 1 header information is printed in a format that is
+terminal dependent.  If stack 1 is the result of a recent gt, some scan
+header information will be printed also.  Header printing may be
+turned on and off with the flag 'd'.
+
+Use array:
+
+The use array is plotted as a line between the underflow markers and the
+horizontal numbering.  Where the use array is not set, the line is broken.
+
+The use array may be turned on and off with the flag 'u'.
+
+Plotting against stack 2:
+
+If the 'agst' flag is used, then the horizontal axis represents the
+temperature of stack 2.  Each channel from 'f' to 't' for which the use
+array is on is plotted at the intersection of the temperatures for it
+in stacks 1 and 2.
+
+The use array is not plotted regardless of whether it is on or off as it
+would be meaningless.
+
+The horizontal bounds default in the same way as the vertical bounds, and
+the horizontal label defaults to "Stack 2 Antenna Temp.(K)" The current
+plot unit is considered to be degrees K.  Where input in the current plot
+unit is to be translated into channels, no change in value will occur.
+Thus 35 degrees K translates to channel 35.

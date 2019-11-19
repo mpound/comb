@@ -1,0 +1,258 @@
+		   Some Notes on the Parser
+		 ---------------------------
+
+0. Guts
+
+The parser is written in lex and yacc. See their respective man
+pages for descriptions of what they do.
+
+1. General
+
+The comb input structure is in the form of a tree.  Each leaf
+represents a single datum that may be entered by the user.  The
+internal nodes define the relationships between the leaves.  In a "lk"
+command, for example, the LEFT X, and RIGHT X parameters for the x-axis
+are  grouped together by being the two children of one node.  A node
+may be grouped with other nodes in a similar way.
+
+In addition to grouping leaves that belong together, internal nodes may
+group nodes that are mutually exclusive.  Such nodes are called
+"exclusive", while those that group like leaves are "normal".
+Generally, only one child of an exclusive node is used at a time. An
+example of an exclusive node is INTERPOLATION TYPE in "cm", "vc", etc.
+
+Certain rules are followed for deciding what part of the input line
+will be used as the data for each leaf.  In general, the input line is
+read from left to right and comb keeps track of the node currently
+being input.  Various characters and strings can be used to move the
+current node pointer around on the tree (see sect. 3).
+
+Each leaf corresponds to one parameter of the command and contains
+information describing how the input line is to be interpreted, how it
+should default and where the resulting datum should be stored.
+
+2. Data Types
+
+The way in which the input is interpreted for a given leaf is dictated
+by the "data type" of that leaf.
+
+Each leaf has one of 6 data types:  NUMERIC (INTEGER or REAL), LIST,
+FLAG, TOGGLE, STRING, EXPRESSION, SCAN NUMBER.  SCAN NUMBERs and
+NUMERICs may also be RANGEs.  A RANGE is specified by an upper bound U,
+and a lower bound L.  It is input as "L_U" or "U_L".  If only one value
+is specified for a RANGE, then the upper and lower bounds are both set
+to that value. For a description of data types, consult the Help
+topic 'data_types'.
+
+3. Moving the Current Node Pointer
+
+As previously noted, comb keeps track of a current node which describes
+the data that is being input.  This node is always pointed to by the
+"current node pointer".  The current node pointer starts at the left
+most leaf.
+
+If the current node pointer were not to move then the entire input line
+would be read into the first (left-most) leaf.  To give the user
+control, the pointer may be moved with the use of a variety of
+symbols.  Most of them are described below ("[" and "]" are described
+in section 4).
+
+	Comma:
+
+	Commas move the current node pointer one leaf to the right.
+	Leaves related to the current node only through at least one
+	exclusive node, however, are skipped.
+
+		Example:
+
+		Suppose the tree looks like this (in outline notation)
+
+		Normal (A)
+			Exclusive (B)
+				Normal (C)
+					Leaf (D)
+					Exclusive (E)
+						Leaf (F)
+						Leaf (G)
+				Normal (H)
+					Leaf (I)
+					Leaf (J)
+			Leaf (K)
+
+		(The type of each node and its label are given.  Each
+		node's children are indented below it, listed in order
+		from left to right.)
+
+		If the current node is leaf F, and a comma is typed,
+		the current node pointer will skip leaf G because it is
+		related to leaf F through exclusive node E.  It will
+		also skip leaves I and J because they are related to
+		leaf F through exclusive node B.  Leaf K is related to
+		leaf F through the normal node A and is not skipped.
+		Thus, the next current node after typing a comma is
+		leaf K.
+
+		Note that only one descendant of exclusive node B is
+		ever the current node (leaf F).
+
+	Spaces:
+
+	A group of any number of spaces will act in exactly the same
+	way as commas unless they are preceded or followed by special
+	characters.
+
+	Labels:
+
+	Each leaf and normal node has a one to four character name
+	followed by a colon, for instance the velocity node in "cm" is
+	"vl:".  When comb sees a group of alphabetic characters not
+	enclosed in quotes and ending with a colon, it will interpret
+	it as a label.  Comb will then search for the given label on
+	the tree and set the current node pointer to the left most
+	descendant of that node.
+
+	When comb searches for a label it always starts with the
+	siblings of the current node.  If it does not find the label
+	there it will move on to the siblings of the current node's
+	parent, then the current node's grandparent, and so on to the
+	root (where it generates an error). Note that the current
+	node's cousins are never searched.
+
+	During the search exclusive nodes are treated as if they did
+	not exist.  When comb gets to an exclusive node it searches the
+	nodes children.  It is as if all the exclusive nodes were
+	deleted and their children were one generation younger.
+
+		Example:
+
+		Suppose the tree looks like this
+
+		Node A
+			Node B
+				Node C
+					Node D
+					Node E
+				Exclusive
+					Node F
+					Node G
+			Node H
+				Node I
+				Node J
+			Node K
+				Node L
+				Node M
+
+		and the current node is node D.  When comb sees "K:" it
+		will search through the tree in the following order:
+		D,E,C,F,G,B,H, K.  When it finds K, it sets the current
+		node pointer to L (the first descendant of K).  Note
+		that the children of the exclusive node (F and G) are
+		searched.
+
+4. Moving the Root
+
+It is possible to move the current node pointer accidentally to a leaf
+you did not intend.  When this happens, you may think you are entering
+one parameter while actually entering another.  To help guard against
+this, the special characters "[" and "]" may be used to move the root.
+The group of leaves that the current node pointer can point to is
+restricted to the the descendants of the root.  Thus moving the root
+down the tree reduces the possibility of reaching an unwanted leaf.
+
+A "[" will move the current node pointer in exactly the same way as a
+group of spaces (sect. 3).  It will also move the root down one node
+toward the resulting current node (skipping exclusive nodes).  If "["
+follows a label (separated by zero or more spaces), the root will be
+set to the node described by that label.
+
+A "]" will move the root to the parent of the current root (skipping
+exclusive nodes) and the current node pointer to the left most
+descendant of the node to the right of the current root.
+
+	Example:
+
+	Suppose the tree looks like this
+
+	Node A
+		Exclusive
+			Node B
+				Node C
+				Node D
+			Node E
+				Node F
+				Node G
+		Node H
+			Node I
+			Node J
+
+	and the current node is A.
+
+	When the user types "[", the root is moved down (skipping the
+	exclusive node) to node B.  Only nodes C and D can be reached.
+	If the user then types "]" the root is moved back up (skipping
+	the exclusive node) to node A and the current node pointer is
+	moved to node I (the left most descendant of node H - the next
+	node after B).  If the user then types "E:[", the current node
+	pointer will move to node F (the left most descendant of node
+	E) and the root will move to node E (the node specified by the
+	label "E:").  Only nodes F and G can be reached.
+
+5. Defaults
+
+It is clear that many leaves might never be set by the user.  When this
+happens the parameter corresponding to the leaf will be set to a
+default value.  The value that the parameter is set to depends on the
+"default type" of the leaf.
+
+Each leaf has one of five default types:  SET, OLD, AUTOMATIC, FLAG,
+and TOGGLE.
+
+There follows a description of each default type.
+
+	SET:
+
+	Parameters that correspond to a leaf with a SET type default to
+	a reasonable initial value.  The leaf reverts to this value
+	when a value is not explicitly given by the user.
+
+	OLD:
+
+	These parameters will default to the last value set for them.
+	The initial default (what they will default to before they have
+	been used) is set by the command.
+
+	OLD values can be manipulated with the & operator, e.g. "&+1"
+	to increment an OLD value.
+
+	If a scan number has this default type, then it will default to
+	the last scan number used.
+
+	AUTOMATIC:
+
+	This is an automatic default.  The command will pick a value
+	for these parameters on the basis of other data.  In the "pl"
+	command, for example, the FROM, TO, and STEP parameters for the
+	x and y axis have the AUTOMATIC default type based on number of
+	channels and rms noise in the data to be plotted. 
+
+	FLAG:
+
+	A parameter with the FLAG type will take the value 1 (yes) if
+	it is explicitly accessed with a label but no value is given,
+	and 0 (no) if its label is not given.  For example, node F has
+	a FLAG default type.  If node F is completely left out of the
+	input line, it will default to 0 (no).  If, however, "F:" is
+	typed, but no value is given (the next character moves the
+	current node pointer), then it will default to 1 (yes). An
+	example of a FLAG is "ovl:" for overlay in "lk", "cp", etc.
+	Note that, e.g., "lk ovl:" is the same as "lk ovl:1" is the
+	same as "lk ovl:yes". And just plain  "lk" is the same as 
+	"lk ovl:no" is the same as "lk ovl:0".
+
+	TOGGLE:
+	
+	A toggle is a parameter that can take two values: "yes" or
+	"no".  The value can be specified explicitly or, if not given,
+	the value changes to "yes" if it is "no" and "no" if it is
+	"yes". (That's right, it's a toggle switch).  An example is 
+	"op yw:", to answer yes to warning messages.

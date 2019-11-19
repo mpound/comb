@@ -1,0 +1,6 @@
+#!/bin/sh
+#This version will work with the standard HP cc compiler.
+	cd $COMB/bin;  cp ldcmb.std ldcmb; cp mvcmb.hp mvcmb;chmod 777 mvcmb
+	cd $COMB/src/main;  cp include.mk.hp include.mk
+	cd $COMB/src/main; cp machinedep.h.hp machinedep.h
+	cd $COMB/lib; cp xref.hp xref

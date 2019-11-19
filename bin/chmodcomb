@@ -1,0 +1,19 @@
+#!/bin/sh
+if test $# -eq 0 
+then
+	echo Usage: $0 mode [mode is, e.g., 664]
+	exit 1
+fi
+cd ${COMB}/src
+for i in coordsys error graphics image main misc misc/libut misc/libedit\
+	parse parse/entree scan scan2 stacks user fits
+do
+	echo "$i"
+	(cd $i;chmod $1 *.[cht])
+done
+cd cmd
+for i in *
+do
+	echo "$i"
+	(cd $i;chmod $1 *.[cht])
+done

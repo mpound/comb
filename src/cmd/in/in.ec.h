@@ -1,0 +1,14 @@
+	*h1 = h1_o;
+	*h1t = 16;
+	*h2 = h2_o;
+	*h2t = 16;
+	*clip0 = clip0_o;
+	*clip0t = 16;
+	*clip1 = clip1_o;
+	*clip1t = 16;
+	*ndpt = 8;
+	parse_(&cmnd_.gstr,int_,inb.c);
+	h1_o = *h1;
+	h2_o = *h2;
+	clip0_o = *clip0;
+	clip1_o = *clip1;

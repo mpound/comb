@@ -1,0 +1,132 @@
+.TH LIBUT 3local
+.SH NAME
+clear fill filbts ibit ifdif irond irondd move
+- A utility library of subroutines
+.SH SYNOPSIS
+.nf
+FORTRAN entry points. Array can be a variable or array of any appropriate
+type and length. Nbytes is no longer restricted to 65K.
+.PP
+integer*4 nbytes
+call clear(array,nbytes)
+.PP
+character char
+integer*4 nbytes
+call fill(array,char,nbytes)
+.PP
+integer or logical *2 or *4 ibit
+integer*4 ifirst,last
+call filbts(array,ibit,ifirst,last)
+.PP
+integer*2 or integer*4 i
+integer*4 nbit
+i=ibit(array,nbit)
+.PP
+real*4 a,b,fuzz
+if(ifdif(a,b,fuzz) ...
+.PP
+integer*2 or integer*4 i
+real*4 x
+real*8 dx
+i=irond(x)
+  -or-
+i=irondd(dx)
+.PP
+'anytype' source,dest
+integer*4 nbytes
+call move(source,dest,nbytes)
+.PP
+integer*2 src(?),dest(?)
+integer*4 nbytes
+call swab(src,dest,nbytes)
+.PP
+C entry points. Array can be a pointer of any appropriate type.
+.PP
+int nbytes;
+cclear(array,nbytes);
+.PP
+int nbytes;
+char c;
+cfill(array,c,nbytes);
+.PP
+double a,b,fuzz;
+if(cifdif(a,b,fuzz)) ...
+.PP
+XX *src,*dst;
+int nbytes;
+cmove(src,dst,nbytes);
+.PP
+float or double d;
+int i;
+i = round(d);
+.PP
+XX *src,*dst;
+int nquads;
+exchq(src,dst,nquads);
+.SH DESCRIPTION
+These FORTRAN and C callable assembly language subroutines and functions
+were written to apply some of the VAX's more powerful instructions
+to common problems for which subroutines would be
+useful in any case.
+Many consist of a single instruction.
+All are much more efficient than the equivalent
+c or FORTRAN subroutine.
+.PP
+To use any of these subroutines, give the compiler the flag '-lut'.
+.PP
+.I clear cclear
+is a subroutine which clears memory i.e. sets all bits to 0.
+This is a true zero for all internal numerical representations, 
+but is a series of nulls in a character string
+(not recommended in FORTRAN).
+.PP
+.I fill cfill
+is a subroutine for filling memory with repetitions of a
+given byte. 
+This is not very meaningful for internal
+number representations, but is useful for
+character strings.
+.PP
+.I filbts
+is a subroutine for filling a specified range of bits in memory
+with a given bit.
+It was designed for subroutine use, but may have other uses.
+The bits in 'array' from ifirst to last
+will be set equal to the lsb of ibit.
+.PP
+.I ibit
+is a function which returns a given bit from 'array'.
+It was designed for the use array, 
+but may have other uses.
+.PP
+.I ifdif
+is a logical function for comparing two real values.
+Ifdif returns the logical value .true. (=1) if
+a and b differ by more than fuzz,
+otherwise it returns .false. (=0).
+.PP
+.I irond and irondd, or round
+are functions which round a real (or double) argument
+and return an integer. The integer will be the closest
+integer to the argument. The c callable routine round
+expects a double arg since c always converts float to
+double before passing arguments;
+.PP
+.I move cmove
+is a subroutine which moves a block of
+memory from one place to another.
+If the regions overlap the move will be made
+in the correct order ot avoid overwriting.
+.PP
+.I exchq
+is a c callable subroutine to exchange the contents of two
+buffers whose lengths are expressable as an even number
+of quad words.  That is the number of bytes exchanged is
+8 * nquads.
+.PP
+.I swab
+is a fortran callable byte swapping subroutine. It swaps
+successive byte pairs from the source and puts them in the
+dest. The two arrays may be the same, but if they only overlap
+be careful that you don't overwrite a later part of the source
+with the destination.

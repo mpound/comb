@@ -1,0 +1,73 @@
+                         Things You Should Know
+                       ---------------------------
+
+SCAN - 	The data as they come from the telescope. Scans are read from the 
+	file you attach with "nf", in which they are stored sequentially. 
+	Except in special circumstances, a comb user cannot write to a 
+	scan file. Scans are gotten with "gt".
+
+STACK -	The location of a spectrum on which you can operate. Stacks come in 
+	two flavors:
+
+	   1) core- or memory-resident. These are stacks 1, 2, and 3 and
+	      are stored in memory. Most comb commands operate on 
+	      core resident stacks. Core-resident stacks disappear when
+	      you quit comb.
+	   2) disk stacks. These are stacks 4 through 262143 (the maximum
+	      number of stacks allowed). 
+
+	Disk stacks are stored in a directory opened with "ns". A stacks
+	directory contains 5 files called 'data', 'default', 'index', 
+	'macros', and 'search' which have the following functions:
+
+	   data     Contains the spectral headers and channel data 
+                    in binary form.  
+	   default  ASCII file containing information on user preferences 
+		    such as relative coordinates.  
+   	   index    A table of pointers to the data location corresponding 
+		    to the beginning of each stack in 'data' 
+	   macros   ASCII file containing the user macros applicable to 
+		    these stacks only.  
+	   search   A lookup table linking stack numbers to locations in the 
+		    sky  
+
+        Stacks are retrieved with "rt".
+
+RELATIVE COORDINATES - In order to construct a contour map, you first 
+	must tell comb the coordinate system in which you wish to make it. 
+	This is known as the 'relative coordinate system' and is done
+	with "rc". Once you have defined your coordinate system, you can 
+	also retrieve stacks by their relative coordinates ("rt rc:").
+
+INTERPOLATION - When comb makes any map ("cm", "vc", "wc") or averages 
+	spectra ("co", "is", "ad", "vm") it asks the user what type
+	of smoothing/weighting it should use when combining spectra.
+	The interpolation types are near-point, cone, Gaussian, and Bessel
+	and their details are discussed in the cm documentation ("cm ?!").
+	The smoothing for each point is applied over a user-supplied 
+	interpolation radius (always given in units of arcminutes), 
+	such that any spectra within a circle of that radius centered
+	on the point are included in the average.
+
+PROJECTIONS -  The default relative coordinate system in comb is 
+	"observer's offsets" in arcminutes---i.e., the way you usually
+	take data at the telescope. This is not a true projection. You
+	can specify a particular projection (e.g. gnomonic, mercator) 
+        for your maps with "op".
+	
+MACRO - A macro is a small program which allows you to perform 
+	arbitrarily complicated operations without having to do much
+	typing. See the Help topic 'macros'.
+
+VARIABLE - Variables in comb can be strings or numbers. Certain
+	special variables begin with "$" or "#". Scan/Stack header
+	variables are reserve words---you can't define new variables
+	with those names. See Help topic 'variables'.
+
+DRAGON -  A special value returned if, e.g., an integration or
+        Gaussian fit fails or is undefined.  DRAGON is the variable
+        DR in comb, and .DR is set equal to IEEE NaN (not a number).
+	It is also the value of BLANK in maps made by cm, vc, and
+	wc.  DRAGON is also used to specify "holes" in user-defined
+	areas (see "da ?!"). Tony Stark came up with the name "dragon"
+	to indicate unknown parts of a map as in "Here There Be Dragons."

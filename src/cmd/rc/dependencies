@@ -1,0 +1,4 @@
+rct_.o: rct_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h
+rc.o: rc.c ../../main/C.h ../../main/History.h ../../main/machinedep.h \
+ ../../stacks/C.h ../../coordsys/C.h ../../stacks/include.h \
+ ../../error/C.h rc.dc.h rc.ec.h rc.uc.h

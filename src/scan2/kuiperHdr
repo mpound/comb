@@ -1,0 +1,311 @@
+Tom,
+
+I will set off my replies with a '|'.  I will enter units in the comments
+of the original file.  Frequencies are in MHz.  L, b, az, el, and dec
+are in degrees.  Ra is in hours.
+
+
+Bob
+
+Hello Bob:
+
+Phil and I have been looking at how to create a data file that is comb
+compatible. Since we haven't yet defined the header and data for the
+balloon project, we've decided to use data obtained at Tidbinbilla to
+see what kinds of problems we encounter. The following is a sample
+descriptor prepared by Phil, as well as some questions he has. I'll
+annotate (see the >'s) his message to clarify it (I hope).
+
+Regarding your question of last week on what you should bring with
+you, I guess we'll be concentrating on this compatibility question.
+I don't know what, if anything, you need that isn't already here.
+In a pinch, there's always ftp.
+
+Will you be staying with me the whole time, or just Fri + Sat? When
+will you arrive?
+
+Regards
+
+        Tom
+        ----------------------------------------------
+
+Questions regarding COMB's handling of header variables.
+
+1.  If a header variable is not recognized by COMB, does COMB ignore 
+    it, assign it incorrectly or just halt execution.
+
+        > I believe that comb ignores it.
+
+	| True.  I realize that Comb should be able to list those values,
+	| though.
+
+2.  We have added some variables which may refer to some quantity 
+    derivable from other existing header variables.  Who translates,
+    COMB or us?  This may be a continuation of the first question.
+
+        > All the new header variables are identified with a *** in
+        > the comment line. It seems clear to me now that it is asking
+        > a lot of comb to be able to handle ANY data file, just because
+        > there are so many ways to encode the same data. I'm sure that the
+        > instances noted below are just a tiny subset of all the possible
+        > variations. I suspect that we cannot entirely avoid having
+        > translator programs, or else imposing some conventions on the
+        > programs which generate the data files.
+
+	| Yes, I agree.  I am willing to take your date format, because I
+	| realize that mine is off the wall.
+
+>3.     The descriptor doesn't say anything about units (e.g. MHz, GHz, etc.)
+>       We've put them in some of our descriptions.
+
+| I will add units to my original header also.
+
+
+blsdf                   /*This should convince any Fits reader to stop.
+/ScanSize M 1J          / Size of all scans if location not given in INDEX
+FrstScan M 1J           / 1
+LastScan M 1J           / 0
+
+                        > I assume that LastScan is updated as data are put in
+                        > the file.
+
+			| Correct.
+
+HMIFreq  M 1E           / Lock loop intermediate frequency
+
+                        > This is what we call our phase-lock IF and we
+                        > use MHz
+
+			| Same here
+
+IFCenter M 1E           / 1366 Reference IF frequency.  Spect cntr rel to this
+
+                        > I assume this is what we call our signal IF, which
+                        > we express in MHz. We use the term SigIF to describe
+                        > this but you use that name to specify where the
+                        > spectral line appears in the IF, right?
+
+			| This is the nominal center frequency of my IF system.
+			| other values like SigIF are offsets from this center.
+			| feel free to set this to zero.  It should be left as
+			| zero in Comb if not given.
+
+Longitud M 1E           / 
+Latitude M 1E           /
+Height   M 1E           / meters above spheroid ~Mean sea level
+Telescop M 8A           / BTL-7MTR, DSS43, BALLOON   
+ObsPrg   M 8A           / OBS, DSS43xx
+SpecType M 8A           / FILTBANK, FTSPEC, AUTOCORR
+
+                        > We have in the past use multiple spectrometers, so
+                        > I think this will drop down to the S level. Does
+                        > that cause a problem for comb?
+
+			| No, I don't think that Comb actually uses it yet.
+
+ScanLoc  M 10J          /*This variable gives the scan offset from beg of file
+                        >       ^^^^^^^ array?
+
+			| This will have a much larger dimension in a real data
+			| file.  It is the array of locations of each scan.
+
+ScanNum  S 1I           /*The scan number as known by the observer
+ObsType  S 2A           / Observation type
+
+                        > We need to know your codes, as well as the
+                        > calibration algorithm for the observation type.
+                        > We need to algorith so we can match our type
+                        > codes to yours.
+
+			| This has values like "CA", "SK", "FS", and "PS".
+			| again Comb only displays this value on plots
+			| See DataType in the 'A' section
+                        
+J2Second S 1J           / Sec +- from J2000
+
+                        > Here's a case of our method of encoding
+                        > header info differs from yours. The next entries
+                        > show what we use instead.
+
+Year     S 1I           / Current Year                           **
+Day      S 1I           / Day of year                            **
+UT       S 1E           / UT hours                               **
+LST      S 1E           / Local Sidereal Time (hrs)              **
+
+                        > We also store the sidereal time, rather than
+                        > computing it from the UT
+
+			| These are fine.  As I said above, I will set up Comb
+			| so that if J2Second is missing it looks for these.
+			| Comb doesn't use sidereal time at present because
+			| it expects the doppler shift to have been done by obs.
+
+IntTime  S 1E           / Integration time S + R
+OnOffInt S 1E           / time per on/off source integration (sec) **
+
+                        > This is how long we stay in either the ON or
+                        > OFF position when beam or position switching
+
+PosType  S 4A           /*
+                        > What is this?
+
+			| It has one of the following values:
+			| "AzEl", "Equ", "Gal", "EqAp"
+
+CurrRa   S 1E           / Current RA (hrs)                       **
+CurrDec  S 1E           / Current Decl (deg)                     **
+
+                        > We also store the precessed coordinates. I
+                        > think my original idea is that I wanted to have
+                        > a record of where the telescope actually pointed,
+                        > in case the precesssion was done incorrectly.
+
+			| Fine.
+
+CentRa   S 1E
+CentDec  S 1E
+CentL    S 1E
+CentB    S 1E
+                        > This is a case where your header is redundant.
+                        > Obviously (L,B) is the same as (Ra,Dec). There
+                        > is no harm in that.
+
+			| Comb won't mind if you don't give L and B
+
+			| The following are observing positions relative to
+			| the center pos above.
+RaMap    S 1E		/True 'Arc on the sky in Ra direction for "on" position
+DecMap   S 1E		/'Arc in Dec. for "on" position
+LMap     S 1E		/ (Deg) L offset from center pos for "on"
+BMap     S 1E		/ (Deg) B offset from center pos for "on"
+RaRef    S 2E		/ Off positions with units as above
+DecRef   S 2E
+LRef     S 2E
+BRef     S 2E
+                        > Phil just came up and asked me why the four
+                        > entries just above here are 2E. I don't know.
+                        > Without thinking about it, we just replicated
+                        > 2E for the new entries below, but we think they
+                        > should be 1E.
+
+			| We often use two off positions to ballance the
+			| change in atm temp.
+
+HAROff   S 2E           / H.A reference offset (deg)             **
+DecROff  S 2E           / Declination referece offset (deg)      **
+HASOff   S 2E           / H.A. source offset (deg)               **
+DecSOff  S 2E           / Declination source offset (deg)        **
+
+			| These seem the same except for scaling as mine above.
+
+Epoch    S 1E
+Azimuth  S 1E
+Elevatio S 1E
+AzDelta  S 1E
+ElDelta  S 1E
+VRefSys  S 4A		/ Has values: "LSR", "Sun", "Eart", "Ant"
+LineFreq S 1D           /*Rest Frame Frequency
+SigIF    S 1E           /*Expected IF freq of line wrt IFCenter at signal time
+RefIF    S 1E           / Same for ref phase of a freq switch
+VSource  S 1E           /*Vel of Source in VRefSys (Redshift is positive)
+VAnt     S 1E           /*Tot Doppler shift is VSource + VAnt
+DopFac   S 1E           / Doppler Factor                         **
+                        > In this particular data format, I store
+                        > 1 - Vtot/c. This is a case of having the same infor-
+                        > mation stored in different ways.
+
+			| Obs actually use the relativistic formula, but COmb
+			| does nothing but display these
+
+Sidereal S 1I           / Which velocity formula to use          **
+                        > This specifies whether the source is sidereal,
+                        > or whether its velocity is to be computed from
+                        > an ephemeris (i.e. comet or planet)
+
+			| This is the same info as VRefSys above
+
+/BZero   S 1E
+                        > Why is BZero commented out?
+
+			| because Obs doesn't use it. Comb recognizes and uses
+			| it (Untested probably)
+
+BScale   S 1E           / If data is integer, value = data * BScale [+ BZero]
+RecTemp  S 1E           / True Receiver temperature (At antenna feed)
+/SysTemp  S 1E          / System temperature (Above the atmosphere)
+
+                        > Why is this commented out?
+
+			| because COmb is recalculating it from other parameters
+
+CalTemp  S 1E           / Calibration temp (K)                   **
+
+                        > For example, this might be the temperature of
+                        > noise diode. The meaning depends on the observation
+                        > type. It could be = TAmbient.
+
+			| I have had this in the past.
+
+HotSpill S 1E           / Fraction of Hot terrestrial absorption beyond ant feed
+SbRatio  S 1E           / Signal sideband Gain / Image sideband gain
+TAmbient S 1E
+TSky     S 1E           / Most recent measurement of sky temp
+TSkyElev S 1E           / Elevation angle of sky temp measurement
+NRef     S 1C           / Number of reference positions
+Bad      S 1C           / Larger # -> worse data
+
+                        > How is this set? How is it used?
+
+			| In pricipal yoiu could set this while looking at new
+			| data and that data could be rejected later by get.
+			| This mechanism has fallen into disuse at Bell Labs
+
+Synth    S 1E           / Synthesizer (MHz)                      **
+
+                        > This is another example of keeping the most
+                        > primitive form of the data -- in this case,
+                        > how the receiver is tuned.
+
+			| Fine, this will hve a different interpretation
+			| for different receivers.
+
+SBNum    S 1I           / Side Band Number                       **
+
+                        > This is like the sideband number used at the
+                        > NRAO 12-m, although my convention may not be
+                        > the same as theirs. Anyway, it maps into your
+                        > usb/lsb codes below.
+
+MMHN     S 1C           / Harm. numb of main mixer + LO chain after locked osc
+MMSB     S 1A           / Main Mixer Side Band ('u' or 'l')
+HMHN     S 1C           / Harm numb of harmonic mixer
+HMSB     S 1A           / Harmonic Mixer Side Band
+NumArray S 1C           /*
+ArrayLoc S 0I           /*The array offsets (Bytes) start in this location.
+NAxis1   A 1I           /*Number of elements in array
+CType1   A 2A           / ie. Fr, Az, Dc, or L (Implies units for CRVal & CDelt)
+DataType A 4A           / ie. TA, TR*, ON, HOT, HotA
+
+			| Obs records Ta values and Comb converts them to
+			| Ta* for presentation
+
+CRVal1   A 1E           / (Offset) Coordinate of center array element
+CDelt1   A 1E           / Channel to channel spacing
+COffFS   A 1E           / Channel offset for freq switching      **
+
+                        > How much is the frequency shifted (in channels) on
+                        > alternate cycles of a frequency switch.
+
+			| I encode this in SigIF and RefIF
+
+SDStotal A 1E           / SDS total counts per second            **
+SDSdc    A 1E           / SDS d.c. counts per second             **
+
+                        > Purely diagnostic numbers for the Fourier transform
+                        > spectrometer (FTS). They aren't used at all. (SDS is
+                        > the manufacturer of the FTS.)
+
+Data     A 0I           /*This is what it is all about
+END                     /*
+
+

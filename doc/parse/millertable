@@ -1,0 +1,268 @@
+.ig
+F. Marchione
+L253 x2712
+dept. 11341
+new N. Postell 8/3/83
+file tables
+..
+.S 9
+.de TP
+.sp 2
+..
+.EQ
+delim !!
+gsize 9
+.EN
+.PH ""
+.tr `
+.po 0
+.TS H
+c s s s
+c2| c2| c2| c2|
+c2| l2| lw(1.5i)| lw(2.5i).
+COMB REFERENCE SHEET
+.sp
+DATA TYPE	SYNTAX	EXAMPLES	NOTES
+_
+.TH N
+INTEGER	\f2digits\f1	34
+REAL		167
+	_	_	_
+	\f2digits.digits\f1	.5
+		0.273
+		86.2
+	_	_	_
+	(\f2number\f1)	T{
+(34)
+.br
+(12*2)
+T}	T{
+These can be nested.
+\f2number\f1 is a numeric expression.
+T}
+	_	_	_
+	\f2number\f1+\f2number\f1	(8*4)+3	Addition.
+		2+7.5
+	_	_	_
+	\f2number\f1-\f2number\f1	86-2	Subtraction.
+	_	_	_
+	\f2number\f1*\f2number\f1	4.3*87	Multiplication.
+	_	_	_
+	\f2number\f1/\f2number\f1	4/2	Division.
+	_	_	_
+	\f2number\f1^\f2``number\f1	2^16	Exponentiation (2\u16\d)
+	_	_	_
+	\f2number\f1:\f2number\f1	T{
+5:8
+.br
+(2+1):30
+T}	T{
+The expression on the right is divided by 60 and
+added to the expression on the left.
+T}
+	_	_	_
+	\f2number\f1 E \f2number\f1	T{
+2.71E2
+.br
+(8+.5)E(1+1)
+T}	T{
+The expression on the left is multipled by ten
+raised to the power of the expression on the right.
+T}
+	_	_	_
+	-\f2number\f1	-2	Negation.
+	_	_	_
+	\f2number\f1>\f2number\f1	(8+7*2)>15	T{
+Evaluates to 1 if true, 0 if false.
+T}
+	_	_	_
+	\f2number\f1<\f2number\f1	57<8	Less than.
+	_	_	_
+	\f2number\f1>=\f2number\f1	8.3>=(5*2)	Greater than or equal to.
+	_	_	_
+	\f2number\f1<=\f2number\f1	5<=8	Less than or equal to.
+	_	_	_
+	\f2number\f1=>\f2number\f1	28=>16	Greater than or equal to.
+	_	_	_
+	\f2number\f1=<\f2number\f1	128=<87	Less than or equal to.
+	_	_	_
+	\f2number\f1==\f2number\f1	(3*3)==a	Equal to.
+	_	_	_
+	\f2number\f1<>\f2number\f1	(3*3)<>10	Not equal to.
+	_	_	_
+	?(\f2number\f1|\f2number\f1|\f2number\f1)	?(3==2|5|7)	T{
+If the first \f2number\f1 is 0, then this has
+the value of the last \f2number\f1.
+Otherwise, it has the value of the second \f2number\f1.
+T}
+	_	_	_
+	!roman ln! (\f2number\f1)	!roman ln! (3.14)	Natural log.
+	_	_	_
+	!roman log! (\f2number\f1)	!roman log! (1000)	Log to base 10.
+	_	_	_
+	!roman log! (\f2number|number\f1)	!roman log! (2|16)	T{
+Log of the second !number! to base of the first
+!number! (log\d!size 8 2!\u16).
+T}
+.sp .5
+	_	_	_
+	!roman sin! (\f2number\f1)	!roman sin! (45)	Sine (!number!s in degrees).
+	_	_	_
+	!roman cos! (\f2number\f1)	!roman cos! (45)	Cosine.
+	_	_	_
+	!roman tan! (\f2number\f1)	!roman tan! (45)	Tangent.
+	_	_	_
+	!roman atan! (\f2number\f1)	!roman atan! (1)	T{
+Arc tangent (in degrees) (note; !number! may contain
+a division by 0).
+T}
+	_	_	_
+	!roman x! ()	!roman x! ()	T{
+Causes a cursor read and returns the value
+of the x location.
+T}
+	_	_	_
+	!roman y! ()	!roman y! ()	T{
+Causes a cursor read and returns the value of the y location.
+T}
+	_	_	_
+	!roman x! (\f2number\f1)	!roman x! (3)	T{
+Returns the value of the x location for the \f2number\f1'th
+cursor read made with cr. 0<=\f2number\f1<=9.
+T}
+	_	_	_
+	!roman y! (\f2number\f1)	!roman y! (5)	T{
+Returns the value of the y location for the \f2number\f1'th
+cursor read made with cr.
+T}
+	_	_	_
+	!roman crsr! (\f2number\f1)	!roman crsr! (0)	T{
+Flag for whether or not the \f2number\f1'th
+cursor read made with cr ended with "e".
+T}
+	_	_	_
+	#=\f2number\f1	#=5*7  	Sets global variable 0.
+	_	_	_
+	#\f2number\f1=\f2number\f1	#3=26	Sets global variable \f2number\f1.
+	_	_	_
+	#	#	Value of variable 0.
+	_	_	_
+	#\f2number\f1	#3	Value of variable \f2number\f1.
+	_	_	_
+	.\f2headername\f1	T{
+!roman \&.numst!
+.br
+!roman \&.fperr2!
+.br
+!roman \&.ra!
+.br
+!roman \&.ra3!
+T}	T{
+The \f2headername\f1 is an alphanumeric string.
+The numbers 1, 2, or 3 may be added to the end
+to indicate the value should come from the header
+of stack 1, 2, or 3 respectively.
+T}
+	_	_	_
+	.\f2headername\f1 (\f2number\f1)	T{
+ \&.stak (35)
+.br
+ \&.use (12) 
+T}	T{
+This is used for header variables which are arrays (.use
+and .kuse are arrays of bits).
+T}
+	_	_	_
+	.\f2headername\f1=\f2number\f1	.numst=5	Sets a header variable.
+	_	_	_
+	.\f2headername\f1 (\f2number\f1)=\f2number\f1	.stak (12)=57
+	_	_	_
+	&	&	T{
+This is the old value of a parameter if that
+parameter has default type OLD.
+T}
+COMMAND	"\f2chars\f1"	"hello"
+	_	_	_
+EXPRESSION	"\f2chars\f1\e"\f2chars\f1"	"hello\e"Fred\e" "	The \e is stripped.
+	_	_	_
+STRING	'\f2chars\f1'	'goodbye'
+	_	_	_
+	'\f2chars\f1\e'\f2chars\f1'	'goodbye\e'Fred\e''	The \e is stripped.
+	_	_	_
+	{\f2chars\f1}	{pl 10, 20}
+	_	_	_
+	{\f2chars\f1{\f2chars\f1}\f2chars\f1}	{ca`{#1=1+1}}	T{
+These can be nested to any depth.
+T}
+	_	_	_
+	{\f2chars\f1\e{\f2chars\f1}	{p "\e{"}	The \e is stripped.
+	_	_	_
+	{\f2chars\f1\e}\f2chars\f1}	{p "\e}"}	The \e is stripped.
+	_	_	_
+	\f2string\f1 \f2string\f1	T{
+"hello" 'Fred'
+.br
+{goodbye}{Joe}
+.br
+{hello} "Mary"
+T}	The strings are concatinated.
+	_	_	_
+	(\f2string\f1)	T{
+("hello")
+.br
+("who's "{that?})
+.br
+T}	These can be nested.
+	_	_	_
+	sub(\f2string|number|number\f1)	T{
+sub("abcd"|2|1)
+.br
+sub('abcd'|1+1|1)
+T}	T{
+This gives the substring of "abcd" starting
+at character 2 and continuing for 1 character.
+\f2number\f1 may be a numeric expression as described
+for INTEGER and REAL.
+T}
+	_	_	_
+	$=\f2string\f1	$="hello"	This is a string variable.
+	_	_	_
+	$\f2number\f1=\f2string\f1	T{
+$3="hello"
+.br
+$(2*1.5)="hello"
+T}	T{
+\f2number\f1 may be a numeric expression
+as described for INTEGER and REAL that evaluates to a value
+of 0-9.
+$0 is the same as $.
+T}
+	_	_	_
+	$	$	T{
+These get replaced 
+with whatever the variable was set to before.
+T}
+	_	_
+	$\f2number\f1	$3
+	_	_	_
+	&	&	T{
+This is replaced with the old value of the parameter
+if the default type is OLD.
+T}
+_
+SCAN NUMBER	number	100	\f2filename\f1 comes from default value.
+	_	_	_
+	filename number	80a100	T{
+\f2filename\f1 is three characters long, contains digits and lower case
+letters.
+T}
+		T{
+1a100
+.br
+b100
+T}	T{
+If not all three characters are given, the
+others come from the default value.
+T}
+.TE
+

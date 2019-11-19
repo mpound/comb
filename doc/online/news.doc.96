@@ -1,0 +1,145 @@
+=====================================================================
+                 Comb News and Views
+=====================================================================
+
+-------------------------------
+Changes for Comb 1996.0-Public
+-------------------------------
+
+9. On-line "Frequently Asked Questions" List
+
+       Type "faq_" or select the topic "FAQ" in Help.
+ 
+
+8. New News Interface
+
+	You're using it.
+
+
+7. Oy! We've Enhanced So Many Commands! 
+
+	See their respective on-line documentation for details.
+	Here's a synopsis:
+
+   ad, gt, me - Option type: to match a specific type of scan
+	(character string matching to scan keyword ObsType). 
+	Flag t: to set ".test" to 1 if the get was successful.
+
+   bc - works for Scan2 type scans now
+
+   cr - has p:, px:, py: exclusive action to print both coords or 
+	just x or just y
+
+   da - more areas available
+
+   gf, pf -  gf (Gauss fit) and pf (Parabola fit) will set "fwhm" and 
+	     other stack header variables to .DR if the fits don't converge.
+	     Chi-squared and and nfree are stored in in new stack header
+   	     variables chisq and nfree.
+
+   hc - You can name the output file 
+
+   in - in (integrate) now calculates the dispersion of the line (2nd 
+	moment).  The result is stored in "fwhm".
+
+   lk - has overlay (ovl:) option
+
+   nf - the scan file path defaults to the environment variable SCANFILE
+
+   ns - option q: (quiet) to open a new stacks file without asking
+
+   op - Option dp: to turn off ALL plotting--for use in conjunction with
+	"ro" when you want to capture text but not plotting char. 
+	Option msg: to warn about DRAGONs in stacks.
+
+   ri - can read input from a string variable in addition to a file.
+
+   ro, pr - These commands can now redirect their output to any string variable
+
+   sc - Option w: to warn if you've gone past the end of file marker; 
+	Option str: to read from a string variable.
+
+   sl - horizontal (h:) and vertical (v:) leaves; plot symbols (ps:)
+  	allowed; add: option to add constant to y-values (like "rs");  
+	changed "fact:" to type SET so that it always reverts to 1. This
+	matches the behavior of "rs add:" and "im rs:ad:"
+
+   wf - You can tell wf what to use for BITPIX when writing FITS files.
+
+   wr - Write a Scan2 back to the raw data file can be implemented. 
+        It is normally turned off as a safety feature.  See 'wr ?!'
+
+
+   In addition, most lengths of input strings have been increased.
+
+   Also, a new function "abs()" is available to return the absolute value
+   of whatever you put in the parentheses. 
+
+
+6. New Help Interface!
+
+	The macro 'help' has been re-written to provide a more
+	user-friendly help interface. In addition to the regular help
+	on commands, there are explanations of other comb esoterica.
+
+
+5. Saint Comb and the Dragon
+
+	Comb will now find and eliminate BLANKs (aka DRAGON, aka IEE
+	NaN, aka .DR) in stacks. The default behavior is to check
+	stacks when they are brought into a memory stack (1, 2, or 3).
+	This behavior can be changed with op msg:. See 'op ?!' for a
+	complete description of this feature.
+
+
+4. You can now specify the output file name in "hc"
+
+	You can now specify the name of the disk file to which you
+	want hc to write.  For instance, if you type hc pf:"file.ps" 
+	(or tf: or lf:) the file will be written to file.ps.
+	If you type hc pf: with no file name given, it will be
+	written to /tmp/comb.XXXXXX, where the X's are replaced
+	by unique characters (this was the previous behavior for
+	hc pf:, hc tf:, hc lf:). 
+
+
+3. More areas and images available
+
+	You can now have up to 10 areas defined (Area 0 thru Area 9)
+	You can now have up to 10 images defined (Image 0 thru Image 9)
+
+
+2. New command: dv - "Declare Variables"
+
+ 	You can now declare your own variables in comb! Declared variables
+	can be local to a macro or global to the rest of comb.  Type
+	'dv ?!' for more info.
+
+
+1. Parser Improvements
+ 
+	Changes to the way comb parses input strings have removed some
+	oddities in the way you have to specify certain expressions.
+	For instance, you used to have to enclose "." variables in
+	parentheses when using them in conditional statements, e.g.
+
+	do i:{(.ra)==20} {...}.
+
+	You no longer have to do this.  This is also fixed for global 
+	numeric ("#") and global string ("$") variables, e.g.
+
+	-> p $4="Pattern"
+	Pattern
+ 
+	-> p $4=="Pattern"
+	1
+
+  	i.e., you no longer need parentheses around $4.
+
+
+	Also, The parser has been rewritten somewhat so that Scan2 header
+	variables can be set by the user.  Wr -- write a Scan2
+	back to the raw data file can be implemented. It is normally
+	turned off as a safety feature.  See 'wr ?!'
+
+  

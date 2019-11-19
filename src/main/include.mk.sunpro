@@ -1,0 +1,3 @@
+CC=cc -Xc -D__sparc  -D__SVR4 -D__BUILTIN_VA_ARG_INCR 
+# this causes trouble for older versions (< SC4.0) of /opt/SUNWspro/cc:
+#  -erroff=E_MACRO_REDEFINED 

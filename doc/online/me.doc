@@ -1,0 +1,73 @@
+"Map data Extraction" "me"				R. W. Wilson
+
+EXAMPLES:
+
+me rd: 5:32:47 -05:24:30 nbe: fs: ps: smacro:"smac" rmacro:"rmac"\
+	emacro "emac" sn:92a1000_2000
+
+    Search through the given scans for scans with center position of
+    Orion A, get the nbe, and call the given macros.  The stored 
+    default scan number will not be changed (but it would have been set
+    to 92a2000 if update had been given).
+
+me rd: 5:32:47 -05:24:30 -45_30 -120_100 nbe: fs: ps: smacro:"smac"\
+	rmacro:"rmac" emacro:"emac" update:
+
+    Same as before, except that any scan falling in the box with ra
+    offset between -45 and 30 'Arc and dec between -120 and 100 'Arc
+    of the center of Orion A will be accepted independent of its
+    'center position'.  The default starting scan will be used and
+    me will continue until it reaches the end of the last file
+    in the sequence (c92a10001 will be followed by c92b1).  The
+    default starting scan number will be updated.
+
+me lb: 0 0 30_31 -.5_.5 bbe: ps: smacro:"smac" rmacro:"rmac" emacro:"emac"
+
+    Search the box from 30 to 31 deg in l and +/- 0.5 deg in b. Note
+    idiom for searching areas in galactic coordinates: any scan with an
+    ``offset'' from the origin of galactic coordinates by 30 to 31 degrees
+    in l and +/- 0.5 degrees in b is accepted. The scan's center position
+    doesn't have to be 0 0; it need only fall in the specified box.
+
+
+DESCRIPTION: !!! NOTE: me's mode of operation was changed in 3/92 !!!
+
+'Me' is designed to automatically look through a data file [and its
+successors] and extract the data which belongs in the map in the
+current stacks directory.  It is also useful for scanning a data file
+for observations of a given set of types (eg. FS or PS) in a region of
+the sky (or with a given center position) and at a range of
+frequencies.  Additional filters may be applied in the user's
+processing macro.
+
+When 'me' finds the first scan which satisfies the given criteria, it
+gets that scan, and calls the start up macro ('smacro:' in the parse
+tree) to start the process.  It then re-gets that scan and calls the
+data reduction macro ('rmacro:').  Subsequent scans in the map have
+only 'rmacro' called.  It is the responsibility of 'rmacro' to do any
+data storage which is desired, but it can assume that the scan in stack
+1 fits the criteria for the map.  At the end of the range of scans or
+when the file ends, the ending macro ('emacro:') is called.  At the
+time 'rmacro' is called for the first scan of a given map, the next
+stack number is put in global variable 1 "#1".  Thus 'emacro' can
+expect to have the first stack number in #1 and the last stack where
+'rmacro' left it (st a: sets .numst to the number of the stack where
+stack 1 was stored).  In most cases a macro for calling me and the
+processing macros will be defined in the stack macro file for the map.
+
+The macros may be left undefined if no action is required, although
+if no macros are given the only effect of running me will be to update
+the record of the last scan processed if requested.
+
+If me finishes correctly, it will store the file and number of the
+last scan processed in the stacks default file.  A subsequent run
+of me with no scan number will start up from that point.
+
+If you interrupt 'me' or it otherwise fails to finish properly it will
+not update the last scan processed.  I suspect that the most common
+problem with 'me' will be duplicating scans in the stacks.  If you want
+to play with 'me' and do no harm, replace the store command in 'rmacro'
+with a print command.  I recommend keeping track of maps manually to
+check up on 'me'.
+
+See the documentation for gt for a discussion of scan numbers in comb.

@@ -1,0 +1,234 @@
+		Special Characters, Data Types, and Command Archiving
+
+SUMMARY OF SPECIAL CHARACTERS:
+	crtl C, 'del'   interrupts comb and returns control to terminal. If
+			you try this while plotting, the xterm may stay in TEK mode.
+	, or 'space'	delimits arguments in a command.
+	[		moves root of syntax tree down one node
+	:[		(following label) moves root of syntax tree to
+			node described by preceding label
+	]		moves root of syntax tree back to its previous node
+			(before [ or :[ ) and changes current leaf to skip
+			remaining children of root
+	?		hand hold mode
+	??		print out syntax tree
+	?!		print out command documentation
+	;		separates commands in a command string.
+	",', or {}	delimit strings. {} nest, and they all can be escaped
+			with \.
+	_ (underscore)	used to separate the two values in a 'range'.
+	:		follows a flag.
+	:		in a number means /60 as in hh:mm:ss format.
+	.		at the beginning of a line introduces a history cmd.
+	.expch		in a argument refers to the header variable expch.
+	.ndat(15)	If the variable is an array, it can have an index.
+	.		in a number is a decimal point.
+	E		* 10^  (cannot use lowercase 'e' because of conflicts
+                        with scan filenames, e.g. 85e1201)
+	# or #4		refers to global variables 0 or 4.
+	$ or $3		string variables 0 or 3.
+	!0 or !2	in a macro will be replaced by argument 0 or 2 in the
+			macro call.
+	&		is replaced by the previous value of the argument
+			if argument is OLD default type
+	x(0)		x value of the first cursor read
+	y(2)		y value of the 3rd cursor read
+	crsr(1)		flag from 2nd cursor read. =1 unless you hit 'e'.
+			NOTE: The cursor variables are the only ones that
+			      don't follow the ".name" rule to access the value
+			      of the variable "name".
+	+ - * / ^	are operators as you would expect.
+	=		is used for assignment.
+	< > =		are used in tests.
+
+
+NUMERIC EXPRESSIONS:
+    Numbers:
+          non-integral and integral, no leading digit required  before
+        a decimal point
+                "35"    "3.5"   ".35"
+    Operators:
+        "+"   addition
+        "-"   subtraction
+        "*"   multiplication
+        "/"   division
+        "^"   exponentiation
+        ":"   base 60 (hours:minutes:seconds)
+	"E"   times 10^ (3E2 == 300)
+
+    Unary Operator:
+          "-" negation
+    Tests:
+        ">"    greater than
+        "<"    less than
+        "=="   equal to
+        ">="   greater than or equal to
+        "<="   less than or equal to
+        "<>"   not equal to
+
+    Functions:
+	    "?"("expr1"|"expr2"|"expr3")"
+            if expr1 evaluates to a non-zero number,
+            the function will have the value of expr2,
+            otherwise it will have the value of expr3.
+
+        "ln("expr")"
+            natural log of expr
+
+        "log("expr")"
+            log to base 10 of expr
+
+        "log("expr1"|"expr2")"
+            log to base expr1 of expr2
+
+        "sin("expr")"
+            sine of expr in degrees
+
+        "cos("expr")"
+            cosine of expr in degrees
+
+        "tan("expr")"
+            tangent of expr in degrees
+
+        "atan("expr")"
+            arc tangent of expr
+
+        "atan("expr1"/"expr2")"
+            arc tangent of expr1 divided by expr2 even if  expr2  is
+            zero.  This is a four quadrant arctan.
+	
+	"exp("expr")"
+	    exponentiation,  e^("expr")
+
+	"abs("expr)"
+	    absolute value
+
+    Ranges:
+	expr_expr or expr
+	    can be used to give values to a 'range' argument.
+	    Range arguments are used where either a single value or a range
+	    of values is appropriate. Thus the scan numbers in 'gt' and the
+	    channel numbers in 'us' are ranges, whereas 'in' or 'pl' use 'from'
+	    and 'to' values (a single value does not make sense).
+
+    Variables:
+
+        "#0" through "#9"
+            numeric variables
+
+        "#" - same as "#0"
+
+        "#"expr
+            whichever numeric variable expr indexes
+            (if expr == 5 then same as "#5")
+
+        variable "=" expr
+            assigns the value of expr to variable
+
+    Header variables:
+	A header variable name preceded by a '.' refers to the value of
+	that header variable. It can be used as part of an numeric expression or
+	on the left side of '=' to assign a new value to the header variable.
+	The names which are defined are:
+
+		1) All of the stack header variables in each of the three
+		   core resident stacks eg. .freq2 is the line freq in stack 2.
+		   Use the macro "doch" or Help topic 'stack' to read the 
+		   stack header variable names.
+
+		2) .stak(n)  [same as .stak1(n)] refers to the n-th channel 
+	           of stack 1. Similarly, .stak2() and .stak3() are the 
+		   channels of stacks 2 and 3.
+
+		3) All the scan header variables (see "pd sc:", macro "docs", 
+		   or Help topic 'scan').
+
+		4) Bits in the use array. .use(10) is the tenth bit in the
+		   use array.
+
+		5) ndat contains the scan data for old Bell Labs scans and
+		   is empty for other types of scans. 
+
+		6) Any user-defined arrays (see "dv ?!").
+
+		7) The special value DRAGON (=BLANK) is in the variable DR.
+
+	    	8) The header variable "test" which is set by various commands
+		   like "rt t:".
+
+STRINGS OR COMMANDS OR EXPRESSIONS
+
+
+    String:
+          enclosed  in  double  quotes,  single  quotes,  or  squiggly
+        brackets, backslash before quotation mark prevents mark from
+        ending string
+            "abc" {abc} 'abc'
+
+    Concatenation:
+         "string string"  concatenates strings
+             ("hello"{there} == "hello there")
+
+    Substring:
+          "sub("string"|"expr1"|"expr2")" the portion  of  string
+           that  starts  at  the  expr1'th character and goes
+           on for expr2 characters
+
+    Variables:
+        "$0" through "$9"
+            string variables
+
+        "$ - same as "$0"
+
+        "$" expr
+            whichever string variable expr indexes
+            (if expr == 5 then same as "$5")
+
+
+        variable "=" string
+            sets variable to string
+
+SCAN NUMBERS
+    Scan Number:
+          three characters followed by an expression which must  begin
+        with a numeric digit.  If any or all of the three characters
+        are missing, they are replaced from left  to  right  by  the
+        last characters used.
+            "80a100" "abc5" "c2"
+            "2" "abc0+25*#1"
+            "3*#2"
+GENERAL
+          Ampersand ("&") is replaced by the  previous  value  of  the
+        parameter being entered if that parameter has default type OLD.
+
+	Macro arguments are accessed with a '!'. eg. !0 refers to argument
+	zero, !2 to argument 2.
+
+	Cursor x and y values are accesed with 'x(0)'for the first x, or
+	y(1) for the second y value. Cause the cursor to be read with
+	the 'cr' command. crsr(n) is a flag returned from the n'th cursor
+	read. It will be set to '1' unless you type 'e' to read the
+	cursor. See the definitions of uscr or zoom in the global macros
+	for examples of cursor use.
+
+	Each flag must be followed by a ':'.
+
+	Multiple commands on a line should be separated by a ';'.
+
+	Expressions cannot have spaces in them, e.g. 
+		3*#/4
+	is ok, but
+		3 * # / 4
+	is not.
+
+	The previous command line is kept and may be accessed with the
+	following history commands:
+
+		. or .e		execute the old command as it is.
+		.p		print the old command.
+		.an		store the old command in archive n (n is a 
+				single digit).
+		.n		retrieve the command in archive n.
+		.s/xxx/yy/	edit the old command substituting the string
+				yy for the first occurence of xxx. The
+				delimiter may be any character, not just '/'.

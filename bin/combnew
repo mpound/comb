@@ -1,0 +1,7 @@
+cd $COMB
+if test $# -ne 1
+then
+	echo usage: combnew days_back
+	exit 1
+fi
+find . -type f -mtime -$1 ! -name test ! -name *.o ! -name *t_.c ! -name *.ec.h ! -name *.dc.h ! -name *.df.h ! -name *.ef.h ! -name *.if.h -print

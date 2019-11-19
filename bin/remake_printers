@@ -1,0 +1,15 @@
+#!/bin/sh
+#
+# script to recompile hc if hcsetup was run after makecomb.
+# Tom K. complained it was too much work to add a printer!
+#
+# Wed Apr  5 08:21:19 PDT 1995  -- MWP
+#
+echo Recompiling hardcopy '(hc)'...
+cd $COMB/src/cmd/hc
+make
+cd $COMB/bin
+echo Linking...
+ldcmb
+mvcmb
+echo done

@@ -1,0 +1,123 @@
+		The Bell Laboratories Spectral Data File
+
+This file type allows variable length data records (scans) with the
+possibility of a variable number of spectra per record.  Scan numbers
+will be sequential and it is expected that scans will be accessed by
+number.  In the interest of rapid access for data reduction and economy
+of space, numbers in the header and data are currently required to be in
+binary ie. two's compliment integers or IEEE floating point values.
+There are also two somewhat arbitrary limits imposed on the data :  1)
+The byte order in the file will be Big Endian (IBM, Motorola, Sun).  2)
+Binary numbers (int, double, etc.) will be located at even locations
+modulo their length.  It would be relatively easy to make a reader
+which removed all three of these restrictions.
+
+The file begins with a  preamble which has an ASCII description of the
+data in the file through a set of keywords giving their location, type,
+and number of array elements (usually 1).  Immediately following this
+is a main header which applies to the whole file.  Following this are
+the scans.  Scans will have header variables and may have either one
+data vector or one or more 'arrays', each with optional header values
+and a data vector.  Except for a few housekeeping header values, the
+reading program will be able to accept header values in any of the
+three locations as given by the preamble.
+
+The preamble contains a description of the file based on keywords which
+are given one per line.  There are three white space separated fields
+in each line with an optional comment following the last:
+
+Keyword  Which_Hdr  Format  /Comments
+
+An example line is:
+HMIFreq  M 1E		/ 864 Lock loop Harmonic mixer intermediate frequency
+
+Keyword.  The keyword should have 8 or fewer printable chars.  I suggest
+using upper case at the beginning of each concatinated word.
+
+Which_Hdr.  There are three places for header values:
+
+M: The main header.  These values will be constant for the whole file.
+S: The Scan header.  Most header values will be here in two's compliment
+   integer, IEEE floating point, or fixed length string format.
+A: The Array header.  Scans may contain more than one spectrum when the
+   telescope has more than one spectrometer, an array of receivers,
+   etc.  The header values which change from spectrum to spectrum will
+   immediately preceed the corresponding array of data.  The offset
+   is from the given start of the array (bytes).
+
+Format:  The formats descriptions are taken from FITS 3-D Bibary tables
+format and were adopted from FORTRAN format specifications.  They have
+the form 'rX' where 'r' is a repeat count (array length) and X gives
+the data type.  The Formats are:
+
+rC: 8 Bit signed two's compliment integers.
+
+rI: 16 Bit signed two's compliment integers.
+
+rH: 32 Bit signed two's compliment integers.
+
+rE: 32 Bit IEEE format floating point numbers.
+
+rA: A character string of length r (8 Bit chars.).
+
+The main use for
+
+Comment:  By convention, this field should start with a '/', although
+the reader now ignores any remainder of the line.  A line which begins
+with a '/' is treated as a comment by the reader, but the software which
+sets up the reader in Comb treats shch lines as valid header variables,
+so that that keyword could be recognized.
+
+As the main header is read,  each item is assigned the next location in
+its header.  The order in the binary headers is determined from the
+order in the main header.  Each value will be located on an 'even'
+boundary for its size.  Thus doubles are on even 8 byte addresses but
+chars can be anywhere.  There may be holes in a header, just as in a
+struct in c.
+
+The preamble will be followed on the next 8 byte boundary by the Main
+header, followed by the scans (also on 8 byte boundaries).
+At the end of a scan, the arrays will probably be located on an
+8 byte boundary, but a writer is free to locate them in any way
+as long as each element of each array is on the appropriate boundary.
+
+A few keywords will be needed for managing the format of the file.
+Many others will be needed to describe the spectral line data.  The
+first keyword should be:
+
+SIMPLE M 5A 'blsdf' /This should convince any Fits reader to stop.
+
+If an index area is to be used with variable length scans, the
+following should be in the main header:
+
+MaxScans M 1J n /This sets the size of the index (which need not be full).
+RecLoc I 1J  /This is the variable in the index which gives the scan loc
+
+If no index is given we need:
+
+ScanSize M 1J n /The size of each scan in bytes (a multilple of 8)
+
+In a scan the first header value should be:
+
+ScanNum S 1J /The scan number as known by the observer
+
+The last header value in a scan gives the locations of the data arrays.
+The number of arrays must have been given earlier.  These could be in
+any appropriate integer format.  A repeat of 0 for ArrayLoc indicates
+that its length is determimed in the scan header, not the main header.
+
+NumArray S 1C
+....
+ArrayLoc S 0J /The array offsets start in this location.
+
+These could be in the main header if they never change:
+
+NumArray M 1C 3
+....
+ArrayLoc M 3J n1 n2 n3
+
+Another required value is the number of channels in each array.  Normally
+this would be in the array header, but it could be in the scan or main 
+header if it applies to all arrays in the scan or all arrays in the file.
+
+NumChans A 1I n

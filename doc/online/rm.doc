@@ -1,0 +1,13 @@
+rm - calculate rms and ssb noise figure for stack 1	Adam Buchsbaum
+
+
+EXAMPLES:
+rm				Print rms and ssb noise figure for stack 1.
+rm dp:				Calculate values but don't print.
+
+DESCRIPTION:
+
+Rm calculates the root mean square and single sideband noise figure for
+all the active channels (set by "us") in stack 1 and then prints its
+results.  The rms value is also put in the variable rms in stack 1 
+(i.e., it can be referred to as .rms1).

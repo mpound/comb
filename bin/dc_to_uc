@@ -1,0 +1,1 @@
+awk '$1 ~ /^#define/ {print "#undef",$2}' < $1.dc.h > $1.uc.h

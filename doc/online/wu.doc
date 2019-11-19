@@ -1,0 +1,27 @@
+
+wu - make a plot of what's up in the sky  		RW Wilson & MW Pound
+
+EXAMPLES:
+
+wu xl:[170,190] st:3		make a plot of whatever is transiting
+				at LST 3:00. Use the default source file.
+
+wu l:30 hr:17 fn:"mycat"        make a plot for latitude 30 degrees and
+				LST 17:00, using the source file "mycat"
+				in the current working directory.
+wu yr:1776			See what was up a long time ago.
+
+DESCRIPTION:
+
+wu reads source name coordinates from a file (default:
+$COMB/lib/stars) and plots them on the screen. The user
+can specify azimuth and elevation limits, sidereal time, 
+epoch, and latitude.  The format for a source catalog is
+
+Source_Name   RA     DEC   VLSR    Epoch_of_Coords
+
+where RA and DEC are in sexagesimal or decimal notation. This format 
+may eventually change to be the same as the format used by the
+AT&T-BL 7-m control program. 
+
+The year defaults to the current year, including the fractional portion.

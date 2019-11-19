@@ -1,0 +1,53 @@
+ad - Make a weighted average of additional scans with those
+	in stack2 (if any)					RWW & MWP
+
+EXAMPLES:
+ad 80a108_112,bbe:	Add scans 108 to 112 from file c80a into stack 2. Use
+			The 1 Mhz filter bank. Scans which are not the same
+			type as 108 will not be added.
+ad a9993_b4,mh:		Look through scans 80a9993 to 80b4 and add the ones
+			which are the same type as 80a9993 and match header
+			values with stack 2. If stack 2 is empty, the matches
+			are made with 9993.
+em;ad 108_112,cr:1	Average together the scans which match 108 in the group
+			108 to 112 and keep moderately bad data.
+
+ad 108_112 ss:3		Average together all #3 subscans in the scans 108 to 
+		        112. (for more info on subscans, see 'gt ?!')
+
+DESCRIPTION:
+For a scan number, or a range of scan numbers using the step size, each
+scan is read. All of the scans which pass a series of tests are
+averaged into stack 2 (see co for details of this process).At the end,
+stack 2 is copied into stack 1.  If some scans were not used, the
+number is printed.  A flag is set to show that stack 1 has not been
+plotted.  This will trigger a plot at the end of the command line it
+the auto plot option is on.  The scan number range may span more than
+one file.
+
+Step size may be either positive or negative as long as it is
+appropriate for the range of scan numbers given.
+
+The observation type (fs,ps,cal, etc.) of the first scan is saved and
+succeeding scans are used only if they have the same type.  If a scan
+has been marked bad by setting ndat(34) to a positive value, the scan
+is rejected if ncare+ndat(3) is greater than 2. If the matching header
+flag is set, the header values freq, position, filter width,amt of freq
+switch, and lsr velocity are checked against stack 2, and if any are
+different, the scan is rejected.
+
+If the matching header flag is not set, the header values are still
+checked for a match. If differences are found, you will be asked
+whether you wish to proceed. If you answer yes, all further mismatches
+of the same type will be ignored, but if other mismatches occur, you
+will be questioned again. If your answer is no, the command will be
+aborted, stack 1 will contain the offending scan, and stack 2 will
+contain all of the scans added so far.
+
+You may specify the backend to be used either by number or type.
+Continuum scans are processed without using the backend parameter.
+
+The current 'scan number' is shared with gt.
+
+See the gt documentation for a discussion of the special rules for
+typing scan numbers in comb.

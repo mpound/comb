@@ -1,0 +1,3 @@
+This documentation is not in the same form as most of
+the COMB documentation, thus "pdoc" and "vdoc" don't work.
+Use "pd" and "vd" to do the same jobs.

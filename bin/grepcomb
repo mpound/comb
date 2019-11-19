@@ -1,0 +1,20 @@
+#!/bin/sh
+if test $# -gt 2  #to allow for -options 
+then
+	echo Usage: grepcomb [-options] string
+	exit 1
+fi
+echo the comb path is $COMB
+cd ${COMB}/src
+for i in coordsys error graphics image main misc misc/libut misc/libedit\
+	parse parse/entree scan scan2 stacks
+do
+	echo "$i"
+	(cd $i;grep $* *.[cht])
+done
+cd cmd
+for i in *
+do
+	echo "$i"
+	(cd $i;grep $* *.[cht])
+done

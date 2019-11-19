@@ -1,0 +1,22 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%BoundingBox: 0 0 612 792
+%%Creator: comb
+%%Orientation: Landscape
+%%Pages 1
+%%Title: Comb plot
+%%EndComments
+%%BeginProlog
+/ln {setdash setlinewidth} def
+/mt {.24 mul exch .24 mul exch moveto} def
+/rm {.24 mul exch .24 mul exch rmoveto} def
+/sh {show} def
+/rt {rotate} def
+/lt {.24 mul exch .24 mul exch lineto} def
+/st {stroke} def
+/sf {.24 mul exch findfont exch scalefont setfont} def
+%%EndProlog
+%%Page: 1 1
+50 3328 mt
+-90 rt
+currentpoint translate
+1 setlinejoin 1 setlinecap /Courier 1 sf

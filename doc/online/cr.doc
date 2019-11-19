@@ -1,0 +1,21 @@
+cr - Read the cursor
+
+EXAMPLES:
+cr p:			read the cursor and print its position.
+cr px:			read the cursor and print only the X position.
+cr py:			read the cursor and print only the Y position.
+cr 2;us x(0)_x(1)	zero the use array between cursor positions. This is
+			the macro 'uscr' in the global macros. (See also
+			'zoom' in .GMACROS)
+
+DESCRIPTION:
+cr turns the cursor of your terminal on and reads its position when you
+strike a key or click a mouse button. If 'n' is given it is read n times. 
+The horizontal and vertical positions of the cursor are converted to plot 
+units and may be accessed in a numeric expression as an argument to a 
+command. The tokens 'x(m)' and 'y(m)' have the values from the 
+m'th cursor read and may be used in any expression.
+
+The token 'crsr(m)' will have the value 1 unless the key you struck to make
+the m'th reading was 'e'. For xterms, a carriage return must be
+entered after the keystroke or mouse-click.

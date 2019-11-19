@@ -1,0 +1,45 @@
+co - combine two stacks				RWW
+
+EXAMPLES:
+co		combine stacks 1 and 2.
+co 25		combine stack 25 of the current directory with stack 2.
+co 40 65	combine stack 40 and 65 of the foreground directory and
+		put the result in stacks 1 and 2
+co add: dc:	add together stacks 1 & 2 and don't check whether the
+		positions are the same.
+co ac:		combine stacks 1 and 2 aligning the center channels. Don't
+	  	perform any shift in frequency (velocity). This is useful
+		for sources whose LSR velocities change with time, like
+		comets.
+
+DESCRIPTION:
+
+Combine averages the data in two stacks using the weight of each
+channel in the average so that the snr is maximized. The new total
+weight is put in each chan.  If the weights of the chans of a stack
+aren't equal, you must be careful to removing a good baseline before
+combining with other data or a step will be introduced where the weight
+changes.
+
+Co works on stacks 1&2. The result is put in both 1&2 and the plot flag
+is set so that a plot will be generated at the end of the command
+line.
+
+If you specify that stacks other than 1 and 2 are to be used, co will
+first retrieve them into stacks 1&2 in the order you give.
+
+Before doing the combination the header values of the two stacks are
+checked for compatibility. If any differences are found they will be
+printed and you will be asked if you want to proceed.  The dc: flag
+may be used to suppress the position check.
+
+The stacks will be aligned so that differences in center chan, freq,
+and velocity are properly resolved. The alignment of stacks 1&2 will be
+done so that as many channels of stack 1 will be kept as can be without
+losing any of stack 2. If it is not possible to fit any channels of
+stack 2 into the same 512 chan stack as stack 1, an error message will
+be given and the new stacks 1&2 will be left as they were.
+
+The add: flag causes co to sum stacks 1 and 2 rather than the usual
+weighted average.  This is useful for summing the flux of a source or
+obtaining an average spectrum.

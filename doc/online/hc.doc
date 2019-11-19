@@ -1,0 +1,35 @@
+hc - make a hard copy of the current plot
+
+EXAMPLES:
+
+hc ??		 list the available printers. "unused" in the printer
+                 list indicates a currently unused printer slot.
+ 
+hc		 Make a copy of the current plot on the first
+		 printer on the list of available printers.
+
+hc b:		 make a hard copy on the "b" printer. 
+
+hc pf:"file.ps"  Write the current plot to a PostScript file called 
+	         file.ps. If no name is given, the file is written to
+	         to a unique filename on /tmp ('hc ??' will show the file as
+		 /tmp/comb.XXXXXX -- the X's will be replaced by unique 
+		 characters).  Comb will tell you the name of the file.  
+		 hc tf: and hc lf: do the same thing for Tektronix and 
+		 LaserJet files.
+
+hc port:         Print out the current plot in portrait mode.
+
+DESCRIPTION:
+
+hc takes the intermediate code in the current picture and submits it to
+the driver for the requested hard copy device.  The driver code is
+equipped to handle 4 PostScript printers (denoted as post1, post2, post3, 
+post4 in $COMB/lib/hc.lpr),  2 Imagen (imagen1, imagen2 in hc.lpr) 
+and 2 HP LaserJet (III and later) printers (lj1, lj2 in hc.lpr), 
+1 HP-GL printer (hpglplot in hc.lpr), and 1 Tektronix printer (tekplot in
+hc.lpr).  You can also write a PostScript, Tektronix, or LaserJet file to disk.
+
+The options land: and port: allow for landscape mode and portrait mode
+printing respectively. The default is landscape. Currently portrait mode 
+is available only with PostScript.

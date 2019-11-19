@@ -1,0 +1,182 @@
+# NOTE: this is copied/scaled from the file form.versatek
+#	numbers in comments HAVE NOT been scaled
+
+# Using a rotated full page we have a space 2112 wide by 1536 high.
+# Many font sizes are available.  For safety, space 20 in width and 30 in
+# height from the edge.
+
+full plot
+	# graph window
+	# side   ch0width ch0height ch1width ch1height ch2width ch2height
+# left
+	 150        0        0         0        0        18        4
+# bottom
+	 130        0        0         0        0         0        8
+# right
+	3327        0        0         0        0         9        0
+# top
+	2300        0        0         0        0         0        3
+
+	# x ovrflow	y ovrflow
+	     6		   6
+
+	# x label	y label
+	     13		   13
+
+	# x sideways?	y sideways?
+	    no		  no
+
+	# places
+	# x    y  txtype width height indent sidways? centered?
+	   0    3   2     60     1      0      no	yes
+	   0    2   2     60     1      0      no       yes
+	   1    0   2     39     1      0      yes      yes
+	  90   55   0     60     1      0      no       no 
+
+full square plot
+	# graph window
+	# side   ch0width ch0height ch1width ch1height ch2width ch2height
+# left
+	 150        0        0         0        0        18        4
+# bottom
+	 130        0        0         0        0         0        8
+# right
+	3327        0        0         0        0         9        0
+# top
+	2300        0        0         0        0         0        3
+
+	# x ovrflow	y ovrflow
+	     6		   6
+
+	# x label	y label
+	     13		   13
+
+	# x sideways?	y sideways?
+	    no		  no
+
+	# places
+	# x    y  txtype width height indent sidways? centered?
+	   0    3   2     60     1      0      no	yes
+	   0    2   2     60     1      0      no       yes
+	   1    0   2     39     1      0      yes      yes
+	  90   55   0     60     1      0      no       no 
+
+small plot
+	# graph window
+	# side   ch0width ch0height ch1width ch1height ch2width ch2height
+# left
+	   41        0        2         0        0         0        0
+# bottom
+	   41        0        2         0        0         0        0
+# right
+	 1075        0        0         0        0         0        0
+# top
+	  531        0        0         0        0         0        2
+
+	# x ovrflow	y ovrflow
+	     6		   6
+
+	# x label	y label
+	     9		   9
+
+	# x sideways?	y sideways?
+	    no		 yes
+
+	# places
+	# x    y  txtype width height indent sidways? centered?
+	  0    66   2     60     1      0      no	yes
+
+small square plot
+	# graph window
+	# side   ch0width ch0height ch1width ch1height ch2width ch2height
+# left
+	   41        0        2         0        0         0        0
+# bottom
+	   41        0        2         0        0         0        0
+# right
+	 1075        0        0         0        0         0        0
+# top
+	  531        0        0         0        0         0        2
+
+	# x ovrflow	y ovrflow
+	     6		   6
+
+	# x label	y label
+	     9		   9
+
+	# x sideways?	y sideways?
+	    no		 yes
+
+	# places
+	# x    y  txtype width height indent sidways? centered?
+	  0    66   2     60     1      0      no       yes
+
+comb
+	# graph window
+
+	# take 260 for the bottom of the graph area to leave room for text
+	# take x = 20 for place 2 to allow fonts of up to  14 points.
+	# the left of the graph is then 20 + 8, but only 2 ch1heights.
+	# similarly place 0 is at 1535 - 20 and so is the graph top
+
+	# side   ch0width ch0height ch1width ch1height ch2width ch2height
+# left
+	 144        0        0        18        0         0        2
+# bottom
+	 553        0        0         0        3         0        2
+# right
+	3200        0        0         9        0         0        0
+# top
+	2300        0        0         0        0         0        4
+
+	# x ovrflow	y ovrflow
+	     6		   6
+
+	# x label	y label
+	     20		   13
+
+	# x sideways?	y sideways?
+	    no		 no
+	# auxiliary windows
+	# window 2 for the use array 8 pixels below the graph window
+# left
+	graph window
+# bottom
+	543 0 0 0 3 0 2
+# right
+	graph window
+# top
+	543 0 0 0 3 0 2
+
+	# places
+	#  x    y  txtype width height indent sidways? centered?
+	   0     3   2     60     1      0      no	 yes
+	   0     3   2     80     1      0      no       yes
+	   1     0   2     40     1      0      yes      yes
+	 300   440   0     21     1      0      no       no
+	1409   440   0     21     1      0      no       no
+	2519   440   0     21     1      0      no       no
+	 300   400   0     21     1      0      no       no
+	1409   400   0     21     1      0      no       no
+	2519   400   0     21     1      0      no       no
+	 300   360   0     21     1      0      no       no
+	1409   360   0     21     1      0      no       no
+	2519   360   0     21     1      0      no       no
+	 300   320   0     21     1      0      no       no
+	1409   320   0     21     1      0      no       no
+	2519   320   0     21     1      0      no       no
+	 300   280   0     21     1      0      no       no
+	1409   280   0     21     1      0      no       no
+	2519   280   0     21     1      0      no       no
+	 300   240   0     21     1      0      no       no
+	1409   240   0     21     1      0      no       no
+	2519   240   0     21     1      0      no       no
+	 300   200   0    110     3      0      no       no
+	1409   200   0     21     1      0      no       no
+	2519   200   0     21     1      0      no       no
+	 300   160   0     21     1      0      no       no
+	1409   160   0     21     1      0      no       no
+	2519   160   0     21     1      0      no       no
+	 300   120   0     21     1      0      no       no
+	1409   120   0     21     1      0      no       no
+	2519   120   0     21     1      0      no       no

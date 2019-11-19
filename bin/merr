@@ -1,0 +1,4 @@
+echo -------------- >> $COMB/lib/cerr
+/bin/adb $COMB/bin/$* core < $COMB/lib/adbin >> $COMB/lib/cerr
+rm core
+perr
