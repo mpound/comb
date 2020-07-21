@@ -43,3 +43,7 @@ be given and the new stacks 1&2 will be left as they were.
 The add: flag causes co to sum stacks 1 and 2 rather than the usual
 weighted average.  This is useful for summing the flux of a source or
 obtaining an average spectrum.
+
+The div: flag causes co to divide stack 1 by stack 2.  This is 
+useful for the (S-R)/R calculation on data that is not yet reference 
+subtracted.
