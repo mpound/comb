@@ -9,6 +9,7 @@ Comb has not been compiled by me recently on a modern 64-bit architecture. In 20
 07/21/2011 -- The STO version is now in the branch "sto", recovered from a CVS checkout I had.  Among the STO changes:
   * make it work with xwindow displays
   * make it work on mac osx
+  * compile on 64 bit architecture (with -m32)
   * link to CFITSIO library instead of the internal FITS routines
   * some new commands - gs, gi, lf
  
