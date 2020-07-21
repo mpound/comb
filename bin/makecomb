@@ -19,6 +19,7 @@
 #   test for inttypes.h (linux)
 
 echo comb path is ${COMB}
+export PATH=${COMB}/bin:${PATH}
 
 umask 022
 run_ldcmb=no   # are we installing?
@@ -52,7 +53,7 @@ case $# in
 			echo " install and depend are exclusive " ;
 			exit 0;
 		fi;
-		m=`gcc -v 2>&1 | grep -c version`;
+		m=`gcc -v 2>&1 | tail -1 | grep -ci version`;
 		if test $m -ne 1
 		then
 			echo You do not have gcc, so you cannot make dependencies.;
@@ -61,7 +62,11 @@ case $# in
 		fi;
 		run_ldcmb=d;
 		make_option=depend;
-		echo Building dependencies;;
+		echo Building dependencies;
+        if [ ! -x $COMB/bin/entree ]; then
+            echo "Building entree" ;
+            ( cd $COMB/src/parse/entree; make );
+        fi;;
 	install) if [ $# = 2 ] && [ $2 = depend ]; then
 			echo " install and depend are exclusive " ;
 			exit 0;
@@ -124,11 +129,13 @@ else # history off
     done
 fi
 
-cd cmd
+cd ${COMB}/src/cmd
 for i in *
 do
-	echo "$i	\c"
-	(cd $i;make $make_option)
+    echo "$i	\c"
+    if [ "$i" != "CVS" ]; then
+        ( cd $i; make ${i}t_.c; make $make_option; )
+    fi;
 done
 
 # now decide whether or not to run ldcmb and mvcmb
