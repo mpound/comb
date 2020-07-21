@@ -1,0 +1,27 @@
+gs - put STO data into stack 1     AAS & CM
+
+EXAMPLES:
+
+gs,23,4			Get the 4th backend from FITS file 000023.
+gs 000023 be:4		Get the 4th backend from FITS file 000023.
+
+gs &+1 be:5		Get the 5th backend from the next FITS file.
+
+DESCRIPTION:
+
+Gs converts STO data into stack data, and is a way of reading STO data
+into COMB.  Before calling the gs command, it is necessary to identify
+the STO FITS file to COMB using the nf command.   The nf command is given
+a string that holds the absolute address (starting at root "/") of the 
+FITS file up to the first 6 characters of the FITS file name (e.g.
+> nf "/usr/home/aas/stodata/STO11a").  The gs command would generally
+be used in a loop, using the auto increment feature to transfer a series
+of STO FITS files to a COMB stack directory, e.g.:
+nf "/usr/home/aas/stodata/STO11a"; gs,0; st 11; do,1000 {gs,&+1; st a:}
+
+The backend can be specified either by number or name. The backend starts out
+set to 1 and remembers its current type until changed.
+
+The gs command makes no attempt to calibrate or reference-subtract the data.
+Use the stack division capability of the ca command to do an S-R/R 
+calculation.
