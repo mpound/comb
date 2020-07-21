@@ -20,7 +20,7 @@ set n=1
 while ($n < $lines)
   set var=`head -$n $HOME/comb.out|tail -1`
   set elem=$#var
-  echo -n '<BR><A HREF="doc/'$var[1]'.html">'$var[1]'</A> -'
+  echo -n '<BR><A HREF="doc/'$var[1]'.doc">'$var[1]'</A> -'
   set j=3
   @ elem++
   while ($j<$elem)
