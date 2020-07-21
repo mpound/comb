@@ -1,0 +1,242 @@
+# The screen is treated as 1024 wide by 780 high.  The extra bits which give
+# more resolution are not transmitted.
+# At present we are using only the largest characters: 14 wide by 22 high.
+full plot
+	# graph window
+	# side   ch0width ch0height ch1width ch1height ch2width ch2height
+# left
+	   4       18        0         0        0         0        0
+# bottom
+	   4        0        2         0        4         0        0
+# right
+	1023        9        0         0        0         0        0
+# top
+	 779        0        0         0        0         0        4
+
+	# x ovrflow	y ovrflow
+	     2		   2
+
+	# x label	y label
+	     4		   4
+
+	# x sideways?	y sideways?
+	    no		 no
+
+	# places
+	# x    y  txtype width height indent sidways? centered?
+	  0    3    2     60     1      0      no	yes
+	  0    1    1     60     1      0      no       yes
+	  1    3    1     39     1      0      yes      yes 
+	  8   11    0     60     1      0      no       no 
+
+full square plot
+	# graph window
+	# side   ch0width ch0height ch1width ch1height ch2width ch2height
+# left
+	   4       18        0         0        0         0        0
+# bottom
+	   4        0        2         0        4         0        0
+# right
+	1023        9        0         0        0         0        0
+# top
+	 779        0        0         0        0         0        4
+
+	# x ovrflow	y ovrflow
+	     2		   2
+
+	# x label	y label
+	     4		   4
+
+	# x sideways?	y sideways?
+	    no		  no
+
+	# places
+	# x    y  txtype width height indent sidways? centered?
+	  0    3    2     60     1      0      no	yes
+	  0    1    1     60     1      0      no       yes
+	  1    0    1     39     1      0      yes      yes 
+	  8   11    0     60     1      0      no       no 
+
+small plot
+	# graph window
+	# side   ch0width ch0height ch1width ch1height ch2width ch2height
+# left
+	   8       18        0         0        0         0        0
+# bottom
+	   8        0        2         0        0         0        0
+# right
+	1023        9        0         0        0         0        0
+# top
+	 779        0        0         0        0         0        4
+
+	# x ovrflow	y ovrflow
+	     4		   4
+
+	# x label	y label
+	     8		   8
+
+	# x sideways?	y sideways?
+	    no		  yes
+
+	# places
+	# x    y  txtype width height indent sidways? centered?
+	  0    3    2     60     1      0      no	yes
+
+small square plot
+	# graph window
+	# side   ch0width ch0height ch1width ch1height ch2width ch2height
+# left
+	   8       18        0         0        0         0        0
+# bottom
+	   8        0        2         0        0         0        0
+# right
+	1023        9        0         0        0         0        0
+# top
+	 779        0        0         0        0         0        4
+
+	# x ovrflow	y ovrflow
+	     4		   4
+
+	# x label	y label
+	     8		   8
+
+	# x sideways?	y sideways?
+	    no		  yes
+
+	# places
+	# x    y  txtype width height indent sidways? centered?
+	  0    3    2     60     1      0      no	yes
+
+valid format
+	# graph window
+# left
+	6 0 2 0 0 0 0
+# bottom
+	46 0 1 0 0 0 0
+# right
+	450 8 0 0 0 0 0
+# top
+	340 0 0 0 0 0 4
+
+	# x overflow	y overflow
+	2		2
+
+	# x label	y label
+	4		4
+
+	# x sideways?	y sideways?
+	no		no
+
+	# auxiliary windows
+	# window 2
+# left
+	graph window
+# bottom
+	6 0 0 0 0 0 0
+# right
+	graph window
+# top
+	40 0 1 0 0 0 0
+
+	# window 3
+# left
+	460 8 0 0 0 0 0
+# bottom
+	graph window
+# right
+	710 0 0 0 0 0 0
+# top
+	graph window
+
+	# places
+# place 0
+	233 350 2 9 2 0 no yes
+# place 1
+	450 350 1 12 2 2 no no
+# place 2
+	455 215 0 8 1 0 no yes
+
+comb
+	# graph window
+	# side   ch0width ch0height ch1width ch1height ch2width ch2height
+# left
+	   6       18        0         0        0         0        0
+# bottom
+	   9        0        2         0        3         0        0
+# right
+	1023        9        0         0        0         0        0
+# top
+	 550        0        0         0        0         0        3
+
+	# x ovrflow	y ovrflow
+	     3		   3
+
+	# x label	y label
+	     9 		   6
+
+	# x sideways?	y sideways?
+	    no		 no
+	# auxiliary windows
+	# window 2 for the use array
+# left
+	graph window
+# bottom
+	 3 0 2 0 3 0 0
+# right
+	graph window
+# top
+	 3 0 2 0 3 0 0
+
+	# places
+	# x    y  txtype width height indent sidways? centered?
+	  0    3    2     60     1      0      no	yes
+	  0    1    1     60     1      0      no       yes
+	  1    0    1     40     1      0      yes      yes
+	  0   757   1     21     1      0      no       no
+	346   757   1     21     1      0      no       no
+	678   757   1     21     1      0      no       no
+	  0   734   1     21     1      0      no       no
+	346   734   1     21     1      0      no       no
+	678   734   1     21     1      0      no       no
+	  0   712   1     21     1      0      no       no
+	346   712   1     21     1      0      no       no
+	678   712   1     21     1      0      no       no
+	  0   689   1     21     1      0      no       no
+	346   689   1     21     1      0      no       no
+	678   689   1     21     1      0      no       no
+	  0   666   1     21     1      0      no       no
+	346   666   1     21     1      0      no       no
+	678   666   1     21     1      0      no       no
+	  0   643   1     21     1      0      no       no
+	346   643   1     21     1      0      no       no
+	678   643   1     21     1      0      no       no
+	  0   621   1     72     3      0      no       no
+	346   621   1     21     1      0      no       no
+	678   621   1     21     1      0      no       no
+	  0   598   1     21     1      0      no       no
+	346   598   1     21     1      0      no       no
+	678   598   1     21     1      0      no       no
+	  0   575   1     21     1      0      no       no
+	346   575   1     21     1      0      no       no
+	678   575   1     21     1      0      no       no
+ 
+squished
+        # special graph window - a test for boxes with coincident edges: MWP
+        # side   ch0width ch0height ch1width ch1height ch2width ch2height
+# left
+           1        0        0         0        0         0        0
+# bottom
+           1        0        0         0        0         0        0
+# right
+        1023        0        0         0        0         0        0
+# top
+         779        0        0         0        0         0        0
+ 
+        # x ovrflow     y ovrflow
+             0             0
+ 
+        # x label       y label
+             0             0
+ 
+        # x sideways?   y sideways?
+            no           no

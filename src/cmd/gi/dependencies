@@ -1,0 +1,2 @@
+gaussianfit.o: gaussianfit.c ../tp/nr.h ../tp/nrutil.h ../../stacks/C.h \
+  ../../image/C.h ../../parse/C.h
