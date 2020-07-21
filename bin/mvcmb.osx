@@ -1,0 +1,10 @@
+#!/bin/sh
+echo mvcmb: COMB is ${COMB}
+if [ -f ${COMB}/bin/cmbt ]; then
+  echo " Renaming cmbt to comb..."
+  cd ${COMB}/bin;mv cmbt comb;chmod 755 comb
+  echo " ${COMB}/bin/comb installed."
+else
+  echo " ${COMB}/bin/cmbt does not exist."
+fi
+

@@ -1,5 +1,5 @@
 #!/bin/sh
 echo ldcmb: COMB is ${COMB}
 rm -f ${COMB}/bin/cmbt
-cd ${COMB}/obj; acc -g * -lm -o ${COMB}/bin/cmbt
+cd ${COMB}/obj; acc -g *.o -lm -o ${COMB}/bin/cmbt
 echo 

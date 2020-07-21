@@ -2,5 +2,6 @@
 echo ldcmb: COMB is ${COMB}
 rm -f ${COMB}/bin/cmbt
 #cd ${COMB}/obj; cc -g * /usr/lib/debug/mallocmap.o -lm -o ${COMB}/bin/cmbt
-cd ${COMB}/obj; cc -g * -lefence -lm -o ${COMB}/bin/cmbt
+#cd ${COMB}/obj; gcc  -L/usr/X11R6/lib -g *.o -lm -lcfitsio -lX11 -o ${COMB}/bin/cmbt
+cd ${COMB}/obj; gcc -L/usr/lib/lib32 -g -m32 *.o -lm -lcfitsio -lX11 -o ${COMB}/bin/cmbt
 echo 
