@@ -5,6 +5,9 @@ EXAMPLES:
 nf "/usr/anon/cs3b"			Assigns /usr/anon/cs3b as
 					the new data file.
 
+nf "/usr/anon/STO11a"			For STO, give path and first 
+					letters of FITS filename
+
 nf p:					print the current data file
 
 DESCRIPTION:
