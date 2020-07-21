@@ -6,4 +6,9 @@ Comb was actively developed and maintained from the mid 1980s to ~2004 by Robert
 
 Comb has not been compiled by me recently on a modern 64-bit architecture. In 2011, I got the STO version working with gcc -m32.  I still have a working 32-bit binary from 2001 that I copy around as a change computers.   That will all end soon.
 
-07/21/2011 -- The STO version is now in the branch "sto", recovered from a CVS checkout I had.  
+07/21/2011 -- The STO version is now in the branch "sto", recovered from a CVS checkout I had.  Among the STO changes:
+  * make it work with xwindow displays
+  * make it work on mac osx
+  * link to CFITSIO library instead of the internal FITS routines
+  * some new commands - gs, gi, lf
+ 
