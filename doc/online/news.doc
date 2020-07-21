@@ -2,8 +2,19 @@
                  Comb News and Views
 =====================================================================
 -------------------------------
-Changes for Comb 2000.2 
+Changes for Comb 2011.8 
 -------------------------------
+
+16. Added gs command for getting data from STO (Stratospheric
+Terahertz Observatory)
+
+15. Color map output from Chris Martin
+
+Multiple changes for color postscript and graphics terminal output.
+
+14. Enhanced 'ft' command
+
+A better Fourier transform of the stacks.
 
 13. Upgraded 'gt'
 
