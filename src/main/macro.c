@@ -1,5 +1,6 @@
 # include <fcntl.h>
 # include <stdio.h>
+# include <string.h>
 # include "C.h"
 #if COMB
 # include "../stacks/C.h"
@@ -45,7 +46,6 @@ struct MacLink {
 static struct MacLink *macLink = 0;	/* Points to head of linked list */
 
 extern char *getenv();
-extern char *strcpy();
 
 #if __STDC__ || defined(__cplusplus)
 #define P_(s) s

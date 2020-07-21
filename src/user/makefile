@@ -1,5 +1,5 @@
 include ${COMB}/src/main/include.mk
-CFLAGS=-O
+#CFLAGS=-O
 OBJECT=userpg
 #
 test	: ${OBJECT}
@@ -10,7 +10,7 @@ userpg: userpg.o
 	$(CC) userpg.o -lm -o userpg
 
 ftnuser: ftnuser.o ftnsub.o
-	f77 ftnuser.o ftnsub.o -o ftnuser
+	gfortran ftnuser.o ftnsub.o -o ftnuser
 
 userpg.o ftnuser.o: userpg.h
  

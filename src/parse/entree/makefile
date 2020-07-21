@@ -4,7 +4,7 @@ OBJECT=E.error.o E.family.o E.flocs.o E.fprnt.o E.lex.o E.main.o E.var.o\
 OOBJECT=E.error.o E.family.o E.flocs.o E.fprnt.o E.lex.o E.main.o E.var.o\
 	E.owrdef.o E.owrex.o E.wrtre.o E.yacc.o
 INCLF= E.constant.h E.extern.h E.global.h E.struct.h y.tab.h
-CFLAGS=-O
+#CFLAGS=-O
 FFLAGS=-O
 LINTSRC=
 #
@@ -12,7 +12,7 @@ test: ../../../bin/entree
 	touch test
 
 ../../../bin/entree : $(OBJECT)
-	${CC} $(OBJECT)
+	${CC} ${CFLAGS} $(OBJECT)
 	mv a.out ../../../bin/entree
 	
 

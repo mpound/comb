@@ -487,6 +487,8 @@ static void pdata()
 			s = "DRIFT SCAN";break;
 		case 30:
 			s = "CONTINUUM INT";break;
+		case 31:
+			s = "HOT LOAD TOT POW";break;
 		default:
 			s = "UNKNOWN OBS TYPE"; break;
 		}

@@ -1,4 +1,0 @@
-sp.o: sp.c ../../main/C.h ../../main/History.h ../../main/dragon.h \
- ../../error/C.h ../../stacks/C.h ../../image/C.h ../../coordsys/C.h \
- ../../graphics/C.h sp.dc.h sp.ec.h
-spt_.o: spt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

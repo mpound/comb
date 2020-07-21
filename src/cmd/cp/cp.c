@@ -209,7 +209,7 @@ error("Bailing out");
 		}
 		if (*circb) 
 			MkOpt(CIRCBORDER, ENDOPT);
-		MkGrid(NO FLAGY0,NO FLAGX0,ENDOPT);
+		/* MkGrid(NO FLAGY0,NO FLAGX0,ENDOPT); */
 	}
 	MkOpt(CLEVRANGE(ihp->datamin, ihp->datamax), HATCH(*hcl,*hcs),ENDOPT);
 	switch(contourChoice) {
@@ -241,6 +241,7 @@ error("Bailing out");
 	}
 	MkOpt(CSTORE(&levels,&types,&numLevels), ENDOPT);
 	MkMap(ARRAY(ihp->buf, ihp->naxis2, ihp->naxis1), ENDOPT);
+	if(!*ovl) MkGrid(NO FLAGY0,NO FLAGX0,ENDOPT);
 
 	if( (xBoxes | yBoxes) == 1) {
 	/* display first, last contour, step, ir, and interp type in place 3 */

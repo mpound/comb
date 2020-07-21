@@ -1,5 +1,5 @@
 include ${COMB}/src/main/include.mk
-OBJECT=wr.o wrt_.o
+OBJECT=wrt_.o wr.o
 INCLP=../../parse/P.tree.h  ../../main/machinedep.h
 INCL=../../main/C.h
 CFLAGS=-O

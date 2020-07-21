@@ -1,9 +1,9 @@
-# include <stdio.h>
-# include <string.h>
+#include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include "../main/C.h"
-# include "C.h"
+#include "C.h"
 #include "include.h"
 #include "../scan2/scan2.h"
 #include "../stacks/C.h"
@@ -384,14 +384,13 @@ void putfn_()
 }
 
 /* Print the list of scans in stack 1 */
-void prtsl_()
+void prtsl_(char *out,int length)
 {
 	char ts[80];
 	register int start = 0;
 
 	while(start < stk_[0].indx - 1) {
-		start = scanStr(ts, sizeof(ts), start);
-		puts(ts);
+		start = scanStr(out, length, start);
 	}
 }
 
@@ -481,6 +480,25 @@ static char * NextFileName()
 
 	strcpy(newFile,scan_.datfn);
 	newFile[scan_.ndfn - 1] += (scanStep >= 0)? 1:-1;
+	/* AST/RO used letters, e.g. 05a 05b ... 05z 06a 06b ... */
+	/* STO is using only numbers 110 111 112 ... -CLM 22-Dec-2011 */
+	/*	if (newFile[scan_.ndfn - 1]>'z') {
+	  newFile[scan_.ndfn - 2] += (scanStep >= 0)? 1:-1;
+	  newFile[scan_.ndfn - 1] = 'a';
+	    if (newFile[scan_.ndfn - 2]>'9') {
+	    newFile[scan_.ndfn - 3] += (scanStep >= 0)? 1:-1;
+	    newFile[scan_.ndfn - 2] = '0';
+	  }
+	}
+	if (newFile[scan_.ndfn - 1]<'a') {
+	  newFile[scan_.ndfn - 2] += (scanStep >= 0)? 1:-1;
+	  newFile[scan_.ndfn - 1] = 'z';
+	    if (newFile[scan_.ndfn - 2]<'0') {
+	    newFile[scan_.ndfn - 3] += (scanStep >= 0)? 1:-1;
+	    newFile[scan_.ndfn - 2] = '9';
+	  }
+	}
+	*/
 	if((rangeGiven && strncmp(newFile + scan_.ndfn - 3,lName,3) *
 	    scanStep > 0 ) || access(newFile,4) )
 		*newFile = 0;

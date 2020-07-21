@@ -1,5 +1,5 @@
 include ${COMB}/src/main/include.mk
-CFLAGS=-O 
+#CFLAGS=-O 
 OBJECT=P.default.o P.error.o P.lex.o P.pointer.o P.yacc.o P.doc.o P.headvars.o\
 	P.parse.o P.uservars.o P.value.o
 LINTSRC=P.default.c P.error.c P.lex.c P.pointer.c P.yacc.c P.doc.c P.headvars.c\
@@ -16,7 +16,7 @@ llib-lparse.ln : $(LINTSRC)
 	lint -Cparse $(LINTSRC)
 
 P.lex.c : P.lex.x
-	lex P.lex.x
+	flex P.lex.x
 	cat lex.yy.c | sed 's/= {stdin}//g' | sed 's/= {stdout}//g' > P.lex.c
 	/bin/rm lex.yy.c
 #       /*mv lex.yy.c P.lex.c */
@@ -34,7 +34,7 @@ P.lex.c : P.lex.x
 #
 
 P.yacc.c : P.yacc.y
-	yacc P.yacc.y
+	bison P.yacc.y
 	mv y.tab.c P.yacc.c
 
 depend :

@@ -1,5 +1,0 @@
-th.o: th.c ../../main/C.h ../../main/History.h ../../main/dragon.h \
- ../../coordsys/C.h ../../stacks/C.h ../../stacks/include.h \
- ../../error/C.h ../../graphics/C.h ../../image/C.h ../../misc/C.h \
- th.dc.h th.ec.h
-tht_.o: tht_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

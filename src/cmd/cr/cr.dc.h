@@ -1,4 +1,3 @@
-
 extern Node crt_[];
 union {
 	char c[34];

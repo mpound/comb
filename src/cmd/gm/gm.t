@@ -4,6 +4,7 @@ parse("cmnd_.gstr")
 {
     "Action" : ex("act");
     {
+	"Set default terminal" "defterm" : str("12") old("") - "dtermstr";
 	"Current box" "cb";
 	{
 		"Current column" "cc": extern("bxCol" "") int 

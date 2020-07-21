@@ -27,6 +27,7 @@
 
 # include <stdio.h>
 # include <math.h>
+# include <string.h>
 # include "C.h"
 # include "include.h"
 # include "../main/C.h"
@@ -42,6 +43,14 @@ static int currX, currY;	/* current font size */
 static int lwnmb;
 static int needsStroke = 0;	/* number of lines which have been defined,
 				 * but not stroked */
+
+#define MAX_RGB_COLOR 1.0
+
+static struct {
+  double red;
+  double green;
+  double blue;
+} pixel_map[NUM_PIXEL_COLORS]; /* rgb values of the colormap */
 
 int orientation;         	/* Page Orientation: default is LANDSCAPE,
 				   which is set in hc.c  */
@@ -61,6 +70,8 @@ static void text P_((register char *str, int sideways));
 static void texttype P_((int type));
 static void center P_((char *str, int sideways));
 static void dmy P_((void));
+static void boxfill P_((int x, int y, short int color));
+static void choose_colormap P_((int colormap_num));
 #undef P_
 
 /****************************************/
@@ -166,6 +177,7 @@ static void setup ()
   */
 
 /*    setvalues (); */
+    choose_colormap(3);
     linetype (255);
     plotting = 1;
     needsStroke = 0;
@@ -241,6 +253,7 @@ static void setvalues ()
     d_ctext = center;
     d_settxt = texttype;
     d_cursor = dmy;
+    d_boxfill = boxfill;
 
  /* get formats */
     GtSpec ("form.laser");
@@ -258,6 +271,8 @@ int  x, y;
 	needsStroke = 0;
     }
     fprintf(fout,"%d %d mt\n",x,y);
+    cx = x;
+    cy = y;
 }
 
 /********************/
@@ -274,6 +289,74 @@ int  x, y;
     cx = x;
     cy = y;
     needsStroke++;
+}
+
+/***************************************************/
+/* choose_colormap - set up the requested colormap */
+/***************************************************/
+
+static void choose_colormap(colormap_num)
+     int colormap_num;
+{
+  static int old_colormap_num = -1;
+  int i;
+  double cutoff;
+  
+  if (old_colormap_num == colormap_num) return;
+  
+  cutoff = 3*NUM_PIXEL_COLORS/8;
+
+  for (i=0 ; i<NUM_PIXEL_COLORS ; i++) {
+    switch (colormap_num) {
+    case 1: /* gray-scale */
+      pixel_map[i].red   =
+	pixel_map[i].green =
+	pixel_map[i].blue  = i*((MAX_RGB_COLOR)/(NUM_PIXEL_COLORS-1));
+      break;
+    case 2: /* red */
+      pixel_map[i].red   = i*((MAX_RGB_COLOR)/(NUM_PIXEL_COLORS-1));
+      pixel_map[i].green =
+	pixel_map[i].blue  = 0;
+      break;
+    case 3: /* hot */
+      pixel_map[i].red=((i<cutoff) ? i/cutoff : 1)*MAX_RGB_COLOR;
+      pixel_map[i].green=((i<cutoff) ? 0 : 
+			  ((i<(2*cutoff)) ? (i-cutoff)/cutoff : 1))
+	*MAX_RGB_COLOR;
+      pixel_map[i].blue=((i<(2*cutoff)) ? 0 : (i-2*cutoff)/cutoff)*MAX_RGB_COLOR;
+      break;
+    case 0:
+    default:
+      pixel_map[i].red   =
+	pixel_map[i].green =
+	pixel_map[i].blue  = MAX_RGB_COLOR;
+      break;
+    }
+  }  
+}
+
+/*************************************/
+/* boxfill - create a filled box     */
+/*************************************/
+
+static void boxfill(x,y,color)
+	int x,y;
+	short int color;
+{
+  int ulx,uly,width,height;
+  
+  if(needsStroke)
+    move(cx, cy);
+
+  fprintf(fout,"%d %d lt %d %d lt %d %d lt %f %f %f bf\n",
+	  x,cy,x,y,cx,y,
+	  pixel_map[color].red,
+	  pixel_map[color].green,
+	  pixel_map[color].blue);
+  move(x,y);
+  
+  cx=x;
+  cy=y;
 }
 
 /****************************/

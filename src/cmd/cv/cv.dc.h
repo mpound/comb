@@ -1,4 +1,3 @@
-
 extern Node cvt_[];
 union {
 	char c[1];

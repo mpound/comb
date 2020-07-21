@@ -1,6 +1,6 @@
 # include <stdio.h>
 /*# define DEBUG  		/* uncomment for debugging */
-# define NUMCHUNKS 2048
+# define NUMCHUNKS 262144
 struct of_memChunk {		/* structure to hold info about one */
 	char *pntr;		/* Safely allocated chunk of memory */
 #ifdef DEBUG

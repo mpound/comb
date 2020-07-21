@@ -1,5 +1,5 @@
 include ${COMB}/src/main/include.mk
-OBJECT=dvt_.o dv.o
+OBJECT=dv.o dvt_.o
 CFLAGS=-O
 #
 test      : $(OBJECT) 

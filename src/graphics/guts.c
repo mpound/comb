@@ -53,6 +53,7 @@ static void InsrtStr P_((char *str));
 static int CheckSpace P_((register char *newEnd));
 static void mcursor P_((int x, int y));
 static void dline P_((int x, int y));
+static void dboxfill P_((int x, int y, short int color));
 static void ptext P_((int place, char *text));
 static void dtext P_((int sideways, char *text));
 static void dgrnum P_((int x, int y, double num));
@@ -840,6 +841,30 @@ void Pline(x,y)
 	Dline(tx,ty);
 }
 
+/********************************/
+/* Pboxfill - plot a filled box */
+/********************************/
+
+void Pboxfill(x,y,color)
+	double x;		/* x value to plot to */
+	double y;		/* y value to plot to */
+	short int color;         /* gray scale color to plot */
+{
+	int tx;		/* true x */
+	int ty;		/* true y */
+
+	/* find point to plot to in window */
+	ScaleXy(cPic,x,y,&tx,&ty);
+
+	/* make commands to draw box */
+	if((cPic)->x == UNKNOWN || (cPic)->y == UNKNOWN)
+		error_("Trying to draw a line from an unknown position");
+	dboxfill(tx,ty,color);
+
+	(cPic)->x = tx;
+	(cPic)->y = ty;
+}
+
 /******************************/
 /* Ptext - draw graphics text */
 /******************************/
@@ -1179,6 +1204,18 @@ static void dline(x,y)
 	PushInstr(DLINE, sizeof(DL_ARGS));
 }
 
+/* Mat declared x and y as unsigned short int */
+static void dboxfill(x,y,color)
+	int x;
+	int y;
+	short int color;
+{
+	args.bf.x = (unsigned short int)x;
+	args.bf.y = (unsigned short int)y;
+	args.bf.color = (short int) color;
+	PushInstr(DBOXFILL, sizeof(BF_ARGS));
+}
+
 static void ptext(place,text)
 	int place;
 	char *text;
@@ -1409,7 +1446,7 @@ void GtSpec(fileName)
 				/* sideways */
 	char yDef[4];		/* definition of whether y labels are */
 				/* sideways */
-	char errStr[100];	/* error string */
+	char errStr[DIRNMLEN + 30];	/* error string */
 	char line[80];		/* line of file */
 	char *sLine;		/* start of information on line */
 

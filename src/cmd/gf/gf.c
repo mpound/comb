@@ -116,7 +116,17 @@ L5:
     nchan = nto - nfrom + 1;
     nfree = nchan - nterms;
     if (nfree <= 0) {
-	error_("not enough channels");
+	warn_("not enough channels");
+	stk_[0].fwhm = FDRAGON;
+	stk_[0].fwerr = FDRAGON;
+	stk_[0].fpeak = FDRAGON;
+	stk_[0].fperr = FDRAGON;
+	stk_[0].ftmax = FDRAGON;
+	stk_[0].fterr = FDRAGON;
+	stk_[0].area = FDRAGON;
+	stk_[0].chisq =FDRAGON;
+	stk_[0].nfree = FDRAGON;
+	return;
     }
     if (stk_[0].rms != (float)0.) {
 /* Computing 2nd power */

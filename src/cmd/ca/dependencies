@@ -1,4 +1,0 @@
-ca.o: ca.c ../../stacks/C.h ../../main/C.h ../../main/History.h \
- ../../misc/C.h ../../parse/C.h ca.dc.h caf.dc.h ca.ec.h caf.ec.h
-cat_.o: cat_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h
-caft_.o: caft_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

@@ -8,6 +8,8 @@ void nf()
 	if(*prn) { 
 		printf("Scan file - %s\n",scan_.datfn);
 	}
+        strcpy(STOscan_.dirfn,scan_.datfn);  
 	scan_.ndfn = strlen(nfln);
+	STOscan_.ndfn = strlen(nfln);
 	strcpy(curscn_.fil, &nfln[scan_.ndfn - 3]);
 }

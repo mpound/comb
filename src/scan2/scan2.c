@@ -157,7 +157,7 @@ int ReadPreamble()
 	    if(++vdp >= &valDes[NUMDEFINED])
 		vdp = valDes;
 	    if(vdp == cvdp) {
-		printf("Unrecognized keyword %s in line %d\n",
+		fprintf(stderr,"Unrecognized keyword %s in line %d\n",
 			keyword, hdrLineNumber);
 		/* Process the unrecognized keyword so its space in the header
 		 * will be accounted for and the user will have access. */

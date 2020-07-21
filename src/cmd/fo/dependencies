@@ -1,3 +1,0 @@
-fo.o: fo.c ../../stacks/C.h ../../main/C.h ../../main/History.h \
- ../../misc/C.h fo.dc.h fo.ec.h
-fot_.o: fot_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

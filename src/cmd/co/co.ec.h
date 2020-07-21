@@ -5,4 +5,6 @@
 	*addft = 8;
 	*dcft = 8;
 	*acft = 8;
+	*nsnlft = 8;
+	*divft = 8;
 	parse_(&cmnd_.gstr,cot_,cob.c);

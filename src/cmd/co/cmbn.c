@@ -176,40 +176,54 @@ city*/
 		if (wt2 == (float)0.) {
 		    stk_[1].stak[i - 1] = (float)0.;
 		}
-		if (wt1 != (float)0.) {
-		    stk_[1].stak[i - 1] += s1;
-		}
+	        if ((64 & *init) == 0) {
+		    if (wt1 != (float)0.) {
+		         stk_[1].stak[i - 1] += s1;
+		    }
+	        } else {
+		    if (DABS(s2) > (float)0.) {
+		         if ( (s1/s2) < MAXVALUE) {
+		              stk_[1].stak[i - 1] = s1/s2;
+		         } else {
+		              stk_[1].stak[i - 1] = MAXVALUE;
+		         } 
+		    } else {
+		         stk_[1].stak[i - 1] = MAXVALUE;
+		    } 
+	        }
 	    }
 	}
 	pkwts_(&totwt, &i, tempwt, itmplc, &nwts);
 /* L100: */
     }
-    stk_[1].time += stk_[0].time;
     stk_[1].numpt = nend;
     if (izer != 0) {
 	printf("%d wts zero\n", izer);
     }
-    bcopy(tempwt, stk_[1].wght, sizeof(tempwt));
-    bcopy(itmplc, stk_[1].locwt, sizeof(itmplc));
-    stk_[1].nwts = nwts;
-/*  set up use array */
-    if (use_.kusfl != 0) {
+    if ((!(*init & 8)) || (!(*init & 16))) {
+      stk_[1].time += stk_[0].time;
+      bcopy(tempwt, stk_[1].wght, sizeof(tempwt));
+      bcopy(itmplc, stk_[1].locwt, sizeof(itmplc));
+      stk_[1].nwts = nwts;
+      /*  set up use array */
+      if (use_.kusfl != 0) {
 	for (ii = 1; ii <= 32; ++ii) {
-	    stk_[1].kuse[ii - 1] = stk_[0].kuse[ii - 1] & stk_[1].kuse[ii - 1];
-/* L111: */
+	  stk_[1].kuse[ii - 1] = stk_[0].kuse[ii - 1] & stk_[1].kuse[ii - 1];
+	  /* L111: */
 	}
-    }
-/* Calculate the new rms2 */
-    if (stk_[0].rms != (float)0. && stk_[1].rms != (float)0.) {
-/* Computing 2nd power */
+      }
+      /* Calculate the new rms2 */
+      if (stk_[0].rms != (float)0. && stk_[1].rms != (float)0.) {
+	/* Computing 2nd power */
 	r__1 = stk_[0].rms;
-/* Computing 2nd power */
+	/* Computing 2nd power */
 	r__2 = stk_[1].rms;
 	stk_[1].rms = 1 / sqrt(1 / (r__1 * r__1) + 1 / (r__2 * r__2));
+      }
     }
-/* Concatenate the two scan number lists. */
     if ((*init & 16) == 0) {
-	catsn_(init);
+      /* Concatenate the two scan number lists. */
+      catsn_(init);
     }
 } /* cmbn_ */
 

@@ -1,3 +1,0 @@
-el.o: el.c ../../stacks/C.h ../../main/C.h ../../main/History.h \
- ../../misc/C.h el.dc.h el.ec.h
-elt_.o: elt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

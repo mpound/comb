@@ -11,6 +11,7 @@
 
 # include <stdio.h>
 # include <ctype.h>
+# include <string.h>
 # include "C.h"
 # include "include.h"
 # include "../main/C.h"
@@ -251,6 +252,7 @@ static void setvalues()
 	d_settxt = dmy;
 	d_clear = clear;
 	d_cursor = cursor;
+	d_boxfill = dmy;
 
 	/* get formats */
 	GtSpec("form.tek401x");

@@ -107,6 +107,8 @@ static double *lVal;		/* contour level values */
 				/* so that lVal[-1] is a real place) */
 static double *midLVal;		/* middle of lVal */
 static double *lastLVal;	/* end of lVal */
+static double lowDMVal;        /* lowest value for density map color */
+static double highDMVal;       /* highest value for density map color */
 static int *lType;		/* contour level line types */
 static int cLevels;		/* number of contour levels */
 static ENDPOINT *endPoint;	/* endpoint being computed */
@@ -210,6 +212,8 @@ void MkMap(int firstOpt, ...)
 	va_end(opList);
 
 	/* set up defaults */
+	lowDMVal  = 0;
+	highDMVal = 0;
 	numToAdd = 0;
 	numToRem = 0;
 	cLevels = 10;
@@ -340,6 +344,32 @@ void MkMap(int firstOpt, ...)
 	if(hatchLen && hatchSpace == 0)
 		hatchSpace = hatchLen * 5;
 
+	/* calculate density map parameters */
+	if(levDefault)
+	  {
+	    if(lowDMVal == highDMVal)
+	      {
+		chkDatum = data;
+		while(*chkDatum++ == FDRAGON)
+		  if(chkDatum - data == rows * columns)
+		    error_("No data for map");
+		lowDMVal = chkDatum[-1];
+		highDMVal = lowDMVal;
+		while(chkDatum < data + (rows * columns))
+		  {
+		    if(*chkDatum != FDRAGON)
+		      if(*chkDatum < lowDMVal)
+			lowDMVal = *chkDatum;
+		      else if(*chkDatum > highDMVal)
+			highDMVal = *chkDatum;
+		    chkDatum++;
+		  }
+	      }
+	    if(lowDMVal == highDMVal)
+	      error_("No range of data for map");
+	  }
+
+	/* calculate contour level parameters */
 	if(levDefault)
 	{
 		if(lowLev == highLev)
@@ -524,6 +554,8 @@ static void MapArray(array,columns,rows,left,bottom,right,top)
 	register float *lowerLeft; /* pointer to value of lower left corner */
 	int row;		/* row currently being computed */
 	int col;		/* column currently being computed */
+	double llx,lly,urx,ury; /* coordinates for density plot box */
+	int dmpixelcolor;       /* pixel color to use from color map */
 
 	/* allocate space for map */
 	AllocMap(columns - 1);
@@ -531,6 +563,28 @@ static void MapArray(array,columns,rows,left,bottom,right,top)
 	/* compute constant values in box */
 	box.width = (right - left) / (columns - 1);
 	box.height = (top - bottom) / (rows - 1);
+
+	/* before making contour map, let's output the commands for a
+           density map */
+
+	lowerLeft = array;
+	for(row = 0; row < rows ; row++) {
+	  if (row == 0) lly=bottom;
+	  else lly=bottom+((row-0.5)*box.height);
+	  if (row == rows-1) ury=top;
+	  else ury=bottom+((row+0.5)*box.height);
+	  for(col = 0; col < columns ; col++) {
+	    if (col == 0) llx=left;
+	    else llx=left+((col-0.5)*box.width);
+	    if (col == columns-1) urx=right;
+	    else urx=left+((col+0.5)*box.width);
+	    dmpixelcolor = ((*lowerLeft - lowDMVal)/(highDMVal - lowDMVal)) *
+	      (NUM_PIXEL_COLORS-1);
+	    Pmove(llx,lly);
+	    Pboxfill(urx,ury,dmpixelcolor);
+	    lowerLeft++;
+	  }
+	}
 
 	/* make map */
 	lowerLeft = array;
@@ -541,11 +595,11 @@ static void MapArray(array,columns,rows,left,bottom,right,top)
 		box.x = left;
 		for(col = 0; col < columns - 1; col++)
 		{
-			if((box.lowerLeft = *lowerLeft) != DRAGON &&
+		        if((box.lowerLeft = *lowerLeft) != DRAGON &&
 			   (box.lowerRight = lowerLeft[1]) != DRAGON &&
 			   (box.upperLeft = *upperLeft) != DRAGON &&
-			   (box.upperRight = upperLeft[1]) != DRAGON)
-				PlotBox();
+			   (box.upperRight = upperLeft[1]) != DRAGON) 
+			        PlotBox();
 			curLinks += cLevels;
 			if(curLinks == lARow1End)
 			{

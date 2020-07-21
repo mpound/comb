@@ -4,10 +4,10 @@ parse ("cmnd_.gstr")
 {
 	"Type of device":ex("typ");
 	{
-		"Bima2" "b":;
 		"Astro2" "a":;
-		"PostScript 3" "unused":;
-		"PostScript 4" "unused":;
+		"Bima2" "b":;
+		"Suns2" "s":;
+		"Taurus" "t":;
 		"Imagen 1" "unused":;
 		"Imagen 2" "unused":;
 		"LaserJet 1" "unused":;

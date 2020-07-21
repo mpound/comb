@@ -25,6 +25,7 @@ void (*d_cleanup)();		/* driver routine for cleaning up terminal */
 void (*d_clear)();		/* driver routine for clearing part of the */
 				/* screen */
 void (*d_cursor)();		/* driver routine for reading cursor */
+void (*d_boxfill)();		/* driver routine for drawing filled box */
 
 /* external variables */
 int noShow = 0;
@@ -87,7 +88,7 @@ static int GetDevice P_((char *device));
 void Pterminal(terminal)
 	char *terminal;		/* name of default terminal */
 {
-	strcpy(defTerm,terminal);
+	strncpy(defTerm,terminal,TERMNMLEN);
 }
 
 /**********************************************/
@@ -883,8 +884,17 @@ static void Show(picP,xRes,yRes,xSize,ySize,form)
 				labelFmt = args.lf;
 				instr += sizeof(LF_ARGS);
 				break;
-			default:
-				error_("Illegal command in graphics");
+		        case DBOXFILL:
+				(picP)->lastx = (int)(xScale * args.bf.x +
+					left);
+				(picP)->lasty = (int)(yScale * args.bf.y +
+					bottom);
+			        d_boxfill((picP)->lastx,(picP)->lasty,
+					  args.bf.color);
+				instr += sizeof(BF_ARGS);
+				break;
+		        default:
+			        error_("Illegal command in graphics");
 				return;
 		}
 	}
@@ -1371,8 +1381,15 @@ static int InitDevice(device)
 	/* if device is null string, use terminal name in environment */
 	if(!*device)
 	{
-		strncpy(device,getenv("TERM"),TERMNMLEN - 1);
-		device[TERMNMLEN - 1] = 0;
+	  /* Use an XWindow by default if no device is specified 
+	     -CLM Aug 12 2001 */
+	  strcpy(device,"xwindow");
+	  /*
+	    strncpy(device,getenv("TERM"),TERMNMLEN - 1);
+	    device[TERMNMLEN - 1] = 0;
+	    if (!strcmp("xterm",device))
+	    strcpy(device,"xwindow");
+	  */
 	}
 
 	/* make sure we're not going to get killed by a nasty device name */

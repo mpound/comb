@@ -1,3 +1,0 @@
-bc.o: bc.c ../../main/C.h ../../main/History.h ../../stacks/C.h \
- ../../scan/C.h ../../scan2/scan2.h ../../misc/C.h bc.dc.h bc.ec.h
-bct_.o: bct_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

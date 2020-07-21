@@ -29,9 +29,10 @@ parse("cmnd_.gstr")
 	"Broad backend" "bbe":;
 	"Narrow backend" "nbe":;
 	"Expander" "exp":;
+	"All backends" "allbe":;
     }
-    "Frequency (MHz)" "freq":real range set("0_300000") - "ffreq";
-    "Minimum weight before processing" "wght": real set("100") - "fwght";
+    "Frequency (MHz)" "freq":real range set("0_2000000") - "ffreq";
+    "Minimum weight before processing" "wght": real set("0.01") - "fwght";
     "Accept fs scans" "fs": int flag - "fs";
     "Accept ps scans" "ps": int flag - "ps";
     "Accept bs scans" "bs": int flag - "bs";

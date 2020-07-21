@@ -2,8 +2,8 @@
 
 extern void ad_(),af(),bc_(),c(),ca_(),cc_(),co_(),cr(),cv(),da();
 extern void dm(),dv(),docmd(),ex(),el_(),em();
-extern void fl(),fo_(),ft(),gm(),gf_(),gt_(),hc(),/*hi_(),*/im(),in_(),is();
-extern void li_(),lk(),nf(),me(),ns(),op(),p(),pa(),cm(),cplot();
+extern void fl(),fo_(),ft(),gm(),gf_(),gi_(),gs_(),gt_(),hc(),/*hi_(),*/im(),in_(),is();
+extern void lf_(),li_(),lk(),nf(),me(),ns(),op(),p(),pa(),cm(),cplot();
 extern void pd_(),pf_(),ph(),pl(),pr(),quit(),rc(),rm_(),rs_();
 extern void rt(),sc(),sl(),sp(),st(),th(),tp(),up(),us_(),lc(),sq_(),wr_(),xf();
 extern void lk(),ts(),uf(),v(),vc(),vm(),wc(),wf(),wu(),rout(),rin();
@@ -32,7 +32,9 @@ Icmd icmd[] =
 	"fo",fo_,
 	"ft",ft,
 	"gf",gf_,
+	"gi",gi_,
 	"gm",gm,
+	"gs",gs_,
 	"gt",gt_,
 	"hc",hc,
 /*	"hi",hi_, */
@@ -40,6 +42,7 @@ Icmd icmd[] =
 	"in",in_,
 	"is",is,
 	"lc",lc,
+	"lf",lf_,
 	"li",li_,
 	"lk",lk,
 	"me",me,

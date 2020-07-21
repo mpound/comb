@@ -1,6 +1,4 @@
 newfile.o: newfile.c scan2.h ../error/C.h ../main/dragon.h
 scan2.o: scan2.c scan2_incl.h ../main/C.h ../main/History.h \
- ../main/machinedep.h ../main/dragon.h ../error/C.h scan2.h \
- scan2_entries.h
-ts2.o: ts2.c scan2.h ../main/dragon.h
-ws2.o: ws2.c scan2.h ../error/C.h ../main/dragon.h
+  ../main/machinedep.h ../main/dragon.h ../error/C.h scan2.h \
+  scan2_entries.h

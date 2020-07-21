@@ -1,6 +1,6 @@
 include ${COMB}/src/main/include.mk
 OBJECT=file.o alloc.o
-CFLAGS=-O
+#CFLAGS=-O
 #
 test : $(OBJECT)
 	../../bin/LN_TO_OBJ $?

@@ -1,5 +1,5 @@
 include ${COMB}/src/main/include.mk
-OBJECT=p.o prnnt_.o crnt_.o pht_.o
+OBJECT=prnnt_.o crnt_.o pht_.o p.o
 INCLP=../../parse/P.tree.h  ../../main/machinedep.h
 INCL=../../main/C.h
 LINTLIBS=\
@@ -25,6 +25,7 @@ ph.dc.h ph.ec.h pht_.c : ph.t
 print:	p.c prnn.t
 	@pr $?
 	@touch print
-depend:
+pt_.c : crnt_.c prnnt_.c pht_.c
+depend: 
 	gcc -MM ${OBJECT:.o=.c} > dependencies
 include dependencies

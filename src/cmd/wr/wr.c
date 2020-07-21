@@ -3,7 +3,7 @@
 	-lf2c -lm -lc   (in that order)
 */
 
-#define DISABLED /*comment out if this command is enabled*/
+/* #define DISABLED */ /*comment out if this command is enabled*/
 #include "../../main/C.h"
 
 void wr_()

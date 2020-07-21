@@ -1,9 +1,0 @@
-rtst.o: rtst.c ../../stacks/C.h ../../coordsys/C.h \
- ../../stacks/include.h ../../main/C.h ../../main/History.h rt.dc.h \
- rt.ec.h rt.uc.h st.dc.h st.ec.h st.uc.h ns.dc.h ns.ec.h ns.uc.h \
- em.dc.h em.ec.h em.uc.h up.dc.h up.ec.h up.uc.h
-emt_.o: emt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h
-rtt_.o: rtt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h
-stt_.o: stt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h
-nst_.o: nst_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h
-upt_.o: upt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

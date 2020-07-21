@@ -4,7 +4,8 @@ OBJECT=graph.o grid.o guts.o hp.driver.o map.o options.o scale.o show.o\
 	tek.driver.o\
 	im.driver.o\
 	lj.driver.o\
-	laser.driver.o
+	laser.driver.o\
+	xwindow.driver.o
 # HP 7580 pen plotter no longer officially supported as of comb 1993.0
 # However, the source is still distributed so uncomment next line and 
 # the "hp7580" lines in d.routines and d.names to use the pen 

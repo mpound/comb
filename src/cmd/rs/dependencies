@@ -1,3 +1,0 @@
-rs.o: rs.c ../../stacks/C.h ../../main/C.h ../../main/History.h \
- ../../main/dragon.h ../../misc/C.h rs.dc.h rs.ec.h
-rst_.o: rst_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

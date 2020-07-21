@@ -1,5 +1,5 @@
 include ${COMB}/src/main/include.mk
-OBJECT=nf.o nft_.o
+OBJECT=nft_.o nf.o
 INCLP=../../parse/P.tree.h  ../../main/machinedep.h
 INCL=../../scan/C.h ../../main/C.h
 LINTLIBS=\

@@ -34,6 +34,12 @@ void co_()
     if (*dcf != 0) {
 	init += 4;
     }
+    if (*nsnlf != 0) {
+	init += 16;
+    }
+    if (*divf != 0) {
+	init += 64;
+    }
     cmbn_(&init);
     stk_[0] = stk_[1];
     if (use_.kusfl != 0) {

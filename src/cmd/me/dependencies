@@ -1,5 +1,0 @@
-me.o: me.c ../../main/C.h ../../main/History.h ../../error/C.h \
- ../../parse/C.h ../../graphics/C.h ../../coordsys/C.h \
- ../../stacks/C.h ../../stacks/include.h ../../scan/C.h \
- ../../scan2/scan2.h me.dc.h me.ec.h me.uc.h
-met_.o: met_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

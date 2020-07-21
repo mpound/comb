@@ -1,5 +1,5 @@
 include ${COMB}/src/main/include.mk
-OBJECT=pl.o plt_.o flt_.o
+OBJECT=plt_.o flt_.o pl.o
 INCLP=../../parse/P.tree.h  ../../main/machinedep.h
 INCL=../../main/C.h ../../stacks/C.h ../../graphics/C.h\
 	../../graphics/include.h ../../scan/C.h ../../error/C.h ../../misc/C.h
@@ -27,6 +27,6 @@ pl.dc.h pl.ec.h pl.uc.h plt_.c : pl.t
 #flt_.o	: $(INCLP)
 fl.dc.h  fl.ec.h fl.uc.h flt_.c : fl.t
 	../../../bin/entree -C fl.t; dc_to_uc fl
-depend:
+depend: flt_.c plt_.c
 	gcc -MM ${OBJECT:.o=.c} > dependencies
 include dependencies

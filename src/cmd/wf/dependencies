@@ -1,3 +1,0 @@
-wf.o: wf.c ../../main/C.h ../../main/History.h ../../main/dragon.h \
- ../../stacks/C.h ../../image/C.h wf.dc.h wf.ec.h
-wft_.o: wft_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

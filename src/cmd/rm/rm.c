@@ -41,8 +41,8 @@ L10:
 	;
     }
     if (count <= (float)2.) {
-	error_("Not enough channels in stack 1");
-    }
+	warn_("Not enough channels in stack 1");
+    } else {
     rms = sqrt(rms / (count - 2));
 /* put rms value in stack1 */
     stk_[0].rms = rms;
@@ -52,4 +52,5 @@ L10:
 	return;
     }
     printf("rms = %.3g  system noise temp = %.1f\n", rms, ssbn);
+    }
 } /* rm_ */

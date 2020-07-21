@@ -1,3 +1,0 @@
-cr.o: cr.c ../../main/C.h ../../main/History.h ../../parse/C.h \
- ../../graphics/C.h cr.dc.h cr.ec.h
-crt_.o: crt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

@@ -5,5 +5,8 @@
 	*nwvt = 16;
 	*oe = oe_o;
 	*oet = 16;
+	*ssbfr = ssbfr_o;
+	*ssbfrt = 16;
 	parse_(&cmnd_.gstr,cct_,ccb.c);
 	oe_o = *oe;
+	ssbfr_o = *ssbfr;

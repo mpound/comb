@@ -1,2 +1,0 @@
-ex.o: ex.c ../../main/C.h ../../main/History.h ex.dc.h ex.ec.h
-ext_.o: ext_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

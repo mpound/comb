@@ -179,6 +179,7 @@
 {"nwts1", A(stk_[0].nwts), 1, SHORT, MAINMEM},
 {"nwts2", A(stk_[1].nwts), 1, SHORT, MAINMEM},
 {"nwts3", A(stk_[2].nwts), 1, SHORT, MAINMEM},
+{"obstype", A(scan_.iobstp), 1, SHORT, MAINMEM},
 {"oddec", A(stk_[0].oddec), 1, FLOAT, MAINMEM},
 {"oddec1", A(stk_[0].oddec), 1, FLOAT, MAINMEM},
 {"oddec2", A(stk_[1].oddec), 1, FLOAT, MAINMEM},

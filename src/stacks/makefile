@@ -3,7 +3,7 @@ OBJECT=  S.routines.o  T.routines.o data.o value.o\
 	default.o errors.o stk.global.o interp.o search.o
 INCL=C.h include.h ../coordsys/C.h
 SFCK=../../bin/sfck
-CFLAGS=-g
+CFLAGS=-O
 #
 test : ${OBJECT}
 	../../bin/LN_TO_OBJ $?

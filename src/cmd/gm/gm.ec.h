@@ -1,4 +1,6 @@
 	*act = 0;
+	strcpy(dtermstr,dtermstr_o);
+	*dtermstrt = 3;
 	*cc = bxCol;
 	*cct = 8;
 	*cr = bxRow;
@@ -31,6 +33,7 @@
 	*lnt = lnt_o;
 	*lntt = 8;
 	parse_(&cmnd_.gstr,gmt_,gmb.c);
+	strcpy(dtermstr_o,dtermstr);
 	bxCol = *cc;
 	bxRow = *cr;
 	nc_o = *nc;

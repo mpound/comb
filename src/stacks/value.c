@@ -29,6 +29,8 @@ static void ClearValues P_((int start));
 static double StkVal(int stkNum);
 #undef P_
 
+extern void squish(double scale_chan_wid,double cent_of_squish);
+
 int Already_warned;	/* Warned about differing filterwidths? (AvgStacks)*/
 /*******************************************************/
 /* InitValues - initialize value array for a directory */
@@ -164,7 +166,7 @@ static double StkVal(stkNum)
 AvgStacks(list,filtWid,catScanLst)	/* return true if data was found */
 	register STKLINK *list;	/* list of stacks to average */
 	double filtWid;		/* if non zero, only use stacks with this
-				filter width */
+				or smaller filter width */
 	int catScanLst;
 {
 	int weightNum;		/* number of weight being computed */
@@ -192,15 +194,19 @@ printf("stk# = %d, list->wght = %g, nwts2 = %d\n", list->stkNum, list->weight, s
 		    if(!coreFull[0])
 			SearchFileError(list->stkNum);
 
-		/* if a filter width was given, only use stacks of that width */
+		/* if a filter width was given, only use stacks of that or smaller width */
 		    tol = filtWid/( stk_[0].numpt << 4);
-		    if(filtWid == 0. || !cifdif((double)stk_[0].fwid,
-			(double)filtWid,(double)tol)) {
-			for(weightNum = 0;weightNum < stk_[0].nwts;weightNum++)
-				stk_[0].wght[weightNum] *= list->weight;
-			cmbn_(&init);
-			init &= 0xfe;
-			savesig = cmnd_.cmdsig;
+		    if(filtWid == 0. || 
+		       (filtWid>stk_[0].fwid) || 
+		       (!cifdif((double)stk_[0].fwid,
+				  (double)filtWid,(double)tol))) {
+		      if (filtWid>stk_[0].fwid)
+			squish(filtWid/stk_[0].fwid,stk_[0].expch);
+		      for(weightNum = 0;weightNum < stk_[0].nwts;weightNum++)
+			stk_[0].wght[weightNum] *= list->weight;
+		      cmbn_(&init);
+		      init &= 0xfe;
+		      savesig = cmnd_.cmdsig;
 		    }
 		    else if(!Already_warned) {
 			warn("Filter widths differ--ignoring some stacks");

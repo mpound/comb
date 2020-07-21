@@ -1,5 +1,2 @@
-co.o: co.c ../../stacks/C.h ../../main/C.h ../../main/History.h \
- ../../misc/C.h co.dc.h co.ec.h
-cot_.o: cot_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h
 cmbn.o: cmbn.c ../../stacks/C.h ../../main/C.h ../../main/History.h \
- ../../main/dragon.h ../../misc/C.h ../../main/machinedep.h
+  ../../main/dragon.h ../../misc/C.h ../../main/machinedep.h

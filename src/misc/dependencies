@@ -7,8 +7,7 @@ indxsn.o: indxsn.c ../stacks/C.h
 jdate.o: jdate.c C.h
 math_fns.o: math_fns.c
 pltoch.o: pltoch.c ../main/C.h ../main/History.h ../stacks/C.h C.h
-readline.o: readline.c ../main/C.h ../main/History.h \
- ../main/machinedep.h
+readline.o: readline.c ../main/C.h ../main/History.h ../main/machinedep.h
 scanlistsame.o: scanlistsame.c ../stacks/C.h
 tran.o: tran.c ../main/C.h ../main/History.h ../stacks/C.h
 wts.o: wts.c C.h ../main/C.h ../main/History.h ../stacks/C.h

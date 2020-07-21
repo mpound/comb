@@ -310,7 +310,7 @@ void vc()
 	PsetType(SP_VEL);	/* identify this picture as a space-vel plot */
 	Pformat("full plot");
 	Pbounds(h1,loVel,h2,hiVel);
-	MkGrid(CLEAROPT,NO FLAGY0,NO FLAGX0,ENDOPT);
+	/* MkGrid(CLEAROPT,NO FLAGY0,NO FLAGX0,ENDOPT); */
 	switch(contourChoice) {
 	case AUTOMATIC:
 		MkOpt(CLINSCALE,ENDOPT);
@@ -331,6 +331,7 @@ void vc()
 		MkOpt(CLEVRANGE(*lc, *hc), ENDOPT);
 	MkOpt(CSTORE(&levels,&types,&numLevels), ENDOPT);
 	MkMap(ARRAY(array,numChan,numPoints), ENDOPT);
+	MkGrid(CLEAROPT,NO FLAGY0,NO FLAGX0,ENDOPT);
 
 	if( (xBoxes | yBoxes) == 1) {
 		/* display first, last contour, step, ir, and interp type

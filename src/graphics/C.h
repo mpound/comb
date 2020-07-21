@@ -20,7 +20,7 @@
 				/* (including null termination) */
 # define TERMNMLEN 11		/* maximum length of a terminal name */
 				/* (including null termination) */
-# define DIRNMLEN 50		/* maximum length of directory name */
+# define DIRNMLEN 100		/* maximum length of directory name */
 				/* (including null termination) */
 # define UNKNOWN (int)(0x80000000) /* indicates an unknown int */
 				/* (this is the highest neg (RWW) number) */
@@ -411,6 +411,7 @@ void Pcircborder P_((void));
 void Pfigure P_((double x, double y, int figure, double width, double height, int filled));
 void Pmove P_((double x, double y));
 void Pline P_((double x, double y));
+void Pboxfill P_((double x, double y, short int color));
 void Ptext P_((char *text));
 void Pstext P_((char *text));
 void Pplace P_((int place, register char *text));

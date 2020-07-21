@@ -1,3 +1,0 @@
-us.o: us.c ../../stacks/C.h ../../main/C.h ../../main/History.h \
- ../../misc/C.h ../../main/machinedep.h us.dc.h us.ec.h
-ust_.o: ust_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

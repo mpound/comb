@@ -7,4 +7,6 @@ parse("cmnd_.gstr")
 	"Add stacks" "add" : int flag - "addf";
 	"Don't check positions" "dc" : int flag - "dcf";
 	"Align center channels" "ac" : int flag - "acf";
+	"Don't combine scan list (nor time when used with add:)" "nsnl": int flag - "nsnlf";
+	"Divide stacks" "div" : int flag - "divf";
 }

@@ -12,6 +12,11 @@ struct of_scan
 	short iobstp, ibad;	/* ndat(13) and ndat(34) replacements */
 	int iobssec;		/* Time of start of scan (sec since 1/1/70) */
 	float azimuth, elevation; /* Az set to < 0 for old scans */
+        double TAmbient,DTAbs;  /* Ambient temperature and DTAbs with scan */
+        double IFCenter;        /* IF Reference Frequency */
+        double VAnt;            /* Antenna Velocity wrt LSR */
+        int mmsb;               /* which sideband 1 for USB, -1 for LSB */
+        double fbCntr;          /* channel offset of IF Freq center of scan */
 } ;
 extern struct of_scan scan_;
 
@@ -27,6 +32,40 @@ typedef struct
 }
 Scan;
 extern Scan curscn_;
+
+struct of_STOscan
+{
+	short ndat[896];
+	short nszsc,nfsc,numpts,nstrt;
+	short invrt,longtd,lattd,if1,map,iexist;
+	int lnfil,nbknd,mbknd,ncur,inver,kontrl,numbch;
+	short nbadch[8];
+	float tsky,tsys,fmult;
+	int ndfn;		/* Fortran index of last char in dirfn
+				 * == strlen(dirfn) */
+	char dirfn[PATHLENGTH];
+	short iobstp, ibad;	/* ndat(13) and ndat(34) replacements */
+	int iobssec;		/* Time of start of scan (sec since 1/1/70) */
+	float azimuth, elevation; /* Az set to < 0 for old scans */
+        double TAmbient,DTAbs;  /* Ambient temperature and DTAbs with scan */
+        double IFCenter;        /* IF Reference Frequency */
+        double VAnt;            /* Antenna Velocity wrt LSR */
+        int mmsb;               /* which sideband 1 for USB, -1 for LSB */
+        double fbCntr;          /* channel offset of IF Freq center of scan */
+} ;
+extern struct of_STOscan STOscan_;
+
+	/**********************************/
+	/* structure for STO scan numbers */
+	/**********************************/
+
+typedef struct
+{
+	char filname[7];			/* file name */
+	int filnum;			/* file number */
+}
+STOScan;
+extern STOScan curSTOscn;
 
 
 #if defined(__STDC__) || defined(__cplusplus)
@@ -50,7 +89,7 @@ void write_ P_((void));
 void mrkbad P_((int sn, int care));
 int ScanInFile P_((register int sn));
 void putfn_ P_((void));
-void prtsl_ P_((void));
+void prtsl_ P_((char *out, int length));
 int scanStr P_((register char *cp, int len, int start));
 void scnlmt_ P_((short int *sn1n, short int *sn2n, char *sn1f, char *sn2f, int step, int snf));
 int islast_ P_((void));

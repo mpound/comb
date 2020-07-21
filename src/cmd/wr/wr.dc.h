@@ -1,4 +1,3 @@
-
 extern Node wrt_[];
 union {
 	char c[1];

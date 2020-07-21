@@ -1,3 +1,0 @@
-gf.o: gf.c ../../stacks/C.h ../../main/C.h ../../main/History.h \
- ../../main/dragon.h ../../misc/C.h gf.dc.h gf.ec.h
-gft_.o: gft_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

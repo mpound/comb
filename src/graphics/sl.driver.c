@@ -37,7 +37,7 @@ setlayer()
 	int move(),line(),linetype();
 	int text(),center(),texttype();
 	int clear();
-	int cursor();
+	int cursor(),dmy();
 
 	static char name[] = "setlayer";
 
@@ -69,6 +69,7 @@ setlayer()
 		d_settxt = texttype;
 		d_clear = clear;
 		d_cursor = cursor;
+		d_boxfill = dmy;
 
 		/* get formats */
 		GtSpec("form.setlayer");
@@ -385,3 +386,9 @@ stopDrawingVectors()
 	}
 }
 #endif
+
+/****************************
+ * dmy - do nothing routine *
+ ****************************/
+
+static dmy () { }

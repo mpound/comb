@@ -1,7 +1,7 @@
 graph.o: graph.c C.h include.h ../main/dragon.h
 grid.o: grid.c C.h include.h step.h
 guts.o: guts.c ../error/C.h ../graphics/C.h include.h ../main/C.h \
- ../main/History.h ../main/dragon.h
+  ../main/History.h ../main/dragon.h
 hp.driver.o: hp.driver.c C.h include.h
 map.o: map.c C.h include.h ../main/dragon.h
 options.o: options.c C.h include.h ../main/dragon.h
@@ -9,9 +9,11 @@ scale.o: scale.c C.h include.h ../main/dragon.h
 show.o: show.c C.h include.h ../error/C.h d.routines d.names
 step.o: step.c step.h
 tek.driver.o: tek.driver.c C.h include.h ../main/C.h ../main/History.h \
- ../main/machinedep.h startqms.h endqms.h
+  ../main/machinedep.h startqms.h endqms.h
 im.driver.o: im.driver.c C.h include.h ../main/C.h ../main/History.h \
- imPcodes.h
+  imPcodes.h
 lj.driver.o: lj.driver.c C.h include.h ../main/C.h ../main/History.h
 laser.driver.o: laser.driver.c C.h include.h ../main/C.h \
- ../main/History.h
+  ../main/History.h
+xwindow.driver.o: xwindow.driver.c C.h include.h ../main/C.h \
+  ../main/History.h ../main/machinedep.h

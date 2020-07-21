@@ -178,6 +178,7 @@ main(argc,argv)
 
 static void CombInit()
 {
+        void exit();
 	register char *cp;
 	int fd;
 	int n;
@@ -211,7 +212,9 @@ static void CombInit()
 		*main_.stkpth = '\0';
 	if((cp = getenv("SCANFILE")) != NULL) {
 		strncpy(scan_.datfn,cp,PATHLENGTH);
+		strncpy(STOscan_.dirfn,cp,PATHLENGTH);
 		scan_.ndfn = strlen(cp);
+		STOscan_.ndfn = scan_.ndfn;
 		memcpy(curscn_.fil, &cp[scan_.ndfn-3], 4);
 		curscn_.num = 1;
 	}
@@ -528,6 +531,7 @@ void warn_(sp)
 	}
 	fprintf(stderr,"\nIn command %s %s.\nDo you want to continue\07? ",
 		cmnd_.nc,sp);
+	fflush(stderr);
 	answer = tolower(getchar()); /* Y is ok */
 	while(getchar() != '\n')
 		;

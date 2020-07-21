@@ -1,3 +1,0 @@
-im.o: im.c ../../stacks/C.h ../../image/C.h ../../main/C.h \
- ../../main/History.h ../../main/dragon.h im.dc.h im.ec.h
-imt_.o: imt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

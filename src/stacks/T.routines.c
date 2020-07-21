@@ -402,12 +402,9 @@ static NumDescend(node)
 
 	/* find descend */
 	descend = *node;
-	while(!Leaf(descend)) {
-	    fprintf(stderr,"number %d chile %d\n",
-		    	descend.l.d.number,descend.l.nextChild);
+	while(!Leaf(descend))
 		ReadNode( (TFILE)node->l.d.tfile,descend.l.d.number +
 			descend.l.nextChild + 1,&descend);
-	}
 
 	/* return number of nodes */
 	return(descend.l.d.number - node->l.d.number);
@@ -1017,7 +1014,7 @@ register TFILE tfile;
 	} while(block);
  }
 
-PrintNode(node)
+ /* PrintNode(node)
  register NODE *node;
  {
 	fprintf(stderr,"Node %d br field %d, b %d, %d bits\n",node->l.d.number,
@@ -1025,4 +1022,4 @@ PrintNode(node)
 	fprintf(stderr,"Values %x, %x, %x, %x, %x,   nextChild %d\n",
 		node->value[0], node->value[1], node->value[2], node->value[3],
 		node->value[4], node->l.nextChild);
-} 
+} */

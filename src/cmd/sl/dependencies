@@ -1,4 +1,0 @@
-sl.o: sl.c ../../main/C.h ../../main/History.h ../../main/dragon.h \
- ../../stacks/C.h ../../image/C.h ../../error/C.h ../../graphics/C.h \
- sl.dc.h sl.ec.h
-slt_.o: slt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

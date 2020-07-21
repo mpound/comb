@@ -1,3 +1,0 @@
-rm.o: rm.c ../../stacks/C.h ../../main/C.h ../../main/History.h \
- ../../main/dragon.h ../../misc/C.h rm.dc.h rm.ec.h
-rmt_.o: rmt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

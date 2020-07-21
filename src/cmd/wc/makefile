@@ -1,5 +1,5 @@
 include ${COMB}/src/main/include.mk
-OBJECT=wc.o wct_.o
+OBJECT=wct_.o wc.o
 LINTLIBS=../../coordsys/llib-lcoord.ln ../../graphics/llib-lgraph.ln\
 	../../image/llib-limage.ln ../../main/llib-lmain.ln\
 	../../stacks/llib-lstack.ln

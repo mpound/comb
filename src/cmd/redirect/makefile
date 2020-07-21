@@ -1,5 +1,5 @@
 include ${COMB}/src/main/include.mk
-OBJECT=redirect.o routt_.o  rint_.o
+OBJECT=routt_.o  rint_.o redirect.o
 INCLP=../../parse/P.tree.h  ../../main/machinedep.h
 INCL=../../main/C.h
 LINTLIBS=\
@@ -22,6 +22,7 @@ rout.uc.h rout.dc.h rout.ec.h routt_.c : rout.t
 #rint_.o    : $(INCLP)
 rin.uc.h rin.dc.h rin.ec.h rint_.c : rin.t
 	../../../bin/entree -C rin.t; dc_to_uc rin
+redirectt_.c : rint_.c routt_.c
 depend:
 	gcc -MM ${OBJECT:.o=.c} > dependencies
 include dependencies

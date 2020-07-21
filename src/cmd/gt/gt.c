@@ -96,6 +96,10 @@ void gt_()
         scnlmt_(sn1n, sn2n, sn1f, sn2f,(int)*istep, (int)*snf);
     }
     if(*last) {
+      /* For some reason opend seems insufficient, let's try an explicit 
+         call to LastScan to pull in the actual LastScan number
+         - CLM 20 Jun 2001 */
+        LastScan();
 	*sn1n = sci.lastScan;
 	*sn2n = sci.lastScan;
         scnlmt_(sn1n, sn2n, sn1f, sn2f,(int)*istep, (int)*snf);
@@ -171,37 +175,45 @@ void gt_()
 
 	if(readbad == 0 && ((*typef)? typcmp_(lmttyp):
 			      !strcmp(type, GS(ObsTypeN)) )) {
-	    if(!get_()) {
-		/* This keeps it simple.  Other options would be to skip over
-		 * the scan without the requested backend or if t: was used
-		 *  just return .test = 0. */
-		error("Bad backend");
-	    }
-	    if (*tsfl != 0) {
-		tschng_();		/* This sets .test depending on match */
-	    }
-	    if(GS(ObjectN)!=0)
-	         strcpy(stk_[0].label,GS(ObjectN)); 
-		/* Copy the object name to the
-		* stack label. If not present,
-		* GS() returns 0.  */
-	    if (*snf == 0 && ! islast_()) {
-		combex_("pl fhr:");
-		sv_curscn = curscn_;	/* Update fall back scan number */
-		wait_();
-	    } else {
-		main_.pltd = 0;
-		if( *tflg)
-		main_.test = 1;
-		return;
-	    }
+	  if(!get_()) {
+	    /* This keeps it simple.  Other options would be to skip over
+	     * the scan without the requested backend or if t: was used
+	     *  just return .test = 0. */
+	    /* It turns out to be more helpful to allow one to test for
+	       the existence of the other backend rather than killing a 
+	       macro entirely, hence I have added to code to check for the
+	       test flag - CLM 20 Jun 2001 */
+	    if (*tflg) {
+	      main_.test = 0;
+	      return;
+	    } else
+	      error("Bad backend");
+	  }
+	  if (*tsfl != 0) {
+	    tschng_();		/* This sets .test depending on match */
+	  }
+	  if(GS(ObjectN)!=0)
+	    strcpy(stk_[0].label,GS(ObjectN)); 
+	  /* Copy the object name to the
+	   * stack label. If not present,
+	   * GS() returns 0.  */
+	  if (*snf == 0 && ! islast_()) {
+	    combex_("pl fhr:");
+	    sv_curscn = curscn_;	/* Update fall back scan number */
+	    wait_();
+	  } else {
+	    main_.pltd = 0;
+	    if( *tflg)
+	      main_.test = 1;
+	    return;
+	  }
 	}
     }
     curscn_ = sv_curscn;	/* Failure, so restore last good scan number */
     if( *tflg)
-	main_.test = 0;
+      main_.test = 0;
     else
-	error("Failed to find requested scan");
+      error("Failed to find requested scan");
 } /* gt_ */
 
 

@@ -1,2 +1,0 @@
-wr.o: wr.c ../../main/C.h ../../main/History.h wr.dc.h wr.ec.h
-wrt_.o: wrt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

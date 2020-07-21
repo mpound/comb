@@ -1,11 +1,13 @@
 include ${COMB}/src/main/include.mk
-OBJECT=hi.o hit_.o
+OBJECT=hit_.o hi.o
 INCLP=../../parse/P.tree.h  ../../main/machinedep.h
 INCL=../../stacks/F.h ../../main/F.h
 CFLAGS=-O
 #
 .SILENT:
 test:
+	echo Hi is not an active command.
+hit_.c:
 	echo Hi is not an active command.
 #test      : hi.o hit_.o
 #	../../../bin/LN_TO_OBJ $?

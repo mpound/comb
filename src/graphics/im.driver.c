@@ -17,6 +17,7 @@
 
 # include <stdio.h>
 # include <math.h>
+# include <string.h>
 # include "C.h"
 # include "include.h"
 # include "../main/C.h"
@@ -312,6 +313,7 @@ static void setvalues ()
     d_ctext = center;
     d_settxt = texttype;
     d_cursor = dmy;
+    d_boxfill = dmy;
 
  /* get formats */
     GtSpec ("form.im");

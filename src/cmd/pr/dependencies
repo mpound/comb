@@ -1,5 +1,0 @@
-pr.o: pr.c ../../main/C.h ../../main/History.h ../../main/machinedep.h \
- ../../parse/P.tree.h ../../parse/../main/machinedep.h \
- ../../parse/P.struct.h ../../parse/C.h ../../error/C.h pr.dc.h \
- pr.ec.h
-prt_.o: prt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

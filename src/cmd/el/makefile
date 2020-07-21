@@ -1,5 +1,5 @@
 include ${COMB}/src/main/include.mk
-OBJECT=el.o elt_.o
+OBJECT=elt_.o el.o
 INCLP=../../parse/P.tree.h  ../../main/machinedep.h
 INCL=../../stacks/C.h ../../main/C.h ../../misc/C.h
 CFLAGS=-O

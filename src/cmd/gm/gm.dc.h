@@ -1,6 +1,6 @@
 extern Node gmt_[];
 union {
-	char c[171];
+	char c[186];
 	short int s[1];
 	int l[1];
 	double d[1];
@@ -19,21 +19,24 @@ union {
 #define fill (gmb.l + 17)
 #define lnt (gmb.l + 18)
 #define act (gmb.s + 38)
-#define cct (gmb.s + 39)
-#define crt (gmb.s + 40)
-#define nct (gmb.s + 41)
-#define nrt (gmb.s + 42)
-#define xst (gmb.s + 43)
-#define yst (gmb.s + 44)
-#define tit (gmb.s + 45)
-#define hpost (gmb.s + 46)
-#define vpost (gmb.s + 47)
-#define mrknt (gmb.s + 48)
-#define fight (gmb.s + 49)
-#define figwt (gmb.s + 50)
-#define fillt (gmb.s + 51)
-#define lntt (gmb.s + 52)
-#define ti (gmb.c + 106)
+#define dtermstrt (gmb.s + 39)
+#define cct (gmb.s + 40)
+#define crt (gmb.s + 41)
+#define nct (gmb.s + 42)
+#define nrt (gmb.s + 43)
+#define xst (gmb.s + 44)
+#define yst (gmb.s + 45)
+#define tit (gmb.s + 46)
+#define hpost (gmb.s + 47)
+#define vpost (gmb.s + 48)
+#define mrknt (gmb.s + 49)
+#define fight (gmb.s + 50)
+#define figwt (gmb.s + 51)
+#define fillt (gmb.s + 52)
+#define lntt (gmb.s + 53)
+#define dtermstr (gmb.c + 108)
+#define ti (gmb.c + 121)
+static char dtermstr_o[13] = "";
 static int nc_o = 1;
 static int nr_o = 1;
 static char ti_o[65] = "";

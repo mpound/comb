@@ -28,17 +28,21 @@
  * 	DATE-OBS, ORIGIN, and CREATOR keywords. Use new jdate.c 
  *      routines for date formatting.  Write out DATE-OBS from 
  *      stk.j2second. Small mod to formatting in SFitsCard
+ * 2011-08-16 Change all instance of round(x) to (int)(x+0.5) 
+ *      Comment out the "include types.h"  statement
  */
 # include <unistd.h>
 # include "../main/machinedep.h"
 # include "../stacks/C.h"
 # include "C.h"
+# include "../misc/C.h"
 # include "include.h"
 # include "../main/dragon.h"
 # include "../main/C.h"
 # include "../coordsys/C.h"
 # include <stdio.h>
 # include "../error/C.h"
+# include "../scan/C.h"
 
 # include <math.h>
 # include <fcntl.h>
@@ -67,7 +71,6 @@ static int ffdDataStart = 0;	/* Start of data in FITS output file */
 static int writingToTape = 0;	/* true if fits output file is a tape */
 
 extern off_t lseek();
-int round();
 
 #define bcopy(s, d, n) memcpy(d, s, n)
 #define bzero(s, n) memset(s, 0, n)
@@ -206,7 +209,7 @@ int imnumber;
 	ihp->simple = 1;
 	ihp->bitpix = 16;
 	ihp->baseln = -1;
-	(void)sprintf(ihp->date,"%s",jdate(time(0)));
+	(void)sprintf(ihp->date,"%s",(const char *)jdate(time(0)));
 	(void)sprintf(ihp->creator,"COMB %s",VERSION);
 }
 
@@ -406,9 +409,9 @@ int ydir;			/* extend buffer to larger or smaller y */
 	/* If the file has cdelt2 < 0, crpix will also be expressed from the
 	 * other end */
 	if( ihp->cdelt2 > 0 ) {
-		reqLine = round(ihp->crpix2) - 1 + y;
+		reqLine = (int) (ihp->crpix2 + 0.5) - 1 + y;
 	} else {
-		reqLine = ihp->naxis2 - round(ihp->crpix2) + y;
+		reqLine = ihp->naxis2 - (int) (ihp->crpix2 + 0.5) + y;
 	}
 
 	if( reqLine < ihp->bufline || reqLine >= ihp->bufline +
@@ -577,7 +580,7 @@ int ydir;			/* extend buffer to larger or smaller y */
 static double delta(cdelt)
 double cdelt;
 {
-	register int arcMinPerPix = round(one / cdelt);
+	register int arcMinPerPix = (int) (one / cdelt + 0.5);
 	if(cifdif(one / (double) arcMinPerPix, cdelt, .001 * cdelt))
 		return(cdelt * sixty);
 	else
@@ -600,7 +603,7 @@ int *xunit;			/* Units of deltax (ARCMINUTES, etc.) */
 	register int refpix;
 	struct AXISNAMES units;
 
-	refpix = round(ihp->crpix1);
+	refpix = (int) (ihp->crpix1 + 0.5);
 	if(ihp->cdelt1 > 0) {
 		*lowx = 1 - refpix;
 		*highx = ihp->naxis1 - refpix;
@@ -630,7 +633,7 @@ int *yunit;			/* units of deltay (ARCMINUTES, etc.) */
 	register int refpix;
 	struct AXISNAMES units;
 
-	refpix = round(ihp->crpix2);
+	refpix = (int) (ihp->crpix2 + 0.5);
 	if(ihp->cdelt2 > 0) {
 		*lowy = 1 - refpix;
 		*highy = ihp->naxis2 - refpix;
@@ -957,20 +960,28 @@ void CloseFitsOut()
 void WriteEOF(fd)
 int fd;
 {
-# include <sys/types.h>
+
+
 # include <sys/ioctl.h>
 #if AIX
+# include <sys/types.h>
 # include <sys/tape.h>
 	static struct mtop wef = {STWEOF, (daddr_t)1};
 
 	if(ioctl(fd, STIOCTOP, (char *)&wef) < 0)
 		error("Error writing tape EOF");
 #else /*AIX*/
+
+#if OSX
+		error("Error writing tape EOF");
+#else /*OSX*/
+# include <sys/types.h>
 # include <sys/mtio.h>
 	static struct mtop wef = {MTWEOF, 1};
 
 	if(ioctl(fd, MTIOCTOP, (char *)&wef) < 0)
 		error("Error writing tape EOF");
+#endif /*OSX*/
 #endif /*AIX*/
 }
 
@@ -1461,13 +1472,13 @@ double mina, minb;
  */
 	if((pixa=ihpa->buf)==NULL) {
 		pixa=GetImageLine(ima,-1, (ihpa->cdelt2 > 0)? 
-                       1 - round(ihpa->crpix2): round(ihpa->crpix2) - ihpa->naxis2, 
+                       1 - (int) (ihpa->crpix2 +0.5): (int) (ihpa->crpix2 +0.5) - ihpa->naxis2, 
                        ihpa->naxis2, 1);
 	}
 
 	if((pixb=ihpb->buf)==NULL) {
 		pixb=GetImageLine(imb,-1, (ihpb->cdelt2 > 0)? 
-                       1 - round(ihpb->crpix2): round(ihpb->crpix2) - ihpb->naxis2, 
+                       1 - (int) (ihpb->crpix2 + 0.5): (int) (ihpb->crpix2 +0.5) - ihpb->naxis2, 
                        ihpb->naxis2, 1);
 	}
 /* make array for resultant image 			*/
@@ -1653,7 +1664,7 @@ void RescaleImage(int imx,double rsfact,double addend)
 
 	if((pix = ip->buf)==NULL)
 		pix = GetImageLine(imx,0, (ip->cdelt2 > 0)? 
-                       1 - round(ip->crpix2): round(ip->crpix2) - ip->naxis2, 
+                       1 - (int)(ip->crpix2 + 0.5): (int)(ip->crpix2 +0.5) - ip->naxis2, 
                        ip->naxis2, 1);
 	if(ip->naxis >= 2)
                 endPix = pix + ip->naxis1 * ip->naxis2;
@@ -1774,10 +1785,10 @@ double minpix;               /* min pixel value to include */
  */
 	(void)printf("Rounding requested subimage to nearest pixel.\n");
  
-	lox = round(xmin/delx);
-	hix = round(xmax/delx);
-	loy = round(ymin/dely); /* to be passed to GetImageLine */
-	hiy = round(ymax/dely);
+	lox = (int)(xmin/delx +0.5);
+	hix = (int)(xmax/delx +0.5);
+	loy = (int)(ymin/dely +0.5); /* to be passed to GetImageLine */
+	hiy = (int)(ymax/dely +0.5);
 #ifdef DEBUG
         (void)fprintf(stderr,"xSrc: %d %d ySrc: %d %d| xReq:%d %d yReq:%d %d dx:%f dy:%f\n",
                 loxS,hixS,loyS,hiyS,lox,hix,loy,hiy,delx,dely);
@@ -1894,6 +1905,18 @@ static void PrepareSpectrumHdr(int imnumber, struct of_stk *stk,
 {
 	register struct of_imagehdr *ihp = imageHdr[imnumber];
 
+	/* If we have access to the scan header, 
+	   add in some more variables -CLM 3-Dec-2004 */
+
+	if(stk->nstk[(stk->nstk[0] < 0)? 2: 0] == curscn_.num) {
+	  ihp->tel_azimuth=scan_.azimuth;
+	  ihp->tel_elevation=scan_.elevation;
+	  ihp->tel_Tamb=scan_.TAmbient;
+	  ihp->tel_Tatm=scan_.TAmbient+scan_.DTAbs;
+	  ihp->Ftsky=scan_.tsky;
+	  ihp->tel_VAnt=scan_.VAnt;
+	}
+
 	ihp->ftype |= STACK;
 	strcpy(ihp->bunit, "K");
 	ihp->naxis = 3;
@@ -1902,6 +1925,8 @@ static void PrepareSpectrumHdr(int imnumber, struct of_stk *stk,
 	ihp->Frestfreq = stk->freq * 1e6;
 	ihp->cdelt1 = -1e6 * stk->fwid;
 	ihp->crpix1 = stk->expch;
+	if (stk->refch != stk->expch)
+	  ihp->Rcrpix1= stk->refch;
 	ihp->naxis2 = 1;
 	ihp->naxis3 = 1;
 	ihp->baseln = stk->ibsln;
@@ -1927,6 +1952,7 @@ static void PrepareSpectrumHdr(int imnumber, struct of_stk *stk,
 	ihp->scan_num = (double)stk->nstk[(stk->nstk[0] < 0)? 2: 0];
 	ihp->Fobstime = stk->time;
 	ihp->Ftsys = 1000. * sqrt(stk->time / stk->wght[0]);
+	ihp->Ftrms=stk->rms;
 	strcpy(ihp->object, obj);
 	strcpy(ihp->telescop, telescope);
 	/* put the DATE-OBS out */
@@ -2017,7 +2043,7 @@ static void SetupStackHdr(int imnumber, struct of_stk *stk)
 	stk->wght[0] = 1e6 * ihp->Fobstime / (ihp->Ftsys * ihp->Ftsys);
 	stk->factt = 1.;
 	stk->ibsln = ihp->baseln;
-	stk->nstk[0] = round(ihp->scan_num);
+	stk->nstk[0] = (int)(ihp->scan_num +0.5);
 	stk->nlist = 1;
 	stk->indx = 1;
 	stk->numst = 1;

@@ -1,11 +1,10 @@
 edit.o: edit.c io.h sh_config.h ../../main/machinedep.h terminal.h \
- history.h edit.h
-editlib.o: editlib.c io.h sh_config.h ../../main/machinedep.h \
- terminal.h history.h edit.h
+  history.h edit.h
+editlib.o: editlib.c io.h sh_config.h ../../main/machinedep.h terminal.h \
+  history.h edit.h
 emacs.o: emacs.c io.h sh_config.h ../../main/machinedep.h history.h \
- edit.h
+  edit.h
 fix_hist.o: fix_hist.c sh_config.h ../../main/machinedep.h history.h
-history.o: history.c io.h sh_config.h ../../main/machinedep.h \
- history.h
+history.o: history.c io.h sh_config.h ../../main/machinedep.h history.h
 vi.o: vi.c io.h sh_config.h ../../main/machinedep.h history.h edit.h \
- terminal.h
+  terminal.h

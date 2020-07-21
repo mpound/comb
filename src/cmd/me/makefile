@@ -1,5 +1,5 @@
 include ${COMB}/src/main/include.mk
-OBJECT=me.o met_.o
+OBJECT=met_.o me.o
 INCLP=../../parse/P.tree.h  ../../main/machinedep.h
 INCL=../../main/C.h ../../coordsys/C.h ../../graphics/C.h ../../parse/C.h\
 	../../stacks/C.h ../../stacks/include.h ../../scan/C.h\
@@ -28,7 +28,7 @@ lint:
 #	me.dc.h me.ec.h me.uc.h
 #met_.o	:$(INCLP)
 me.dc.h me.ec.h me.uc.h met_.c : me.t
-	../../../bin/entree -C me.t; dc_to_uc me
+	../../../bin/entree -C me.t; ../../../bin/dc_to_uc me
 print:	me.c me.t
 	@pr $?
 	@touch print

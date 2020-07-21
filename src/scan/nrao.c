@@ -433,7 +433,6 @@ void InitHeader() {
  */
 int ReadNRAO(int scannum) 
 {
-	extern int round(); /* in image.c */
 	int dirno;
 	off_t position, max;
 	SeekBoot(sci.fd); 
@@ -462,7 +461,7 @@ int ReadNRAO(int scannum)
             }
 
 	    swapDirectory(); /* swap bytes if necessary */
-	    cSubscan = (int)round(100.*(sdd_dire.scan - (int) sdd_dire.scan)); 
+	    cSubscan = (int)(100.*(sdd_dire.scan - (int) sdd_dire.scan) + 0.5); 
             if((scannum == (int)sdd_dire.scan) && (subscanReq == cSubscan)) {
 		sci.nscan = (short)scannum;
           	break;
@@ -496,7 +495,6 @@ int ReadNRAO(int scannum)
  * read each class separately, read class pointers first 
  */
 void ReadClasses(off_t position) {
-        extern int round(); /* in image.c */
 	struct val_description *vdp;
 	struct tm  obstime;
 	time_t gmt;
@@ -745,10 +743,10 @@ class1.datalen, class1.scan+((float)scan_.nbknd/100.));
 
 	swapClass3(&class3); /* swap bytes if necessary */
 
-	year = round(class3.utdate);
+	year = (int)(class3.utdate + 0.5);
 	fdum = class3.utdate - (float)year;   	     /* .MMDD */
-	month =  round((fdum*100.));  		     /* (int)(MM.DD) */
-	day   = round(((fdum*100. - month)*100.));       /* (int) DD. */
+	month =  (int)((fdum*100.) + 0.5);  		     /* (int)(MM.DD) */
+	day   = (int)(((fdum*100. - month)*100.)+0.5);       /* (int) DD. */
 	bzero(s,16);
 	HmsPrint(s,0,class3.ut);
 	/* kluge. HmsPrint is returning ' [h]h:mm:ss'
@@ -765,7 +763,7 @@ class1.datalen, class1.scan+((float)scan_.nbknd/100.));
 	/* now set up the obstime struct so that we can set J2Second */
 	obstime.tm_hour=(int)class3.ut;
 	obstime.tm_min=(int)((class3.ut-obstime.tm_hour)*60);
-	obstime.tm_sec=round( ((class3.ut-obstime.tm_hour)*60 - obstime.tm_min)*60);
+	obstime.tm_sec=(int)( ((class3.ut-obstime.tm_hour)*60 - obstime.tm_min)*60 +0.5);
 	/*printf("h m s %d %d %d\n",obstime.tm_hour,obstime.tm_min,obstime.tm_sec);*/
 	obstime.tm_mday=day;
 	obstime.tm_mon=month-1;

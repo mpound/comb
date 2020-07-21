@@ -149,7 +149,23 @@
 #define Fobstime d[OBSTIME]
 #define SCAN_NUM 26
 #define scan_num d[SCAN_NUM]
-#define NUMFITSDOUBLE 27
+#define TELALT 27
+#define tel_elevation d[TELALT]
+#define TELAZ 28
+#define tel_azimuth d[TELAZ]
+#define TELTAMB 29
+#define tel_Tamb d[TELTAMB]
+#define TELTATM 30
+#define tel_Tatm d[TELTATM]
+#define TSKY 31
+#define Ftsky d[TSKY]
+#define RCRPIX1 32
+#define Rcrpix1 d[RCRPIX1]
+#define TRMS 33
+#define Ftrms d[TRMS]
+#define TELVANT 34
+#define tel_VAnt d[TELVANT]
+#define NUMFITSDOUBLE 35
 
 /* file types */
 #define TMP 0

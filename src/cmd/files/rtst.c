@@ -351,13 +351,9 @@ void up()
 
 	/* remove the old search file or quit if it is readonly */
 	sprintf(name,"%s/search",drc);
-	if(access(name, W_OK) == 0 && *swap) {
-	    CloseSearch();
-	    fprintf(stderr,"unlinking %s\n",name);
-	    unlink(name); /* NO! this causes the file to disappear if
+	if(access(name, W_OK) == 0) {
+		/*unlink(name);*/ /* NO! this causes the file to disappear if
 				   * up on a normal search file */
-	    CreateSearch();
-	    OpenSearch();
 	} else { 
 		if(access(name,F_OK) == 0) 
 		    error("Trying to 'up' a read-only search file");

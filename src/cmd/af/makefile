@@ -4,7 +4,7 @@ INCLP=../../parse/P.tree.h  ../../main/machinedep.h
 INCL=../../main/C.h
 CFLAGS=-O
 #
-test      : af.o aft_.o
+test      : aft_.o af.o
 	../../../bin/LN_TO_OBJ $?
 	
 	touch test
@@ -19,6 +19,6 @@ af.dc.h af.ec.h aft_.c : af.t
 print:	af.c af.t
 	@af $?
 	@touch print
-depend:
+depend: 
 	gcc -MM ${OBJECT:.o=.c} > dependencies
 include dependencies

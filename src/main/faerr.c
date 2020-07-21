@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <signal.h>
 #include <string.h>
 #include <time.h>
@@ -7,7 +8,7 @@
 # include "machinedep.h"
 
 
-#if ! SYSTEM_V & ! LINUX
+#if ! SYSTEM_V & ! LINUX & ! OSX
 extern char *sys_siglist[];
 #endif /*! SYSTEM_V */
 /* mwp 1999-12-22. jansky does not have strsignal.
@@ -103,11 +104,7 @@ void faerr(int sig)
 		fprintf(ofp, "Stack trace:\n");
 		fclose(ofp);
 		sprintf(lbfr,
-#if LINUX
-			"gdb %s/bin/%s core <%s/lib/gdbin >>%s/lib/cerr",
-#else /* LINUX */
 			"/bin/adb %s/bin/%s core <%s/lib/adbin >>%s/lib/cerr",
-#endif /* LINUX */
 			main_.comb,interrupt.name,main_.comb,main_.comb);
 		eshell_(lbfr);
 		sprintf(lbfr,"%s/lib/cerr",main_.comb); 

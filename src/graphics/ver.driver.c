@@ -22,7 +22,7 @@ versatek()
 	int move(),line(),linetype();
 	int text(),center(),texttype();
 	int clear();
-	int cursor();
+	int cursor(),dmy();
 
 	static char name[] = "versatek";
 
@@ -57,6 +57,7 @@ versatek()
 		d_settxt = texttype;
 		d_clear = clear;
 		d_cursor = cursor;
+		d_cursor = dmy;
 
 		/* get formats */
 		GtSpec("form.versatek");
@@ -233,3 +234,9 @@ static cursor(x,y,flag)
 	int *x,*y,*flag;
 {
 }
+
+/****************************
+ * dmy - do nothing routine *
+ ****************************/
+
+static dmy () { }

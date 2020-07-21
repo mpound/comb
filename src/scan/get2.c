@@ -75,6 +75,7 @@ gotbackend:
 	stp->numpt = MAXCHN;
     stp->freq = GDI(LineFreqN, arrayNum);
     stp->vlsr = GDI(VSourceN, arrayNum);
+    scan_.VAnt = GDI(VAntN, arrayNum);
 
     stp->time = GDI(IntTimeN, arrayNum);
     if(stp->time <= .01)
@@ -130,6 +131,7 @@ gotbackend:
 	    tAmbient = GD0(TAmbientN);
 	else
 	    tAmbient = 273;
+	scan_.TAmbient=tAmbient;
 	/* hotSpill is  (1 - eta_l) for eta_l defined as in 
 	 * Ulich & Haas 1976, ApJS, 30, 247.  eta_l accounts for
 	 * rearward spillover, aperture blockage, and ohmic losses. 
@@ -152,6 +154,7 @@ gotbackend:
           dTabs = GDI(LatitudeN, arrayNum) < -80? -24 : 30;
 /*printf("dTabs=%g\n",dTabs);*/
 
+	scan_.DTAbs = dTabs;
         tAbsorber = tAmbient - dTabs;
 
         /* at the elevation that the sky was measured */
@@ -203,6 +206,7 @@ gotbackend:
     else
 	stp->rms = 2 / sqrt(64. * stp->wght[0]);	/* use bw of NBE */
     fbCntr = GDI(CRVal1N, arrayNum);
+    scan_.fbCntr = fbCntr;
     /* Should we do frequency processing? */
     if((tsp = GS(CType1N)) && strcmp(tsp, "Fr") != 0) {
 	stp->expch = (stp->numpt + 1.) / 2. + fbCntr / stp->fwid;
@@ -211,15 +215,20 @@ gotbackend:
     } else {	/* Do Freq processing */
 	mmsb = ((i = *GS(MMSBN)) == 'U' || i == 'u')? 1: -1;
 	sig = GDI(SigIFN, arrayNum);
-	stp->expch = (stp->numpt + 1.) / 2. + mmsb * (fbCntr - sig) / stp->fwid;
+	stp->expch = (stp->numpt + 1.) / 2. + ((mmsb * fbCntr) + sig) / stp->fwid;
 	if(scan_.iobstp == 1)
-	    stp->refch = stp->expch + mmsb * (sig - GDI(RefIFN, arrayNum)) /
+	    stp->refch = stp->expch + (GDI(RefIFN, arrayNum) - sig) /
 		stp->fwid;
 	else
 	    stp->refch = NOTFS;
 	/* Must the order of the data be reversed for increasing velocity? 
 	 * Use nm1 as a flag for reversal (if non zero) */
 	nm1 = (mmsb < 0)? 0: stp->numpt - 1;
+	if (HEXISTS(IFCenterN))
+	  scan_.IFCenter=GDI(IFCenterN,arrayNum);
+	else
+	  scan_.IFCenter=0;
+	scan_.mmsb=mmsb;
     }
 
     f *= GDI(BScaleN, arrayNum);

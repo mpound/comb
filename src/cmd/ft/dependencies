@@ -1,3 +1,0 @@
-ft.o: ft.c ../../stacks/C.h ../../main/C.h ../../main/History.h \
- ../../main/dragon.h ../../misc/C.h ../../error/C.h ft.dc.h ft.ec.h
-ftt_.o: ftt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

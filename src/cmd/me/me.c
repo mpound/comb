@@ -30,7 +30,7 @@
 char typeTrans[] = {FS,PSw,0,BS,BP,0,0,0,0,0,0,SK,0,0,0,0,0,0,0,SA,SE};
 
 static char dfltName[] = "meLastScan";
-static char jbknd[] = {100,25,10};
+static char jbknd[] = {100,25,10,0};
 static double hours = 24.;
 static double degrees = 360.;
 static double minutes = 60.;
@@ -45,6 +45,8 @@ void me()
 #include "me.dc.h"
 	double xSource, x1, x2, ySource, y1, y2, f;
 	int currentScan;
+	int search_all_bes = 0;
+	int max_be;
 	register int scanCount;
 	register char *fileName = &scan_.datfn[scan_.ndfn - 3];
 	int scansInMap = 0;		/* Count scans in each map */
@@ -120,15 +122,23 @@ void me()
 	} else {
 	    scan_.mbknd = *lbknd;
 	}
+	if (scan_.mbknd == 0) {
+	  scan_.mbknd = 1;
+	  search_all_bes = 1;
+	}
 	svbknd = scan_.mbknd;
 	opend_();
 	scnlmt_(sn1n, sn2n, sn1f, sn2f, step, (int)*snf);
 	for(scanCount = 0; (currentScan = nxtscn_()); ) {
-	    curscn_.num = currentScan;
-	    scan_.mbknd = svbknd;
-	    if(read_(&curscn_.num))
-		continue;
-
+	  curscn_.num = currentScan;
+	  if(read_(&curscn_.num))
+	    continue;
+	  if(search_all_bes) {
+	    max_be = sci.cNumArrays;
+	  } else {
+	    max_be = svbknd;
+	  }
+	  for(scan_.mbknd = svbknd ; scan_.mbknd <= max_be ; scan_.mbknd++) {
 	    if(scan_.iobstp <= 0 || scan_.iobstp > 21 ||
 			(typeTrans[scan_.iobstp - 1] & obsType) == 0 ||
 	    		!get_() ||
@@ -210,6 +220,7 @@ void me()
 		scanCount = 0;
 		combex_("pl");
 	    }
+	  }
 	}
 	if(scansInMap) {
 	    printf("%d scans found\n", scansInMap);

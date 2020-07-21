@@ -1,3 +1,0 @@
-da.o: da.c ../../main/C.h ../../main/History.h ../../main/dragon.h \
- ../../graphics/C.h ../../stacks/C.h ../../image/C.h da.dc.h da.ec.h
-dat_.o: dat_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

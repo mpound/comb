@@ -20,6 +20,8 @@
 # define TOVRFLOW 20		/* indicate an overflow on the top */
 # define LABELFMT 21		/* indicate format for x & y axis labels */
 
+# define DBOXFILL 22            /* draw a filled box */
+
 # define PICBLOCK 4096		/* number of bytes that intermediate code */
 				/* buffer is incremented by when it */
 				/* overflows */
@@ -35,6 +37,8 @@
 #define NEWPASS 1		/* pen plotter prepare for next pen */
 #define PLOTTING 2		/* pen plotter is in the middle of a pass */
 #define MOREPENS 3		/* pen plotter will need another pass */
+
+#define NUM_PIXEL_COLORS 500    /* number of possible boxfill pixel colors */
 
 /*******************/
 /* Data structures */
@@ -143,7 +147,16 @@ TO_ARGS;
 typedef struct {
 	char htype, vtype;	/* Type of formats ie. g, f, or hms*/
 	short int hfmt, vfmt;	/* control for decimal points */
-} LF_ARGS;
+} 
+LF_ARGS;
+
+typedef struct			/* box fill arguments */
+{
+  unsigned short int x;		/* x location to draw to */
+  unsigned short int y;		/* y location to draw to */
+  short int color;               /* gray scale shade of box */
+}
+BF_ARGS;
 
 typedef union			/* all possible arguments */
 {
@@ -163,6 +176,7 @@ typedef union			/* all possible arguments */
 	RO_ARGS ro;
 	TO_ARGS to;
 	LF_ARGS lf;
+        BF_ARGS bf;
 }
 ALLARGS;
 
@@ -239,6 +253,7 @@ extern char hasClear;		/* flag for whether driver has a clear */
 extern void (*d_cursor)();	/* driver routine for reading cursor */
 extern char hasCursor;		/* flag for whether driver has a cursor */
 				/* routine (d_cursor) */
+extern void (*d_boxfill)();     /* driver routine for drawing filled boxes */
 extern GRFORMAT formats[MAXFORMS]; /* catalog of formats */
 extern ANYTYPE *optArg;		/* option arguments */
 extern int ppState;		/* Used to coordinate multiple passes through

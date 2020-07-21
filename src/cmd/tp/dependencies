@@ -1,3 +1,6 @@
-tp.o: tp.c ../../stacks/C.h ../../coordsys/C.h ../../stacks/include.h \
- ../../main/C.h ../../main/History.h tp.dc.h tp.ec.h
-tpt_.o: tpt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h
+nrutil.o: nrutil.c
+skydip.o: skydip.c nr.h nrutil.h C.h
+mrqcof.o: mrqcof.c
+mrqmin.o: mrqmin.c
+covsrt.o: covsrt.c
+gaussj.o: gaussj.c

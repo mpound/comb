@@ -1,3 +1,0 @@
-gm.o: gm.c ../../main/C.h ../../main/History.h ../../graphics/C.h \
- gm.dc.h gm.ec.h
-gmt_.o: gmt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

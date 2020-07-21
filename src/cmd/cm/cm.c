@@ -258,7 +258,7 @@ void cm()
 		MkOpt(CLEAROPT, XLABHMS, YLABHMS, ENDOPT);
 	} else
 		MkOpt(CLEAROPT, ENDOPT);
-	MkGrid(NO FLAGY0,NO FLAGX0,LTYPE(29),ENDOPT);
+	/*	MkGrid(NO FLAGY0,NO FLAGX0,LTYPE(29),ENDOPT); */
 	MkOpt(HATCH(*hcl,*hcs),ENDOPT);
 	switch(contourChoice) {
 	case AUTOMATIC:
@@ -280,6 +280,7 @@ void cm()
 		MkOpt(CLEVRANGE(*lc, *hc), ENDOPT);
 	MkOpt(CSTORE(&levels,&types,&numLevels), ENDOPT);
 	MkMap(ARRAY(array,*rv,*rh), ENDOPT);
+	MkGrid(NO FLAGY0,NO FLAGX0,LTYPE(29),ENDOPT);
 
 	if( (xBoxes | yBoxes) == 1) {
 		/* display first, last contour, step, ir, and interp type

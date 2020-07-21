@@ -1,5 +1,5 @@
 include ${COMB}/src/main/include.mk
-OBJECT=rtst.o emt_.o rtt_.o stt_.o nst_.o upt_.o
+OBJECT=emt_.o rtt_.o stt_.o nst_.o upt_.o rtst.o
 INCLP=../../parse/P.tree.h  ../../main/machinedep.h
 INCL=../../main/C.h ../../stacks/C.h  ../../stacks/include.h ../../coordsys/C.h
 LINTLIBS=\
@@ -9,7 +9,7 @@ LINTLIBS=\
 	../../misc/llib-lmisc.ln\
 	../../stacks/llib-lstack.ln
 
-CFLAGS=-g
+CFLAGS=-O
 #
 test      : $(OBJECT) 
 	../../../bin/LN_TO_OBJ $?
@@ -32,6 +32,8 @@ up.dc.h up.ec.h up.uc.h upt_.c : up.t
 print:	rtst.c rt.t st.t ns.t up.t
 	@pr -l62 $?
 	@touch print
+
+filest_.c: rtt_.c nst_.c emt_.c stt_.c upt_.c
 
 depend:
 	gcc -MM ${OBJECT:.o=.c} > dependencies

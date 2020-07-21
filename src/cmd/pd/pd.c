@@ -4,6 +4,10 @@
 #include "../../stacks/C.h"
 #include "../../scan/C.h"
 #include "../../misc/C.h"
+#include "../../parse/C.h"
+#include "../../parse/P.struct.h"
+
+void asgnstrhdr(HdrVar *var, char *val);
 
 void pd_()
 {
@@ -11,6 +15,7 @@ void pd_()
 	short *sp;
 	float *fp;
 	char *date;
+	char tempstr[80];
 
 #include "pd.dc.h"
 #include "pd.ec.h"
@@ -60,9 +65,18 @@ void pd_()
 		PrintScan2MainHdr();
 		break;
 	case 5:		/* Print the scan numbers form stack 1 */
-		prtsl_();
-		break;
-	case 6:		/* Print the date and time of stack 1 */
+	  prtsl_(tempstr,80);
+	  puts(tempstr);
+	  break;
+	case 6:		/* Put the scan filename from stack 1 in a GS */
+	  prtsl_(tempstr,80);
+	  tempstr[3]='\0';
+	  if(sg_[*gs])
+	    ChkFree(sg_[*gs]);
+	  sg_[*gs] = ChkAlloc(strlen(tempstr) + 1, "Global string");
+	  strcpy(sg_[*gs], tempstr);
+	  break;
+	case 7:		/* Print the date and time of stack 1 */
 		if( stk_[0].j2second != 0) 
 			printf(" %s",j2sToDate(stk_[0].j2second));
 		else

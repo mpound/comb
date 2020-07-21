@@ -11,9 +11,9 @@
 	*lbknd = scan_.mbknd;
 	*lbkndt = 8;
 	*ffreq1 = 0;
-	*ffreq2 = 300000;
+	*ffreq2 = 2000000;
 	*ffreqt = 16;
-	*fwght = 100;
+	*fwght = 0.01;
 	*fwghtt = 16;
 	*fst = 8;
 	*pst = 8;

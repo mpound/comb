@@ -1,4 +1,3 @@
-
 extern Node hct_[];
 union {
 	char c[67];

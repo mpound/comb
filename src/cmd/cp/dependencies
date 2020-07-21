@@ -1,4 +1,0 @@
-cp.o: cp.c ../../main/C.h ../../main/History.h ../../coordsys/C.h \
- ../../stacks/C.h ../../graphics/C.h ../../graphics/include.h \
- ../../image/C.h cp.dc.h cp.ec.h
-cpt_.o: cpt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

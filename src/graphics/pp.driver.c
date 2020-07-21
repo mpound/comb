@@ -83,6 +83,7 @@ static setvalues()
 	d_settxt = texttype;
 	d_clear = dmy;
 	d_cursor = cursor;
+	d_boxfill = dmy;
 
 	/* get formats */
 	GtSpec("form.hp7580");

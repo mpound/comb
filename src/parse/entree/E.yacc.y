@@ -6,7 +6,9 @@
 # include "E.struct.h"
 # include "E.extern.h"
 
+#if 0
 	typedef char *YYSTYPE;
+#endif
 %}
 
 %token STRNG_T EX_T FL_T EXT_T LST_T RNG_T INT_T REAL_T SCAN_T STR_T CMD_T EXP_T

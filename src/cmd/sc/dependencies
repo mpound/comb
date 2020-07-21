@@ -1,5 +1,0 @@
-sc.o: sc.c ../../main/C.h ../../main/History.h ../../parse/P.tree.h \
- ../../parse/../main/machinedep.h ../../parse/C.h \
- ../../parse/P.struct.h ../../parse/P.constant.h ../../stacks/C.h \
- ../../error/C.h sc.dc.h sc.ec.h
-sct_.o: sct_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

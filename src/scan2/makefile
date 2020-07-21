@@ -5,7 +5,7 @@ FILES=btlsdf.doc makefile makehdr newfile.c scan2.c scan2.h scan2.h.base\
 	scan2_defs.h scan2_entries.h scan2hdr ts2.c ws2.c
 OBJECT=newfile.c scan2.c ts2.c ws2.c
 
-CFLAGS=
+CFLAGS=-O
 #all: test newfile ts2
 test      : scan2.o
 	../../bin/LN_TO_OBJ $?

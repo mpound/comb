@@ -37,6 +37,7 @@ static void clear P_((int lx, int ly, int hx, int hy));
 static void cursor P_((int *x, int *y, char *flag));
 static void makemode P_((int mode));
 static void xy P_((int x, int y));
+static void dmy P_((void));
 #undef P_
 
 /**********************************/
@@ -120,6 +121,7 @@ static void setterm()
 	d_settxt = texttype;
 	d_clear = clear;
 	d_cursor = cursor;
+	d_boxfill = dmy;
 }
 
 /********************************************/
@@ -375,3 +377,9 @@ static void xy(x,y)
 	cx = x;
 	cy = y;
 }
+
+/****************************
+ * dmy - do nothing routine *
+ ****************************/
+
+static void dmy () { }

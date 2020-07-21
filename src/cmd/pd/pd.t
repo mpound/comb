@@ -9,7 +9,8 @@ parse("cmnd_.gstr")
 		"Stack 1 Data" "stdt":;
 		"Scan Data" "scdt":;
 		"Main header" "main":;
-		"List all scan numbers" "sn":;
+		"List scan numbers" "sn":;
+		"Put first scan file name in global string" "gs": int fl("gsf") old("0") - "gs";
 		"Print date and time of stack 1" "date":;
 	}
 }

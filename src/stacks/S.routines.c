@@ -110,12 +110,12 @@ void Sstore(sfile,data)
 	int newChild;		/* flag for whether new data goes in child1 */
 	int bit;		/* bit for calling ibit */
 	int child;		/* child to go to in search */
-
+/*
 fprintf(stderr,"Entering Sstore: lastNode = %d\n",sfile->head.lastNode);
 fprintf(stderr,"v[] = %x, %x, %x, %x, %x\n",data.v[0], data.v[1], data.v[2],
 	data.v[3], data.v[4] );
 ThdrPrint(sfile);
-
+*/
 
 	if(!sfile->head.lastNode)
 	{
@@ -132,13 +132,13 @@ ThdrPrint(sfile);
 
 	/* search through nodes */
 	Root(sfile,&nodeA);
-fprintf(stderr,"Read root:\n"); 
+/*fprintf(stderr,"Read root:\n"); */
 	bit = nodeA.bit;
 	bitsIn = -1;
 	branchField = -1;
 	while(bitsIn == -1)
 	{
-PrintNode(&nodeA);
+/*PrintNode(&nodeA);*/
 
 		/* compare data with node */
 
@@ -149,7 +149,7 @@ PrintNode(&nodeA);
 			test ^= nodeA.value[field];
 			if(nodeA.bits < 32)
 				test &= ~(-1 << nodeA.bits);
- fprintf(stderr,"field %d, test = %x\n",field, test); 
+/* fprintf(stderr,"field %d, test = %x\n",field, test); */
 			if(test)
 
 				/* if different, see if difference is big */
@@ -168,7 +168,7 @@ PrintNode(&nodeA);
 			/* if this node is a leaf, then the data is */
 			/* already in file and Sstore should return */
 			if(Leaf(nodeA)) {
- fprintf(stderr,"Got to Leaf node\n"); 
+/* fprintf(stderr,"Got to Leaf node\n"); */
 				return;
 			}
 
@@ -176,17 +176,17 @@ PrintNode(&nodeA);
 			bit = nodeA.bit;
 			child = ibit_(data.v + nodeA.branchField,&bit);
 			Child(&nodeA,child,&nodeA);
- fprintf(stderr,"Got new child:\n"); 
+/* fprintf(stderr,"Got new child:\n"); */
 		}
 	}
 
 	/* make new nodes */
 	length = nodeA.bits - bitsIn;
 	branchBit = bitsIn + nodeA.bit;
-
+/*
 fprintf(stderr,"About to make new nodes: bitsIn = %d,length = %d, branchBit = %d\n",
 bitsIn, length, branchBit);
-
+*/
 
 	/* make nodeC */
 	nodeC = nodeA;

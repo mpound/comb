@@ -1,3 +1,0 @@
-pa.o: pa.c ../../main/C.h ../../main/History.h ../../main/machinedep.h \
- pa.dc.h pa.ec.h
-pat_.o: pat_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

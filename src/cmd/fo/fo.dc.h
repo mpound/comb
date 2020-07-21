@@ -1,4 +1,3 @@
-
 extern Node fot_[];
 union {
 	char c[1];

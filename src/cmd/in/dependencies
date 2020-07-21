@@ -1,3 +1,0 @@
-in.o: in.c ../../stacks/C.h ../../main/C.h ../../main/History.h \
- ../../main/dragon.h ../../misc/C.h in.dc.h in.ec.h in.uc.h
-int_.o: int_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

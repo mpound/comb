@@ -1,3 +1,0 @@
-sq.o: sq.c ../../stacks/C.h ../../main/C.h ../../main/History.h \
- ../../misc/C.h sq.dc.h sq.ec.h
-sqt_.o: sqt_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h

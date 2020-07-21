@@ -69,7 +69,6 @@ static double curSqrDis;		/* current smallest square of */
 					/* distance */
 static int curStkNum;			/* current best stack number */
 
-int round();				/* round double to int */
 double dissquare();			/* compute square of distance between
 					   two XYZPOINTs */
 #define bzero(s, n) memset(s, 0, n)
@@ -101,10 +100,8 @@ void CreateSearch()
 	sprintf(fileName,"%s/search",dirName[curDir]);
 
 	/* create file if one doesn't exist */
-	if(access(fileName,0)) {
-	    fprintf(stderr,"Creating search file\n");
+	if(access(fileName,0))
 		Sclose(Screat(fileName,0666));
-	}
 }
 
 /***********************************/
@@ -232,12 +229,12 @@ STKINDX MkSrchIndx(stk)
 	/* compute location of stack */
 	loc = RaDecToXyz(stk->ra + stk->dra,stk->dec + stk->ddec,
 		(double)stk->epoch);
-	temp.x = round(loc.x) + HALFSPACE;
-	temp.y = round(loc.y) + HALFSPACE;
-	temp.z = round(loc.z) + HALFSPACE;
+	temp.x = (int)(loc.x +0.5) + HALFSPACE;
+	temp.y = (int)(loc.y +0.5) + HALFSPACE;
+	temp.z = (int)(loc.z +0.5) + HALFSPACE;
 
 	/* compute remainder of index */
-	temp.freq = round(stk->freq * FREQSCALE);
+	temp.freq = (int)(stk->freq * FREQSCALE +0.5);
 	temp.stkNum = stk->numst;
 
 	/* return index */
@@ -295,9 +292,9 @@ int FindNear(point,range)		/* returns stack number */
 	SetMaxDis(range);
 
 	/* set point to check against */
-	chkPoint.x = round(point.x) + HALFSPACE;
-	chkPoint.y = round(point.y) + HALFSPACE;
-	chkPoint.z = round(point.z) + HALFSPACE;
+	chkPoint.x = (int)(point.x +0.5) + HALFSPACE;
+	chkPoint.y = (int)(point.y +0.5) + HALFSPACE;
+	chkPoint.z = (int)(point.z +0.5) + HALFSPACE;
 
 	/* compute stack index range in which stack should be found */
 	stkRng.low.x = chkPoint.x - iMaxDis;
@@ -306,8 +303,8 @@ int FindNear(point,range)		/* returns stack number */
 	stkRng.high.y = chkPoint.y + iMaxDis;
 	stkRng.low.z = chkPoint.z - iMaxDis;
 	stkRng.high.z = chkPoint.z + iMaxDis;
-	stkRng.low.freq = round(lowFreq * FREQSCALE);
-	stkRng.high.freq = round(highFreq * FREQSCALE);
+	stkRng.low.freq = (int)(lowFreq * FREQSCALE +0.5);
+	stkRng.high.freq = (int)(highFreq * FREQSCALE +0.5);
 	stkRng.low.stkNum = lowStkNum;
 	stkRng.high.stkNum = highStkNum;
 
@@ -489,15 +486,15 @@ static int AddInStk(stk)
 	proj = Proj(loc);
 	if(!isLine)
 	{
-		row = round( (proj.y - spaceLoc.y) * ySpcScale);
-		col = round( (proj.x - spaceLoc.x) * xSpcScale);
+		row = (int)( (proj.y - spaceLoc.y) * ySpcScale +0.5);
+		col = (int)( (proj.x - spaceLoc.x) * xSpcScale +0.5);
 	}
 	else
 	{
 		if(xSpcScale != DRAGON)
-			col = round( (proj.x - spaceLoc.x) * xSpcScale);
+			col = (int)( (proj.x - spaceLoc.x) * xSpcScale +0.5);
 		else
-			col = round( (proj.y - spaceLoc.y) * ySpcScale);
+			col = (int)( (proj.y - spaceLoc.y) * ySpcScale +0.5);
 		row = 0;
 	}
 	if(row < 0)
@@ -669,16 +666,16 @@ void FillInArray(pLowerLeft,pUpperRight,columns,rows,save)
 
 	/* construct range */
 	temp = HALFSPACE - iRad;
-	range.low.x = round(temp + lowLim.x);
-	range.low.y = round(temp + lowLim.y);
-	range.low.z = round(temp + lowLim.z);
-	range.low.freq = round(lowFreq * FREQSCALE);
+	range.low.x = (int)(temp + lowLim.x +0.5);
+	range.low.y = (int)(temp + lowLim.y +0.5);
+	range.low.z = (int)(temp + lowLim.z +0.5);
+	range.low.freq = (int)(lowFreq * FREQSCALE +0.5);
 	range.low.stkNum = lowStkNum;
 	temp = HALFSPACE + iRad;
-	range.high.x = round( temp + highLim.x);
-	range.high.y = round( temp + highLim.y);
-	range.high.z = round( temp + highLim.z);
-	range.high.freq = round(highFreq * FREQSCALE);
+	range.high.x = (int)( temp + highLim.x + 0.5);
+	range.high.y = (int)( temp + highLim.y + 0.5);
+	range.high.z = (int)( temp + highLim.z + 0.5);
+	range.high.freq = (int)(highFreq * FREQSCALE + 0.5);
 	range.high.stkNum = highStkNum;
 
 	/* search */
@@ -818,7 +815,6 @@ float *Stk1Space(point1,point2,low,numCh,spaceRes,filtWid)
 	float *lastChan;	/* last channel to be filled in */
 	static int one = 1,three = 3;
 	double tran_();
-	int round();
 	int AddInStk();
 
 	FillInArray(point1,point2,spaceRes,0,AddInStk);
@@ -836,7 +832,7 @@ float *Stk1Space(point1,point2,low,numCh,spaceRes,filtWid)
 			if(AvgStacks(locList,filtWid, 0))
 			{
 				channel = stk_[0].stak - 1 +
-					  round(tran_(&three,&one,&low));
+					  (int)(tran_(&three,&one,&low) +0.5);
 				lastChan = channel + numCh;
 				while(channel < stk_[0].stak && curEl < lastEl)
 				{
@@ -975,9 +971,9 @@ int verbose;
 		stk_[1].ddec, (double)stk_[1].epoch),
 
 	/* set point to check against */
-	chkPoint.x = round(loc.x) + HALFSPACE;
-	chkPoint.y = round(loc.y) + HALFSPACE;
-	chkPoint.z = round(loc.z) + HALFSPACE;
+	chkPoint.x = (int)(loc.x +0.5) + HALFSPACE;
+	chkPoint.y = (int)(loc.y +0.5) + HALFSPACE;
+	chkPoint.z = (int)(loc.z +0.5) + HALFSPACE;
 
 	/* compute stack index range in which similar stacks should be found */
 	stkRng.low.x = chkPoint.x - iMaxDis;

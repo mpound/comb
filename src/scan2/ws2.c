@@ -159,7 +159,7 @@ char *reason;
 }
 #endif
 
-#include <varargs.h>
+#include <stdarg.h>
 /*VARARGS*/
 error(va_alist)
 va_dcl

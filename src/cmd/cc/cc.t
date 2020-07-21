@@ -8,5 +8,7 @@ parse("cmnd_.gstr")
 		"New vel" "vl": real auto("stk_[0].vlsr") - "nwv";
 		"Oscillator error (km/s to shift line)" "oe": real old("0") -
 			"oe";
+	        "Flip to opposite SSB, and new freq" "ssbflip": real old("0") -
+			"ssbfr";
 	}
 }

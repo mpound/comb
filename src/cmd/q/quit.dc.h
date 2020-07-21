@@ -1,4 +1,3 @@
-
 extern Node quitt_[];
 union {
 	char c[1];

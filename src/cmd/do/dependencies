@@ -1,5 +1,0 @@
-do.o: do.c ../../main/C.h ../../main/History.h do.dc.h wexp.dc.h \
- do.ec.h wexp.ec.h
-dot_.o: dot_.c ../../parse/P.tree.h ../../parse/../main/machinedep.h
-wexpt_.o: wexpt_.c ../../parse/P.tree.h \
- ../../parse/../main/machinedep.h

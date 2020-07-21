@@ -1,4 +1,3 @@
-
 extern Node lct_[];
 union {
 	char c[1];

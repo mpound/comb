@@ -1,5 +1,5 @@
 include ${COMB}/src/main/include.mk
-OBJECT=lk.o lkt_.o
+OBJECT=lkt_.o lk.o
 INCLP=../../parse/P.tree.h  ../../main/machinedep.h
 INCL=../../main/C.h ../../coordsys/C.h ../../stacks/C.h ../../graphics/C.h\
 	../../coordsys/include.h ../../stacks/include.h
