@@ -1,0 +1,6 @@
+(cd ../obj;nm -o *.o) |\
+awk ' $2 !~ /[ad]/  {print $3,$2,$1}' |\
+awk ' BEGIN {FS = ":"}
+	{print $1}'|\
+sed 's/^_//' |\
+sort >xref.out
