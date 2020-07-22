@@ -1,0 +1,1 @@
+This directory will be populated with .o files when comb is compiled. The .o files should not be tracked by git.
